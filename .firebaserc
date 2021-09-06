@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "aiesec-hris"
+  },
+  "targets": {
+    "aiesec-hris": {
+      "hosting": {
+        "hris": [
+          "aiesec-hris"
+        ]
+      }
+    }
+  }
+}
