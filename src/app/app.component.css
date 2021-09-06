@@ -1,0 +1,14 @@
+#header {
+  background-color:#3a539b;
+}
+
+#header img {
+  width:100px;
+  margin-left:-20px;
+}
+
+#header span {
+  color:white;
+  font-weight:bold;
+  font-size:16px;
+}
