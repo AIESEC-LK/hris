@@ -13,6 +13,8 @@ import { LoginComponent } from './auth/login/login.component';
 // Angular fire
 import {AngularFireModule} from "@angular/fire/compat";
 import {SETTINGS as AUTH_SETTINGS, AngularFireAuthModule} from "@angular/fire/compat/auth";
+import { USE_EMULATOR as USE_AUTH_EMULATOR } from '@angular/fire/compat/auth';
+
 
 
 
@@ -32,6 +34,8 @@ import {SETTINGS as AUTH_SETTINGS, AngularFireAuthModule} from "@angular/fire/co
     ],
   providers: [
     { provide: AUTH_SETTINGS, useValue: { appVerificationDisabledForTesting: true } },
+    { provide: USE_AUTH_EMULATOR, useValue: environment.production ? undefined : ['http://127.0.0.1:9099', 9099] },
+
   ],
   bootstrap: [AppComponent]
 })

@@ -1,0 +1,50 @@
+[debug] [2021-09-06T21:05:39.704Z] ----------------------------------------------------------------------
+[debug] [2021-09-06T21:05:39.705Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\kanee\WebstormProjects\hris\node_modules\firebase-tools\lib\bin\firebase.js emulators:start
+[debug] [2021-09-06T21:05:39.705Z] CLI Version:   9.17.0
+[debug] [2021-09-06T21:05:39.706Z] Platform:      win32
+[debug] [2021-09-06T21:05:39.706Z] Node Version:  v14.17.4
+[debug] [2021-09-06T21:05:39.711Z] Time:          Tue Sep 07 2021 02:35:39 GMT+0530 (India Standard Time)
+[debug] [2021-09-06T21:05:39.711Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2021-09-06T21:05:39.751Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2021-09-06T21:05:39.752Z] > authorizing via signed-in user (srilanka@aiesec.net)
+[info] i  emulators: Starting emulators: auth, hosting {"metadata":{"emulator":{"name":"hub"},"message":"Starting emulators: auth, hosting"}}
+[debug] [2021-09-06T21:05:39.769Z] [hub] writing locator at C:\Users\kanee\AppData\Local\Temp\hub-aiesec-hris.json
+[debug] [2021-09-06T21:05:41.714Z] >>> [apiv2][query] GET https://firebasehosting.googleapis.com/v1beta1/projects/aiesec-hris/sites 
+[debug] [2021-09-06T21:05:43.138Z] <<< [apiv2][status] GET https://firebasehosting.googleapis.com/v1beta1/projects/aiesec-hris/sites 200
+[debug] [2021-09-06T21:05:43.138Z] <<< [apiv2][body] GET https://firebasehosting.googleapis.com/v1beta1/projects/aiesec-hris/sites {"sites":[{"name":"projects/502687069614/sites/aiesec-hris","defaultUrl":"https://aiesec-hris.web.app","type":"DEFAULT_SITE"}]}
+[debug] [2021-09-06T21:05:43.138Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/aiesec-hris/webApps/-/config [none]
+[debug] [2021-09-06T21:05:44.433Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/aiesec-hris/webApps/-/config 200
+[debug] [2021-09-06T21:05:44.433Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/aiesec-hris/webApps/-/config {"projectId":"aiesec-hris","appId":"1:502687069614:web:59d5365240d0c33b82c43f","storageBucket":"aiesec-hris.appspot.com","apiKey":"AIzaSyAumg4Mpn3uC5QoyJxtHfl3JlejuTQSVL4","authDomain":"aiesec-hris.firebaseapp.com","messagingSenderId":"502687069614","measurementId":"G-G7NC1B6BK5"}
+[info] i  hosting[hris]: Serving hosting files from: dist/hris {"metadata":{"emulator":{"name":"hosting"},"message":"Serving hosting files from: \u001b[1mdist/hris\u001b[22m"}}
+[info] +  hosting[hris]: Local server: http://localhost:5000 {"metadata":{"emulator":{"name":"hosting"},"message":"Local server: \u001b[4m\u001b[1mhttp://localhost:5000\u001b[22m\u001b[24m"}}
+[info] i  ui: downloading ui-v1.6.3.zip... {"metadata":{"emulator":{"name":"ui"},"message":"downloading ui-v1.6.3.zip..."}}
+[debug] [2021-09-06T21:05:44.463Z] >>> [apiv2][query] GET https://storage.googleapis.com/firebase-preview-drop/emulator/ui-v1.6.3.zip 
+[debug] [2021-09-06T21:05:46.188Z] <<< [apiv2][status] GET https://storage.googleapis.com/firebase-preview-drop/emulator/ui-v1.6.3.zip 200
+[debug] [2021-09-06T21:05:46.188Z] <<< [apiv2][body] GET https://storage.googleapis.com/firebase-preview-drop/emulator/ui-v1.6.3.zip [stream]
+[info] i  ui: Removing outdated emulator files: ui-v1.6.0 {"metadata":{"emulator":{"name":"ui"},"message":"Removing outdated emulator files: ui-v1.6.0"}}
+[info] i  ui: Removing outdated emulator files: ui-v1.6.0.zip {"metadata":{"emulator":{"name":"ui"},"message":"Removing outdated emulator files: ui-v1.6.0.zip"}}
+[debug] [2021-09-06T21:05:47.786Z] Ignoring unsupported arg: auto_download {"metadata":{"emulator":{"name":"ui"},"message":"Ignoring unsupported arg: auto_download"}}
+[debug] [2021-09-06T21:05:47.786Z] Ignoring unsupported arg: port {"metadata":{"emulator":{"name":"ui"},"message":"Ignoring unsupported arg: port"}}
+[debug] [2021-09-06T21:05:47.786Z] Starting Emulator UI with command {"binary":"node","args":["C:\\Users\\kanee\\.cache\\firebase\\emulators\\ui-v1.6.3\\server.bundle.js"],"optionalArgs":[],"joinArgs":false} {"metadata":{"emulator":{"name":"ui"},"message":"Starting Emulator UI with command {\"binary\":\"node\",\"args\":[\"C:\\\\Users\\\\kanee\\\\.cache\\\\firebase\\\\emulators\\\\ui-v1.6.3\\\\server.bundle.js\"],\"optionalArgs\":[],\"joinArgs\":false}"}}
+[info] i  ui: Emulator UI logging to ui-debug.log {"metadata":{"emulator":{"name":"ui"},"message":"Emulator UI logging to \u001b[1mui-debug.log\u001b[22m"}}
+[debug] [2021-09-06T21:05:47.870Z] Web / API server started at localhost:4000
+ {"metadata":{"emulator":{"name":"ui"},"message":"Web / API server started at localhost:4000\n"}}
+[info] 
+┌─────────────────────────────────────────────────────────────┐
+│ ✔  All emulators ready! It is now safe to connect your app. │
+│ i  View Emulator UI at http://localhost:4000                │
+└─────────────────────────────────────────────────────────────┘
+
+┌────────────────┬────────────────┬────────────────────────────┐
+│ Emulator       │ Host:Port      │ View in Emulator UI        │
+├────────────────┼────────────────┼────────────────────────────┤
+│ Authentication │ localhost:9099 │ http://localhost:4000/auth │
+├────────────────┼────────────────┼────────────────────────────┤
+│ Hosting        │ localhost:5000 │ n/a                        │
+└────────────────┴────────────────┴────────────────────────────┘
+  Emulator Hub running at localhost:4400
+  Other reserved ports: 4500
+
+Issues? Report them at https://github.com/firebase/firebase-tools/issues and attach the *-debug.log files.
+ 

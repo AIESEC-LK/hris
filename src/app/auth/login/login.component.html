@@ -1,7 +1,12 @@
-<div class="mat-card clickable" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="20px">
+<div class="mat-card clickable" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="20px" (click)="authService.login()"
+     *ngIf="!logged">
   <img src="assets/images/google.png" width="50px"/>
   <div fxLayout="column" fxLayoutGap="5px">
     <div class="header">Login with Google</div>
     <div class="hint">with your aiesec.net email</div>
   </div>
+</div>
+
+<div *ngIf="logged" (click)="authService.logout()">
+  <div>LOGOUT</div>
 </div>
