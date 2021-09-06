@@ -1,8 +1,13 @@
-<div id="header" fxLayout="row" fxLayoutAlign="start center">
-  <img alt="AIESEC man" src="assets/images/monophy.gif"/>
-  <span>AIESEC Sri Lanka HRIS</span>
+<div fxLayout="column" fxlayoutalign="start center" style="min-height:100%">
+
+  <div id="header" fxLayout="row" fxLayoutAlign="start center">
+    <img alt="AIESEC man" src="assets/images/monophy.gif"/>
+    <span>AIESEC Sri Lanka HRIS</span>
+  </div>
+
+  <div id="content" fxLayout="column" fxLayoutAlign="center center" fxFlex>
+    <router-outlet></router-outlet>
+  </div>
+
 </div>
 
-<div id="content" fxLayout="column" fxLayoutAlign="stretch stretch">
-  <router-outlet>sdfsd</router-outlet>
-</div>

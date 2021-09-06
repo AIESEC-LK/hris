@@ -1,6 +1,30 @@
 /* You can add global styles to this file, and also import other style files */
+html, body {
+  height: 100%;
+  background-color:#EEEEEE;
+}
+body { margin: 0; font-family: Lato, "Helvetica Neue", sans-serif; }
 
-body {
-  margin:0;
-  font-family: 'Lato', sans-serif;
+.mat-card {
+  padding:10px 15px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  border-radius:5px;
+  background-color:white;
+  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+}
+
+.clickable:hover {
+  cursor:pointer;
+  box-shadow: 0 3px 5px rgba(0,0,0,0.25), 0 2px 4px rgba(0,0,0,0.22);
+}
+
+.header {
+  color:#3a539b;
+  font-size:16px;
+  font-weight:bold;
+}
+
+.hint {
+  font-weight:lighter;
+  font-size:10px;
 }
