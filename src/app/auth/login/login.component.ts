@@ -7,14 +7,11 @@ import {AuthService} from "../auth.service";
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-
-  logged = false;
-
+  
   constructor(public authService: AuthService) {
   }
 
   async ngOnInit() {
-    this.logged = await this.authService.isLoggedIn();
   }
 
 }

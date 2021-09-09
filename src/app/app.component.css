@@ -7,7 +7,7 @@
   margin-left:-20px;
 }
 
-#header span {
+#header .title {
   color:white;
   font-weight:bold;
   font-size:16px;
@@ -15,4 +15,14 @@
 
 #content {
   margin:10px;
+}
+
+.links span {
+  font-weight:lighter;
+  color:white;
+}
+
+.links span:hover {
+  cursor:pointer;
+  text-decoration:underline;
 }

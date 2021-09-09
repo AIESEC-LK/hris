@@ -1,13 +1,22 @@
 <div fxLayout="column" fxlayoutalign="start center" style="min-height:100%">
 
-  <div id="header" fxLayout="row" fxLayoutAlign="start center">
-    <img alt="AIESEC man" src="assets/images/monophy.gif"/>
-    <span>AIESEC Sri Lanka HRIS</span>
+  <div id="header" fxLayout="row" fxLayoutAlign="space-between center">
+
+    <div fxLayout="row" fxLayoutAlign="start center">
+      <img alt="AIESEC man" src="assets/images/monophy.gif"/>
+      <span class="title">AIESEC Sri Lanka HRIS</span>
+    </div>
+
+    <div class="links" style="margin-right:20px;">
+      <span *ngIf="!authService.logged" (click)="authService.login()">Log In</span>
+      <span *ngIf="authService.logged" (click)="authService.logout()">Log Out</span>
+    </div>
   </div>
 
   <div id="content" fxLayout="column" fxLayoutAlign="center center" fxFlex>
     <router-outlet></router-outlet>
   </div>
+
 
 </div>
 
