@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable, OnInit} from '@angular/core';
 import {AngularFireAuth} from "@angular/fire/compat/auth";
 import {AngularFireFunctions} from "@angular/fire/compat/functions";
 import firebase from "firebase/compat/app";
@@ -14,7 +14,7 @@ export class AuthService {
 
   private AlreadyLoggedInException:Error  = { name: "Already logged in", message: "You are already logged in." }
 
-  public logged:boolean = false;
+  public logged: boolean = false;
 
   constructor(private auth: AngularFireAuth, private functions: AngularFireFunctions, private dialog: MatDialog) {
     this.isLoggedIn();
@@ -28,8 +28,7 @@ export class AuthService {
       const loginResult = await this.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
       console.log("User:", loginResult.user);
       await this.setUserTokens();
-      //window.location.reload();
-      console.log("reload");
+      window.location.reload();
     } catch (e) {
       this.dialog.open(ErrorComponent, {data: e});
     }
@@ -47,9 +46,10 @@ export class AuthService {
     }
   }
 
-  private async isLoggedIn() {
+  public async isLoggedIn(): Promise<boolean> {
     const logged = await this.auth.authState.pipe(first()).toPromise();
     this.logged = logged != null;
+    return logged != null;
   }
 
   private async setUserTokens() {

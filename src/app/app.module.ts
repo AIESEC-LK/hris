@@ -19,6 +19,7 @@ import {AngularFireFunctionsModule, USE_EMULATOR} from '@angular/fire/compat/fun
 import { LoadingComponent } from './dialogs/loading/loading.component';
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import { ErrorComponent } from './dialogs/error/error.component';
+import { ProfileComponent } from './profile/profile.component';
 
 
 
@@ -28,7 +29,8 @@ import { ErrorComponent } from './dialogs/error/error.component';
     AppComponent,
     LoginComponent,
     LoadingComponent,
-    ErrorComponent
+    ErrorComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
