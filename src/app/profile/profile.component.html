@@ -1,1 +1,72 @@
-<p>profile works!</p>
+<mat-spinner *ngIf="!member"></mat-spinner>
+
+<div fxLayout="row" fxLayoutGap="20px" fxLayout="start start">
+
+  <div fxLayout="column" fxLayoutGap="20px" fxLayoutAlign="stretch stretch" style="padding:0; border:none;" *ngIf="member">
+
+    <img src="{{member.photo}}" width="200px;" style="border-radius:5px;"/>
+
+    <div class="mat-card" fxLayoutGap="20px" style="padding:20px;">
+
+      <div class="mat-card-title" style="font-size:18px; margin-bottom:200px;">Social Media</div>
+
+      <div fxlayout="row" fxLayoutGap="20px" style="margin-top:20px;">
+
+        <div><img src="https://cdn3.iconfinder.com/data/icons/capsocial-round/500/facebook-512.png" width="20px"/></div>
+      </div>
+
+
+    </div>
+  </div>
+
+  <div class="mat-card" fxLayout="column" fxLayoutAlign="center start" fxLayoutGap="20px" *ngIf="member"
+       style="padding:20px;">
+    <div class="mat-card-title">{{member.name}}</div>
+
+    <div fxlayout="row" fxLayoutGap="20px">
+      <div class="item_name">Entity</div>
+      <div>AIESEC in {{member.entity}}</div>
+    </div>
+
+    <div fxlayout="row" fxLayoutGap="20px">
+      <div class="item_name">Expa ID</div>
+      <div>{{member.expa_id}}</div>
+    </div>
+
+    <div fxlayout="row" fxLayoutGap="20px">
+      <div class="item_name">Email Address</div>
+      <div>{{member.email}}</div>
+    </div>
+
+    <div fxlayout="row" fxLayoutGap="20px">
+      <div class="item_name">Contact No.</div>
+      <div>{{member.phone}}</div>
+    </div>
+
+    <div fxlayout="row" fxLayoutGap="20px">
+      <div class="item_name">Date of Birth</div>
+      <div>{{member.dob}}</div>
+    </div>
+
+    <div fxlayout="row" fxLayoutGap="20px">
+      <div class="item_name">Gender</div>
+      <div>{{member.gender}}</div>
+    </div>
+
+  </div>
+
+  <div class="mat-card" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="20px" *ngIf="member"
+       style="padding:20px;">
+    <div class="mat-card-title" style="font-size:18px">Positions</div>
+
+    <div *ngFor="let position of member.positions">
+      <div class="position_name">{{position.name}}</div>
+      <div class="item_name">AIESEC in {{position.entity}}</div>
+      <div class="item_name">
+        {{position.start_date}} to {{position.end_date}}
+      </div>
+    </div>
+
+
+
+</div>

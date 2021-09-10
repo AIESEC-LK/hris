@@ -1,26 +1,52 @@
-import { Injectable } from '@angular/core';
-import {AuthService} from "../auth/auth.service";
+import {Injectable} from '@angular/core';
 import {AngularFireFunctions} from "@angular/fire/compat/functions";
-import firebase from "firebase/compat";
 import {ErrorComponent} from "../dialogs/error/error.component";
 import {MatDialog} from "@angular/material/dialog";
+import {LoadingComponent} from "../dialogs/loading/loading.component";
+import {Router} from "@angular/router";
+
+export interface Member {
+  name: string,
+  email: string,
+  expa_id: number,
+  entity: string,
+  phone: string,
+  dob: string,
+  gender: string,
+  positions: Position[],
+  photo: string
+}
+
+export interface Position {
+  name: string,
+  start_date: string,
+  end_date: string,
+  function:string,
+  entity: string
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class MemberService {
 
-  constructor(private functions: AngularFireFunctions, private dialog: MatDialog) {
+  constructor(private functions: AngularFireFunctions, private dialog:MatDialog, private router: Router) {
+
   }
 
-  public async getMemberInformation(email: string) {
-    try {
+  public async getMemberInformation(email: string): Promise<Member> {
       const getMemberInformation = this.functions.httpsCallable('getProfileInformation');
-      const result = await getMemberInformation({email: email}).toPromise();
-      console.log(result);
+      return await getMemberInformation({email: email}).toPromise();
+  }
+
+  public async addAdditionalInformation(data: {}) {
+    const loadingDialog = this.dialog.open(LoadingComponent);
+    try {
+      const addAdditionalInformation = this.functions.httpsCallable('addAdditionalInformation');
+      await addAdditionalInformation(data).toPromise();
     } catch (e) {
       this.dialog.open(ErrorComponent, {data: e});
     }
-
+    loadingDialog.close();
   }
 }

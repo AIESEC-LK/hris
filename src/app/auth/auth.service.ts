@@ -6,6 +6,7 @@ import {first} from "rxjs/operators";
 import {LoadingComponent} from "../dialogs/loading/loading.component";
 import {MatDialog} from '@angular/material/dialog';
 import {ErrorComponent} from "../dialogs/error/error.component";
+import {Router} from "@angular/router";
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,8 @@ export class AuthService {
 
   public logged: boolean = false;
 
-  constructor(private auth: AngularFireAuth, private functions: AngularFireFunctions, private dialog: MatDialog) {
+  constructor(private auth: AngularFireAuth, private functions: AngularFireFunctions, private dialog: MatDialog,
+              private router: Router) {
     this.isLoggedIn();
   }
 
@@ -27,7 +29,7 @@ export class AuthService {
       if (this.logged) throw this.AlreadyLoggedInException;
       const loginResult = await this.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
       console.log("User:", loginResult.user);
-      await this.setUserTokens();
+      await this.completeLogin();
       window.location.reload();
     } catch (e) {
       this.dialog.open(ErrorComponent, {data: e});
@@ -52,10 +54,19 @@ export class AuthService {
     return logged != null;
   }
 
-  private async setUserTokens() {
-    const setUserTokens = this.functions.httpsCallable('setUserTokens');
-    const result = await setUserTokens(null).toPromise();
-    console.log("Tokens", result)
+  private async completeLogin() {
+    const completeLogin = this.functions.httpsCallable('completeLogin');
+    const result = await completeLogin(null).toPromise();
+    console.log("Tokens", result.tokens)
+
+    // If profile is not created
+    if (!result.profile_created) await this.router.navigate(["/profile/initialize"]);
+  }
+
+  public async getEmail(): Promise<string> {
+    const user = await this.auth.authState.pipe(first()).toPromise();
+    if (user != null) return user.email!;
+    return "";
   }
 
 }

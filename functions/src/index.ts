@@ -1,40 +1,46 @@
 import * as functions from "firebase-functions";
+import {gql, GraphQLClient} from 'graphql-request'
+
 const admin = require('firebase-admin');
 admin.initializeApp();
 const db = admin.firestore();
 const config = require("../src/config");
-import { GraphQLClient, gql } from 'graphql-request'
+
+const NotLoggedInException = new functions.https.HttpsError('unauthenticated', "Not logged in",
+  {message: "You are not logged in."})
+const NotAuthorizedException = new functions.https.HttpsError('unauthenticated', "Not authorized",
+  {message: "You are not authorized to access this page."})
+const MemberDoesNotExistException = new functions.https.HttpsError('not-found', "Member not found",
+  {message: "This member has not been added to the system."})
 
 
-exports.setUserTokens = functions.https.onCall(async (data, context) => {
+exports.completeLogin = functions.https.onCall(async (data, context) => {
   const email = context.auth?.token.email;
   const uid = context.auth?.uid;
 
-  const NotLoggedInException = new functions.https.HttpsError('unauthenticated', "Not logged in",
-    {message: "You are not logged in."})
-  const NotAuthorizedException = new functions.https.HttpsError('unauthenticated', "Not authorized",
-    {message: "You are not authorized to access the system."})
-
-
   if (email == null || uid == null) throw NotLoggedInException;
   const userTokens = await db.collection('users').doc(email).get();
+  console.log("Email", email);
+  console.log("User Tokens", userTokens.data());
 
   if (!userTokens.exists) throw NotAuthorizedException;
   await admin.auth().setCustomUserClaims(uid, {});
   await admin.auth().setCustomUserClaims(uid, userTokens.data());
 
-  return userTokens.data();
+  return {
+    profile_created: false,
+    tokens: userTokens.data()
+  };
 });
 
 exports.getProfileInformation = functions.https.onCall(async (data, context) => {
+  const tokenResult = await admin.auth().getUser(context.auth?.uid!);
+  if (!(tokenResult.customClaims) || tokenResult.customClaims["role"] != "admin") throw NotAuthorizedException;
+
   const email = data.email;
 
-  const UserDoesNotExistException = new functions.https.HttpsError('not-found', "Member not found",
-    {message: "This member has not been added to the system."})
-
   const member = await db.collection('members').doc(email).get();
-  if (!member.exists) throw UserDoesNotExistException;
-
+  if (!member.exists) throw MemberDoesNotExistException;
 
   const query = gql`
     query PeopleHomeQuery($id: ID!) {
@@ -50,6 +56,18 @@ exports.getProfileInformation = functions.https.onCall(async (data, context) => 
         home_lc {
             name
         }
+        positions {
+            id
+            position_name
+            start_date
+            end_date
+            function {
+                name
+            }
+            office {
+                name
+            }
+        }
       }
     }
   `
@@ -63,10 +81,36 @@ exports.getProfileInformation = functions.https.onCall(async (data, context) => 
     { headers: {authorization: config.expa_access_token} })
 
   const queryResult = await client.request(query, variables);
-  return queryResult;
 
-  return member.data();
-  //return ["hello", config.expa_access_token];
+  let positions = [];
+  for (let position of queryResult.getPerson.positions) {
+    const p = {
+      name: position.position_name,
+      start_date: position.start_date.split("T")[0],
+      end_date: position.end_date.split("T")[0],
+      function: position.function,
+      entity: position.office.name
+    }
+    positions.push(p);
+  }
+
+  return {
+    email: email,
+    expa_id: member.data().expaID,
+    name: queryResult.getPerson.full_name,
+    gender: queryResult.getPerson.gender,
+    dob: queryResult.getPerson.dob,
+    created_at: queryResult.getPerson.created_at,
+    phone: queryResult.getPerson.contact_detail.phone,
+    entity: queryResult.getPerson.home_lc.name,
+    positions: positions,
+    photo: member.data().photo ? member.data().photo : "https://i.pinimg.com/originals/fd/14/a4/fd14a484f8e558209f0c2a94bc36b855.png"
+  };
+
 });
 
+exports.addAdditionalInformation = functions.https.onCall(async (data, context) => {
+  const email = context.auth?.token.email;
+  await db.collection('members').doc(email).set(data, {merge: true});
+});
 

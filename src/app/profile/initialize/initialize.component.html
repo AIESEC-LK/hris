@@ -1,0 +1,60 @@
+<div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="start start">
+
+  <div class="mat-card" fxLayout="column" fxLayoutGap="20px" style="padding:0; border:none;">
+    <img src="{{getImageUrl()}}" width="200px;" style="border-radius:5px;"/>
+  </div>
+
+  <div class="mat-card" fxLayout="column" fxLayoutGap="20px" style="padding:20px;">
+
+    <div class="mat-card-title">Looks like this is your first time logging in.</div>
+    <div class="mat-card-subtitle">Please provide us with a few information to get your profile set up.</div>
+
+    <div fxFlex="40" id="form" fxLayout="column">
+
+      <div fxLayout="column" fxLayoutGap="0px" [formGroup]="form">
+
+        <mat-form-field fxFlex="50">
+          <mat-label>Field of Study</mat-label>
+          <input matInput formControlName="field_of_study" required>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="50">
+          <mat-label>Link to high quality photo of yourself</mat-label>
+          <input matInput formControlName="photo" required>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="50">
+          <mat-label>Link to your CV</mat-label>
+          <input matInput formControlName="cv">
+        </mat-form-field>
+
+        <div class="mat-card-title" style="font-size:18px; padding-top:20px;">Social Media Links</div>
+        <mat-form-field fxFlex="50">
+          <mat-label>Facebook</mat-label>
+          <span matPrefix>FB&nbsp;&nbsp;</span>
+          <input matInput formControlName="facebook">
+        </mat-form-field>
+
+        <mat-form-field fxFlex="50">
+          <mat-label>Instagram</mat-label>
+          <span matPrefix>IG&nbsp;&nbsp;</span>
+          <input matInput formControlName="instagram">
+        </mat-form-field>
+
+        <mat-form-field fxFlex="50">
+          <mat-label>LinkedIn</mat-label>
+          <span matPrefix>Ln&nbsp;&nbsp;</span>
+          <input matInput formControlName="linked_in">
+        </mat-form-field>
+
+
+
+        <button class="submit_button" mat-raised-button color="primary"  (click)="submitForm()" [disabled]="!form.valid">
+          CREATE PROFILE
+        </button>
+
+      </div>
+    </div>
+  </div>
+
+</div>

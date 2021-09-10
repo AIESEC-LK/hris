@@ -1,0 +1,8 @@
+::ng-deep .mat-card-title {
+  color:#3a539b;
+}
+
+.item_name {
+  color:#888888;
+  font-size:12px;
+}

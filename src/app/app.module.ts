@@ -20,9 +20,13 @@ import { LoadingComponent } from './dialogs/loading/loading.component';
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import { ErrorComponent } from './dialogs/error/error.component';
 import { ProfileComponent } from './profile/profile.component';
-
-
-
+import { InitializeComponent } from './profile/initialize/initialize.component';
+import {MatCardModule} from "@angular/material/card";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatInputModule} from "@angular/material/input";
+import {MatButtonModule} from '@angular/material/button';
+import {MatIcon, MatIconModule} from "@angular/material/icon";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -30,7 +34,8 @@ import { ProfileComponent } from './profile/profile.component';
     LoginComponent,
     LoadingComponent,
     ErrorComponent,
-    ProfileComponent
+    ProfileComponent,
+    InitializeComponent
   ],
   imports: [
     BrowserModule,
@@ -42,7 +47,15 @@ import { ProfileComponent } from './profile/profile.component';
     AngularFireAuthModule,
     AngularFireFunctionsModule,
     MatProgressSpinnerModule,
-    MatDialogModule
+    MatDialogModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+    FormsModule,
+    ReactiveFormsModule
+
   ],
   providers: [
     { provide: AUTH_SETTINGS, useValue: { appVerificationDisabledForTesting: true } },
