@@ -27,6 +27,7 @@ import {MatInputModule} from "@angular/material/input";
 import {MatButtonModule} from '@angular/material/button';
 import {MatIcon, MatIconModule} from "@angular/material/icon";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import { InviteMemberComponent } from './member/invite-member/invite-member.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
     LoadingComponent,
     ErrorComponent,
     ProfileComponent,
-    InitializeComponent
+    InitializeComponent,
+    InviteMemberComponent
   ],
   imports: [
     BrowserModule,

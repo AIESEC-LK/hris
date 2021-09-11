@@ -6,13 +6,23 @@
 
     <img src="{{member.photo}}" width="200px;" style="border-radius:5px;"/>
 
-    <div class="mat-card" fxLayoutGap="20px" style="padding:20px;">
+    <div class="mat-card" fxLayout="column" fxLayoutGap="10px" style="padding:20px;" *ngIf="member.social_media">
 
-      <div class="mat-card-title" style="font-size:18px; margin-bottom:200px;">Social Media</div>
+      <div class="mat-card-title" style="font-size:18px;">Social Media</div>
 
-      <div fxlayout="row" fxLayoutGap="20px" style="margin-top:20px;">
+      <div fxLayout="row" fxLayoutGap="20px" style="margin-top:20px; margin-bottom:20px;">
 
-        <div><img src="https://cdn3.iconfinder.com/data/icons/capsocial-round/500/facebook-512.png" width="20px"/></div>
+        <a *ngIf="member.social_media.facebook" href="{{member.social_media.facebook}}" target="_blank">
+          <img src="https://cdn3.iconfinder.com/data/icons/capsocial-round/500/facebook-512.png" width="20px"/>
+        </a>
+
+        <a *ngIf="member.social_media.instagram" href="{{member.social_media.instagram}}" target="_blank">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Instagram_icon.png/1024px-Instagram_icon.png" width="20px"/>
+        </a>
+
+        <a *ngIf="member.social_media.linked_in" href="{{member.social_media.linked_in}}" target="_blank">
+          <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" width="20px"/>
+        </a>
       </div>
 
 

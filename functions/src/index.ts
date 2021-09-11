@@ -104,7 +104,12 @@ exports.getProfileInformation = functions.https.onCall(async (data, context) => 
     phone: queryResult.getPerson.contact_detail.phone,
     entity: queryResult.getPerson.home_lc.name,
     positions: positions,
-    photo: member.data().photo ? member.data().photo : "https://i.pinimg.com/originals/fd/14/a4/fd14a484f8e558209f0c2a94bc36b855.png"
+    photo: member.data().photo ? member.data().photo : "https://i.pinimg.com/originals/fd/14/a4/fd14a484f8e558209f0c2a94bc36b855.png",
+    social_media: {
+      facebook: member.data().facebook,
+      instagram: member.data().instagram,
+      linked_in: member.data().linked_in
+    }
   };
 
 });
@@ -113,4 +118,19 @@ exports.addAdditionalInformation = functions.https.onCall(async (data, context) 
   const email = context.auth?.token.email;
   await db.collection('members').doc(email).set(data, {merge: true});
 });
+
+exports.inviteMember = functions.https.onCall(async (data, context) => {
+  const tokenResult = await admin.auth().getUser(context.auth?.uid!);
+  if (!(tokenResult.customClaims) || tokenResult.customClaims["role"] != "admin") throw NotAuthorizedException;
+
+  await db.collection('users').doc(data.email).set({
+    entity: data.entity,
+    role: data.role
+  }, {merge: true});
+
+  await db.collection('members').doc(data.email).set({
+    expaID: data.expa_id,
+  }, {merge: true});
+});
+
 

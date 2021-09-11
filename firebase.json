@@ -20,11 +20,17 @@
     }
   },
   "hosting": {
-    "public": "public",
+    "public": "dist/hris",
     "ignore": [
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
     ]
   },
   "functions": {

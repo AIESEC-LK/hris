@@ -14,7 +14,8 @@ export interface Member {
   dob: string,
   gender: string,
   positions: Position[],
-  photo: string
+  photo: string,
+  social_media: SocialMedia
 }
 
 export interface Position {
@@ -23,6 +24,12 @@ export interface Position {
   end_date: string,
   function:string,
   entity: string
+}
+
+export interface SocialMedia {
+  facebook: string,
+  instagram: string,
+  linked_in: string
 }
 
 @Injectable({
@@ -44,6 +51,17 @@ export class MemberService {
     try {
       const addAdditionalInformation = this.functions.httpsCallable('addAdditionalInformation');
       await addAdditionalInformation(data).toPromise();
+    } catch (e) {
+      this.dialog.open(ErrorComponent, {data: e});
+    }
+    loadingDialog.close();
+  }
+
+  public async inviteMember(data: {}) {
+    const loadingDialog = this.dialog.open(LoadingComponent);
+    try {
+      const inviteMember = this.functions.httpsCallable('inviteMember');
+      await inviteMember(data).toPromise();
     } catch (e) {
       this.dialog.open(ErrorComponent, {data: e});
     }

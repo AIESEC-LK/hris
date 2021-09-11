@@ -11,13 +11,15 @@ import {Router} from "@angular/router";
 })
 export class InitializeComponent implements OnInit {
 
+  private url_regex = '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
+
   form = new FormGroup({
     field_of_study: new FormControl(null, [Validators.required]),
-    photo: new FormControl(null, [Validators.required]),
+    photo: new FormControl(null, [Validators.required, Validators.pattern(this.url_regex)]),
     cv: new FormControl(null),
-    facebook: new FormControl(null),
-    instagram: new FormControl(null),
-    linked_in: new FormControl(null)
+    facebook: new FormControl(null, [Validators.pattern(this.url_regex)]),
+    instagram: new FormControl(null, [Validators.pattern(this.url_regex)]),
+    linked_in: new FormControl(null, [Validators.pattern(this.url_regex)])
   });
 
   constructor(private memberService:MemberService, private authService: AuthService, private router:Router) { }

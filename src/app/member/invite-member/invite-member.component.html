@@ -1,0 +1,40 @@
+<div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="start start">
+
+  <div class="mat-card" fxLayout="column" fxLayoutGap="20px" style="padding:20px;">
+
+    <div class="mat-card-title">Invite a new member</div>
+    <div class="mat-card-subtitle">to join the AIESEC Sri Lanka HRIS</div>
+
+    <div fxFlex="40" id="form" fxLayout="column">
+
+      <div fxLayout="column" fxLayoutGap="0px" [formGroup]="form">
+
+        <mat-form-field fxFlex="50">
+          <mat-label>Email Address</mat-label>
+          <input matInput formControlName="email" required>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="50">
+          <mat-label>EXPA ID</mat-label>
+          <input matInput formControlName="expa_id" type="number" required>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="50">
+          <mat-label>Entity</mat-label>
+          <input matInput formControlName="entity" required>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="50">
+          <mat-label>Access Level</mat-label>
+          <input matInput formControlName="role" required>
+        </mat-form-field>
+
+        <button class="submit_button" mat-raised-button color="primary"  (click)="submitForm()" [disabled]="!form.valid">
+          INVITE MEMBER
+        </button>
+
+      </div>
+    </div>
+  </div>
+
+</div>

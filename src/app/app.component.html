@@ -7,7 +7,8 @@
       <span class="title">AIESEC Sri Lanka HRIS</span>
     </div>
 
-    <div class="links" style="margin-right:20px;">
+    <div class="links" style="margin-right:20px;" fxLayoutGap="10px" fxLayout="row">
+      <span *ngIf="authService.logged" [routerLink]="['/invite']">Invite</span>
       <span *ngIf="!authService.logged" (click)="authService.login()">Log In</span>
       <span *ngIf="authService.logged" (click)="authService.logout()">Log Out</span>
     </div>
