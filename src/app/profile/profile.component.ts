@@ -5,6 +5,7 @@ import {AngularFireFunctions} from "@angular/fire/compat/functions";
 import {Member, MemberService, CurrentStatus} from "../member/member.service";
 import {ErrorComponent} from "../dialogs/error/error.component";
 import {MatDialog} from "@angular/material/dialog";
+import {EditProfileComponent} from "../dialogs/edit-profile/edit-profile.component";
 
 @Component({
   selector: 'app-profile',
@@ -33,5 +34,9 @@ export class ProfileComponent implements OnInit {
     } catch (e) {
       this.dialog.open(ErrorComponent, {data: e});
     }
+  }
+
+  edit(editField: string) {
+    this.dialog.open(EditProfileComponent, {data: {member: this.member, editField: editField}});
   }
 }

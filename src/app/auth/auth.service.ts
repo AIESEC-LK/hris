@@ -14,8 +14,10 @@ import {Router} from "@angular/router";
 export class AuthService {
 
   private AlreadyLoggedInException:Error  = { name: "Already logged in", message: "You are already logged in." }
+  private NotLoggedInException:Error  = { name: "Not logged in", message: "You are not logged in." }
 
   public logged: boolean = false;
+  public role: string = "";
 
   constructor(private auth: AngularFireAuth, private functions: AngularFireFunctions, private dialog: MatDialog,
               private router: Router) {
@@ -30,7 +32,7 @@ export class AuthService {
       const loginResult = await this.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
       console.log("User:", loginResult.user);
       await this.completeLogin();
-      window.location.reload();
+      //window.location.reload();
     } catch (e) {
       this.dialog.open(ErrorComponent, {data: e});
     }
@@ -49,15 +51,22 @@ export class AuthService {
   }
 
   public async isLoggedIn(): Promise<boolean> {
-    const logged = await this.auth.authState.pipe(first()).toPromise();
-    this.logged = logged != null;
-    return logged != null;
+    const user = <firebase.User> await this.auth.authState.pipe(first()).toPromise();
+    this.logged = user != null;
+
+    if (this.logged) {
+      const tokenResult = await user.getIdTokenResult(true);
+      this.role = tokenResult.claims['role'];
+    }
+    return this.logged;
   }
 
   private async completeLogin() {
     const completeLogin = this.functions.httpsCallable('completeLogin');
     const result = await completeLogin(null).toPromise();
     console.log("Tokens", result.tokens)
+
+    this.role = result.tokens['role'];
 
     // If profile is not created
     if (!result.profile_created) await this.router.navigate(["/profile/initialize"]);
@@ -67,6 +76,10 @@ export class AuthService {
     const user = await this.auth.authState.pipe(first()).toPromise();
     if (user != null) return user.email!;
     return "";
+  }
+
+  public getRole(): string {
+      return this.role;
   }
 
 }

@@ -21,3 +21,14 @@
 .btn-TERMINATED { background-color:#c0392b; }
 .btn-ALUMNI { background-color:#674172; }
 
+::ng-deep .material-icons {
+  font-size:12px;
+  color:#CCCCCC;
+}
+
+::ng-deep .material-icons:hover {
+  font-size:12px;
+  color:#3a539b;
+  cursor:pointer;
+}
+
