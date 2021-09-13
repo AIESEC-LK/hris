@@ -6,6 +6,7 @@ import {Member, MemberService, CurrentStatus} from "../member/member.service";
 import {ErrorComponent} from "../dialogs/error/error.component";
 import {MatDialog} from "@angular/material/dialog";
 import {EditProfileComponent} from "../dialogs/edit-profile/edit-profile.component";
+import {environment} from "../../environments/environment";
 
 @Component({
   selector: 'app-profile',
@@ -38,5 +39,10 @@ export class ProfileComponent implements OnInit {
 
   edit(editField: string) {
     this.dialog.open(EditProfileComponent, {data: {member: this.member, editField: editField}});
+  }
+
+  public getImageBaseUrl(): string {
+    if (!environment.production) return "http://localhost:9199/v0/b/aiesec-hris.appspot.com/o/";
+    return "https://firebasestorage.googleapis.com/v0/b/aiesec-hris.appspot.com/o/";
   }
 }

@@ -16,6 +16,8 @@ import {AngularFireModule} from "@angular/fire/compat";
 import { SETTINGS as AUTH_SETTINGS, AngularFireAuthModule} from "@angular/fire/compat/auth";
 import { USE_EMULATOR as USE_AUTH_EMULATOR } from '@angular/fire/compat/auth';
 import {AngularFireFunctionsModule, USE_EMULATOR} from '@angular/fire/compat/functions';
+import {AngularFireStorageModule, BUCKET } from '@angular/fire/compat/storage';
+
 import { LoadingComponent } from './dialogs/loading/loading.component';
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import { ErrorComponent } from './dialogs/error/error.component';
@@ -62,13 +64,15 @@ import { EditProfileComponent } from './dialogs/edit-profile/edit-profile.compon
     FormsModule,
     ReactiveFormsModule,
     MatSelectModule,
-
+    AngularFireStorageModule
   ],
   providers: [
     { provide: AUTH_SETTINGS, useValue: { appVerificationDisabledForTesting: true } },
     { provide: USE_AUTH_EMULATOR, useValue: environment.production ? undefined : ['http://127.0.0.1:9099', 9099] },
     { provide: USE_EMULATOR, useValue: environment.production? undefined : ['localhost', 5001] },
-    { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: true} }
+    { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: true} },
+    { provide: BUCKET, useValue:  environment.production? 'aiesec-hris.appspot.com' : 'aiesec-hris.appspot.com' },
+
   ],
   bootstrap: [AppComponent]
 })

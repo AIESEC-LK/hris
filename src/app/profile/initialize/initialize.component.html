@@ -1,7 +1,7 @@
 <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="start start">
 
   <div class="mat-card" fxLayout="column" fxLayoutGap="20px" style="padding:0; border:none;">
-    <img src="{{getImageUrl()}}" width="200px;" style="border-radius:5px;"/>
+    <img src="{{getImageUrl() || photo}}" width="200px;" style="border-radius:5px;"/>
   </div>
 
   <div class="mat-card" fxLayout="column" fxLayoutGap="20px" style="padding:20px;">
@@ -18,14 +18,51 @@
           <input matInput formControlName="field_of_study" required>
         </mat-form-field>
 
-        <mat-form-field fxFlex="50">
-          <mat-label>Link to high quality photo of yourself</mat-label>
-          <input matInput formControlName="photo" required>
-        </mat-form-field>
+        <div fxLayout="row" fxLayoutGap="20px" style="padding-bottom:20px; padding-top:10px;">
+
+          <input hidden type="file" accept="image/png, image/jpeg" class="file-input" formControlName="photo_x"
+                 (change)="onFileSelected($event, 'photo')" #photoFileUpload required>
+
+          <div class="file-upload" fxLayout="column" fxLayoutGap="10px">
+            <mat-label class="label">Upload a high qualty photo of yourself *</mat-label>
+
+            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+              <button [class.mat-elevation-z0]="true" mat-mini-fab color="primary" class="upload-btn" (click)="photoFileUpload.click()">
+                <mat-icon >attach_file</mat-icon>
+              </button>
+              <div style="font-size:12px;">
+                {{ formData.photo || "" }}
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+        <div fxLayout="row" fxLayoutGap="20px" style="padding-bottom:20px;">
+
+          <input hidden type="file" accept=".pdf" class="file-input" formControlName="cv_x"
+                 (change)="onFileSelected($event, 'cv')" #cvFileUpload>
+
+          <div class="file-upload" fxLayout="column" fxLayoutGap="10px">
+            <mat-label class="label">Upload your CV</mat-label>
+
+            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+              <button [class.mat-elevation-z0]="true" mat-mini-fab color="primary" class="upload-btn" (click)="cvFileUpload.click()">
+                <mat-icon >attach_file</mat-icon>
+              </button>
+              <div style="font-size:12px;">
+                {{ formData.cv || "" }}
+              </div>
+            </div>
+
+          </div>
+
+        </div>
 
         <mat-form-field fxFlex="50">
-          <mat-label>Link to your CV</mat-label>
-          <input matInput formControlName="cv">
+          <mat-label>EXPA login email address</mat-label>
+          <input matInput formControlName="expa_email">
         </mat-form-field>
 
         <div class="mat-card-title" style="font-size:18px; padding-top:20px;">Social Media Links</div>
