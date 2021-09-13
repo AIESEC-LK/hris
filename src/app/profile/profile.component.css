@@ -6,3 +6,18 @@
   color:#888888;
   font-size:12px;
 }
+
+.membership_status {
+  padding:5px;
+  font-size:12px;
+  line-height:16px;
+}
+
+::ng-deep .selectHide div.mat-select-arrow-wrapper {
+  display: none;
+}
+
+.btn-PROBATION { background-color:#f39c12; }
+.btn-TERMINATED { background-color:#c0392b; }
+.btn-ALUMNI { background-color:#674172; }
+
