@@ -73,14 +73,20 @@ exports.getProfileInformation = functions.https.onCall(async (data, context) => 
   `
 
   const variables = {
-    id: member.data().expaID
+    id: member.data().expa_id
   }
 
   // ... or create a GraphQL client instance to send requests
   const client = new GraphQLClient("https://gis-api.aiesec.org/graphql",
     { headers: {authorization: config.expa_access_token} })
 
-  const queryResult = await client.request(query, variables);
+  let queryResult;
+  try {
+    queryResult = await client.request(query, variables);
+  }
+  catch (e) {
+    throw MemberDoesNotExistException;
+  }
 
   let positions = [];
   for (let position of queryResult.getPerson.positions) {
@@ -96,7 +102,7 @@ exports.getProfileInformation = functions.https.onCall(async (data, context) => 
 
   return {
     email: email,
-    expa_id: member.data().expaID,
+    expa_id: member.data().expa_id,
     name: queryResult.getPerson.full_name,
     gender: queryResult.getPerson.gender,
     dob: queryResult.getPerson.dob,
@@ -105,11 +111,7 @@ exports.getProfileInformation = functions.https.onCall(async (data, context) => 
     entity: queryResult.getPerson.home_lc.name,
     positions: positions,
     photo: member.data().photo ? member.data().photo : "https://i.pinimg.com/originals/fd/14/a4/fd14a484f8e558209f0c2a94bc36b855.png",
-    social_media: {
-      facebook: member.data().facebook,
-      instagram: member.data().instagram,
-      linked_in: member.data().linked_in
-    },
+    social_media: member.data().social_media,
     current_status: member.data().current_status.toUpperCase()
   };
 
@@ -131,7 +133,7 @@ exports.inviteMember = functions.https.onCall(async (data, context) => {
   }, {merge: true});
 
   await db.collection('members').doc(data.email).set({
-    expaID: data.expa_id,
+    expa_id: data.expa_id,
   }, {merge: true});
 });
 
@@ -142,6 +144,43 @@ exports.changeCurrentStatus = functions.https.onCall(async (data, context) => {
   const email = data.email;
   await db.collection('members').doc(email).set(data, {merge: true});
 });
+
+exports.editProfileField = functions.https.onCall(async (data, context) => {
+  const tokenResult = await admin.auth().getUser(context.auth?.uid!);
+  if (!(tokenResult.customClaims) || tokenResult.customClaims["role"] != "admin") throw NotAuthorizedException;
+
+  const email = data.email;
+
+  const edits = createNestedObject(data.editField.split("."), data.newValue);
+  console.log("edits", edits);
+  await db.collection('members').doc(email).set(edits, {merge: true});
+});
+
+
+var createNestedObject = function(names: string[], value: string ) {
+  var obj = {};
+  var base = obj;
+
+  // If a value is given, remove the last name and keep it for later:
+  var lastName = names.pop();
+
+  // Walk the hierarchy, creating new objects where needed.
+  // If the lastName was removed, then the last object is not set yet:
+  for( var i = 0; i < names.length; i++ ) {
+    // @ts-ignore
+    base = base[ names[i] ] = base[ names[i] ] || {};
+    console.log(base);
+  }
+
+  // If a value was given, set it to the last name:
+  if( lastName ) { // @ts-ignore
+    base = base[ lastName ] = value;
+  }
+
+  // Return the last object in the hierarchy:
+  return obj;
+};
+
 
 
 

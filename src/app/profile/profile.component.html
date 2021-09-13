@@ -12,26 +12,33 @@
 
       <div fxLayout="row" fxLayoutGap="20px" style="margin-top:20px; margin-bottom:20px;">
 
-        <a *ngIf="member.social_media.facebook" href="{{member.social_media.facebook}}" target="_blank">
+        <a *ngIf="member.social_media.facebook || memberService.canEdit(member)" href="{{member.social_media.facebook}}" target="_blank">
           <img src="https://cdn3.iconfinder.com/data/icons/capsocial-round/500/facebook-512.png" width="20px"/>
         </a>
 
-        <a *ngIf="member.social_media.instagram" href="{{member.social_media.instagram}}" target="_blank">
+
+        <a *ngIf="member.social_media.instagram || memberService.canEdit(member)" href="{{member.social_media.instagram}}" target="_blank">
           <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Instagram_icon.png/1024px-Instagram_icon.png" width="20px"/>
         </a>
 
-        <a *ngIf="member.social_media.linked_in" href="{{member.social_media.linked_in}}" target="_blank">
+        <a *ngIf="member.social_media.linked_in || memberService.canEdit(member)" href="{{member.social_media.linked_in}}" target="_blank">
           <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" width="20px"/>
         </a>
       </div>
 
+      <div fxLayout="row" fxLayoutGap="20px" style="margin-top:20px; margin-bottom:20px;">
+        <mat-icon *ngIf="memberService.canEdit(member)" (click)="edit('social_media.facebook')">edit</mat-icon>
+        <mat-icon *ngIf="memberService.canEdit(member)" (click)="edit('social_media.instagram')">edit</mat-icon>
+        <mat-icon *ngIf="memberService.canEdit(member)" (click)="edit('social_media.linked_in')">edit</mat-icon>
+      </div>
 
     </div>
   </div>
 
   <div class="mat-card" fxLayout="column" fxLayoutAlign="center start" fxLayoutGap="20px" *ngIf="member"
        style="padding:20px;">
-    <div class="mat-card-title">{{member.name}}</div>
+    <div class="mat-card-title">{{member.name}}
+    </div>
 
     <div fxlayout="row" fxLayoutGap="20px">
       <div class="item_name">Entity</div>
@@ -40,7 +47,9 @@
 
     <div fxlayout="row" fxLayoutGap="20px">
       <div class="item_name">Expa ID</div>
-      <div>{{member.expa_id}}</div>
+      <div>{{member.expa_id}}
+        <mat-icon *ngIf="memberService.canEdit(member)" (click)="edit('expa_id')">edit</mat-icon>
+      </div>
     </div>
 
     <div fxlayout="row" fxLayoutGap="20px">

@@ -29,6 +29,7 @@ import {MatIcon, MatIconModule} from "@angular/material/icon";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { InviteMemberComponent } from './member/invite-member/invite-member.component';
 import {MatSelectModule} from "@angular/material/select";
+import { EditProfileComponent } from './dialogs/edit-profile/edit-profile.component';
 
 
 @NgModule({
@@ -39,7 +40,8 @@ import {MatSelectModule} from "@angular/material/select";
     ErrorComponent,
     ProfileComponent,
     InitializeComponent,
-    InviteMemberComponent
+    InviteMemberComponent,
+    EditProfileComponent
   ],
   imports: [
     BrowserModule,
