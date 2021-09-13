@@ -109,7 +109,8 @@ exports.getProfileInformation = functions.https.onCall(async (data, context) => 
       facebook: member.data().facebook,
       instagram: member.data().instagram,
       linked_in: member.data().linked_in
-    }
+    },
+    current_status: member.data().current_status.toUpperCase()
   };
 
 });
@@ -125,12 +126,22 @@ exports.inviteMember = functions.https.onCall(async (data, context) => {
 
   await db.collection('users').doc(data.email).set({
     entity: data.entity,
-    role: data.role
+    role: data.role,
+    current_status: "active"
   }, {merge: true});
 
   await db.collection('members').doc(data.email).set({
     expaID: data.expa_id,
   }, {merge: true});
 });
+
+exports.changeCurrentStatus = functions.https.onCall(async (data, context) => {
+  const tokenResult = await admin.auth().getUser(context.auth?.uid!);
+  if (!(tokenResult.customClaims) || tokenResult.customClaims["role"] != "admin") throw NotAuthorizedException;
+
+  const email = data.email;
+  await db.collection('members').doc(email).set(data, {merge: true});
+});
+
 
 

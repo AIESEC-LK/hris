@@ -15,7 +15,8 @@ export interface Member {
   gender: string,
   positions: Position[],
   photo: string,
-  social_media: SocialMedia
+  social_media: SocialMedia,
+  current_status: CurrentStatus,
 }
 
 export interface Position {
@@ -30,6 +31,13 @@ export interface SocialMedia {
   facebook: string,
   instagram: string,
   linked_in: string
+}
+
+export enum CurrentStatus {
+  ACTIVE = "ACTIVE",
+  PROBATION = "PROBATION",
+  TERMINATED = "TERMINATED",
+  ALUMNI = "ALUMNI"
 }
 
 @Injectable({
@@ -67,4 +75,18 @@ export class MemberService {
     }
     loadingDialog.close();
   }
+
+  async changeCurrentStatus(member: Member, newStatus: CurrentStatus) {
+    member.current_status = newStatus;
+    try {
+      const changeCurrentStatus = this.functions.httpsCallable('changeCurrentStatus');
+      await changeCurrentStatus({
+        email: member.email,
+        current_status: member.current_status
+      }).toPromise();
+    } catch (e) {
+      this.dialog.open(ErrorComponent, {data: e});
+    }
+  }
+
 }

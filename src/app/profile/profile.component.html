@@ -67,6 +67,36 @@
 
   <div class="mat-card" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="20px" *ngIf="member"
        style="padding:20px;">
+
+    <div fxLayout="row" fxLayoutGap="20px">
+
+      <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="0px">
+        <div style="font-size:10px;">Current membership status</div>
+        <button class="membership_status" mat-flat-button color="primary" (click)=currentStatusSelect.open()
+                [class]="'btn-'+member.current_status">
+          {{member.current_status}}
+        </button>
+
+        <mat-select
+          #currentStatusSelect
+          class="selectHide" (selectionChange)="memberService.changeCurrentStatus(member, $event.value)">
+
+          <mat-option *ngFor="let status of CurrentStatus | keyvalue" [value]="status.value" style="font-size:12px;">
+            {{status.value}}
+          </mat-option>
+        </mat-select>
+
+      </div>
+
+      <!--
+      <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="0px">
+        <div style="font-size:10px;">Full membership status</div>
+        <button class="membership_status" mat-flat-button color="primary">Active</button>
+      </div>
+      -->
+
+    </div>
+
     <div class="mat-card-title" style="font-size:18px">Positions</div>
 
     <div *ngFor="let position of member.positions">
