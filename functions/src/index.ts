@@ -2,7 +2,12 @@ import * as functions from "firebase-functions";
 import {gql, GraphQLClient} from 'graphql-request'
 
 const admin = require('firebase-admin');
-admin.initializeApp();
+var serviceAccount = require("../src/aiesec-hris-firebase-adminsdk-jm89q-69ea10c068.json");
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://my-app.firebaseio.com"
+});
+
 const db = admin.firestore();
 const config = require("../src/config");
 
@@ -110,7 +115,16 @@ exports.getProfileInformation = functions.https.onCall(async (data, context) => 
     phone: queryResult.getPerson.contact_detail.phone,
     entity: queryResult.getPerson.home_lc.name,
     positions: positions,
-    photo: member.data().photo ? member.data().photo : "https://i.pinimg.com/originals/fd/14/a4/fd14a484f8e558209f0c2a94bc36b855.png",
+    //photo: member.data().photo ? member.data().photo : "https://i.pinimg.com/originals/fd/14/a4/fd14a484f8e558209f0c2a94bc36b855.png",
+    photo: member.data().photo ?
+      await admin.storage().bucket("aiesec-hris.appspot.com").file(member.data().photo).getSignedUrl(
+        { action: 'read', expires: "01-01-2500" }
+      ) :
+      "https://i.pinimg.com/originals/fd/14/a4/fd14a484f8e558209f0c2a94bc36b855.png",
+    cv: member.data().cv ?
+      await admin.storage().bucket("aiesec-hris.appspot.com").file(member.data().cv).getSignedUrl(
+        { action: 'read', expires: "01-01-2500" }
+      ) : null,
     social_media: member.data().social_media,
     current_status: member.data().current_status.toUpperCase()
   };

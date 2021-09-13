@@ -6,6 +6,8 @@ import {LoadingComponent} from "../dialogs/loading/loading.component";
 import {Router} from "@angular/router";
 import {AuthService} from "../auth/auth.service";
 import {EditProfileComponent} from "../dialogs/edit-profile/edit-profile.component";
+import {AngularFireStorage} from "@angular/fire/compat/storage";
+import {environment} from "../../environments/environment";
 
 export interface Member {
   name: string,
@@ -48,8 +50,8 @@ export enum CurrentStatus {
 export class MemberService {
 
   constructor(private functions: AngularFireFunctions, private dialog:MatDialog, private router: Router,
-              private authService: AuthService) {
-
+              private authService: AuthService, private storage: AngularFireStorage) {
+    //if (!environment.production) this.storage.storage.useEmulator('localhost', 9199);
   }
 
   public async getMemberInformation(email: string): Promise<Member> {
@@ -112,6 +114,15 @@ export class MemberService {
       this.dialog.open(ErrorComponent, {data: e});
     }
   }
+
+  async uploadFile(file: File): Promise<string> {
+    const fileName = Date.now().toString() + "_" + file.name;
+    const ref = this.storage.ref(fileName);
+    const x = await ref.put(file);
+    console.log("X", x);
+    return fileName;
+  }
+
 
   private static changeField(member: Member, path: string, value: string) {
     var schema = member;  // a moving reference to internal objects within obj
