@@ -47,75 +47,11 @@ exports.getProfileInformation = functions.https.onCall(async (data, context) => 
   const member = await db.collection('members').doc(email).get();
   if (!member.exists) throw MemberDoesNotExistException;
 
-  const query = gql`
-    query PeopleHomeQuery($id: ID!) {
-      getPerson(id: $id) {
-        id
-        full_name
-        gender
-        dob
-        created_at
-        contact_detail {
-            phone
-        }
-        home_lc {
-            name
-        }
-        positions {
-            id
-            position_name
-            start_date
-            end_date
-            function {
-                name
-            }
-            office {
-                name
-            }
-        }
-      }
-    }
-  `
-
-  const variables = {
-    id: member.data().expa_id
-  }
-
-  // ... or create a GraphQL client instance to send requests
-  const client = new GraphQLClient("https://gis-api.aiesec.org/graphql",
-    { headers: {authorization: config.expa_access_token} })
-
-  let queryResult;
-  try {
-    queryResult = await client.request(query, variables);
-  }
-  catch (e) {
-    throw MemberDoesNotExistException;
-  }
-
-  let positions = [];
-  for (let position of queryResult.getPerson.positions) {
-    const p = {
-      name: position.position_name,
-      start_date: position.start_date.split("T")[0],
-      end_date: position.end_date.split("T")[0],
-      function: position.function,
-      entity: position.office.name
-    }
-    positions.push(p);
-  }
+  const expa_data = await getMemberExpaInfo(email, member.data().expa_id);
 
   return {
     email: email,
     expa_id: member.data().expa_id,
-    name: queryResult.getPerson.full_name,
-    gender: queryResult.getPerson.gender,
-    dob: queryResult.getPerson.dob,
-    created_at: queryResult.getPerson.created_at,
-    phone: queryResult.getPerson.contact_detail.phone,
-    entity: queryResult.getPerson.home_lc.name,
-    positions: positions,
-    //photo: member.data().photo ? member.data().photo : "https://i.pinimg.com/originals/fd/14/a4/fd14a484f8e558209f0c2a94bc36b855.png",
     photo: member.data().photo ?
       await admin.storage().bucket("aiesec-hris.appspot.com").file(member.data().photo).getSignedUrl(
         { action: 'read', expires: "01-01-2500" }
@@ -126,7 +62,8 @@ exports.getProfileInformation = functions.https.onCall(async (data, context) => 
         { action: 'read', expires: "01-01-2500" }
       ) : null,
     social_media: member.data().social_media,
-    current_status: member.data().current_status.toUpperCase()
+    current_status: member.data().current_status ? member.data().current_status.toUpperCase() : "UNKNOWN",
+    ...expa_data
   };
 
 });
@@ -143,12 +80,15 @@ exports.inviteMember = functions.https.onCall(async (data, context) => {
   await db.collection('users').doc(data.email).set({
     entity: data.entity,
     role: data.role,
-    current_status: "active"
   }, {merge: true});
 
   await db.collection('members').doc(data.email).set({
     expa_id: data.expa_id,
+    current_status: "ACTIVE",
+    email: data.email
   }, {merge: true});
+
+  await getMemberExpaInfo(data.email, data.expa_id);
 });
 
 exports.changeCurrentStatus = functions.https.onCall(async (data, context) => {
@@ -170,6 +110,94 @@ exports.editProfileField = functions.https.onCall(async (data, context) => {
   await db.collection('members').doc(email).set(edits, {merge: true});
 });
 
+exports.getMembers = functions.https.onCall(async (data, context) => {
+  const tokenResult = await admin.auth().getUser(context.auth?.uid!);
+  if (!(tokenResult.customClaims) || tokenResult.customClaims["role"] != "admin") throw NotAuthorizedException;
+
+  const members = await db.collection('members').orderBy("name", 'asc');
+
+  let result: any[] = [];
+  const querySnapshot = await members.get();
+  querySnapshot.forEach((doc: any) => {
+    result.push(doc.data());
+  })
+  return result;
+});
+
+
+async function getMemberExpaInfo(email: any, expa_id: any) {
+  const query = gql`
+    query PeopleHomeQuery($id: ID!) {
+      getPerson(id: $id) {
+        id
+        full_name
+        gender
+        dob
+        created_at
+        contact_detail {
+            phone
+        }
+        home_lc {
+            name
+        }
+        member_positions {
+            function {
+                name
+            }
+            start_date
+            end_date
+            office {
+                name
+            }
+            role {
+                name
+            }
+        }
+      }
+    }
+  `
+
+  const variables = {
+    id: expa_id
+  }
+
+  // ... or create a GraphQL client instance to send requests
+  const client = new GraphQLClient("https://gis-api.aiesec.org/graphql",
+    {headers: {authorization: config.expa_access_token}})
+
+  let queryResult;
+  try {
+    queryResult = await client.request(query, variables);
+  } catch (e) {
+    throw MemberDoesNotExistException;
+  }
+
+  let positions = [];
+  for (let position of queryResult.getPerson.member_positions) {
+    if (position.function.name.includes("-")) position.function.name = position.function.name.split(" - ")[0];
+    const p = {
+      name: position.role.name,
+      start_date: position.start_date,
+      end_date: position.end_date,
+      function: position.function.name,
+      entity: position.office.name
+    }
+    positions.push(p);
+  }
+
+  const expa_data = {
+    name: queryResult.getPerson.full_name,
+    gender: queryResult.getPerson.gender,
+    dob: queryResult.getPerson.dob,
+    created_at: queryResult.getPerson.created_at,
+    phone: queryResult.getPerson.contact_detail.phone,
+    entity: queryResult.getPerson.home_lc.name,
+    positions: positions
+  };
+
+  await db.collection('members').doc(email).set(expa_data, {merge: true});
+  return expa_data;
+}
 
 var createNestedObject = function(names: string[], value: string ) {
   var obj = {};

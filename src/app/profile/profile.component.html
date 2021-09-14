@@ -36,7 +36,7 @@
     </div>
   </div>
 
-  <div class="mat-card" fxLayout="column" fxLayoutAlign="center start" fxLayoutGap="20px" *ngIf="member"
+  <div class="mat-card" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="20px" *ngIf="member"
        style="padding:20px;">
     <div class="mat-card-title">{{member.name}}
     </div>
@@ -110,7 +110,7 @@
     <div class="mat-card-title" style="font-size:18px">Positions</div>
 
     <div *ngFor="let position of member.positions">
-      <div class="position_name">{{position.name}}</div>
+      <div class="position_name">{{position.name}} - {{position.function}}</div>
       <div class="item_name">AIESEC in {{position.entity}}</div>
       <div class="item_name">
         {{position.start_date}} to {{position.end_date}}

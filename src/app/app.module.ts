@@ -32,7 +32,9 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { InviteMemberComponent } from './member/invite-member/invite-member.component';
 import {MatSelectModule} from "@angular/material/select";
 import { EditProfileComponent } from './dialogs/edit-profile/edit-profile.component';
-
+import { ListMembersComponent } from './member/list-members/list-members.component';
+import { MatTableExporterModule } from 'mat-table-exporter';
+import {MatTableModule} from "@angular/material/table";
 
 @NgModule({
   declarations: [
@@ -43,7 +45,8 @@ import { EditProfileComponent } from './dialogs/edit-profile/edit-profile.compon
     ProfileComponent,
     InitializeComponent,
     InviteMemberComponent,
-    EditProfileComponent
+    EditProfileComponent,
+    ListMembersComponent
   ],
   imports: [
     BrowserModule,
@@ -64,7 +67,9 @@ import { EditProfileComponent } from './dialogs/edit-profile/edit-profile.compon
     FormsModule,
     ReactiveFormsModule,
     MatSelectModule,
-    AngularFireStorageModule
+    AngularFireStorageModule,
+    MatTableExporterModule,
+    MatTableModule
   ],
   providers: [
     { provide: AUTH_SETTINGS, useValue: { appVerificationDisabledForTesting: true } },
