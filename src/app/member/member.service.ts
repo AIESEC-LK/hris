@@ -123,6 +123,10 @@ export class MemberService {
     return fileName;
   }
 
+  public async getMembers(): Promise<Member[]> {
+    const getMembers = this.functions.httpsCallable('getMembers');
+    return <Member[]> await getMembers({}).toPromise();
+  }
 
   private static changeField(member: Member, path: string, value: string) {
     var schema = member;  // a moving reference to internal objects within obj
@@ -139,6 +143,46 @@ export class MemberService {
     // @ts-ignore
     schema[pList[len-1]] = value;
   }
+
+  public getCurrentFunctions(member: Member): string[] {
+    let functions: string[] = [];
+
+    const today: Date = new Date();
+    for (let position of member.positions) {
+      const end_date: Date = new Date(Date.parse(position.end_date));
+      if (end_date < today) continue;
+      functions.push(position.function);
+    }
+
+    return [...new Set(functions)];
+  }
+
+  public getCurrentRoles(member: Member): string[] {
+    let roles: string[] = [];
+
+    const today: Date = new Date();
+    for (let position of member.positions) {
+      const end_date: Date = new Date(Date.parse(position.end_date));
+      if (end_date < today) continue;
+      roles.push(position.name);
+    }
+
+    return [...new Set(roles)];
+  }
+
+  public getCurrentEntities(member: Member): string[] {
+    let entities: string[] = [];
+
+    const today: Date = new Date();
+    for (let position of member.positions) {
+      const end_date: Date = new Date(Date.parse(position.end_date));
+      if (end_date < today) continue;
+      entities.push(position.entity);
+    }
+
+    return [...new Set(entities)];
+  }
+
 
 
 }

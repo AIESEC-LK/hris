@@ -24,6 +24,7 @@
     "@angular/router": "~12.2.0",
     "config": "^3.3.6",
     "firebase": "^9.0.0",
+    "mat-table-exporter": "^10.2.3",
     "rxfire": "^6.0.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.3.0",
