@@ -35,6 +35,7 @@ import { EditProfileComponent } from './dialogs/edit-profile/edit-profile.compon
 import { ListMembersComponent } from './member/list-members/list-members.component';
 import { MatTableExporterModule } from 'mat-table-exporter';
 import {MatTableModule} from "@angular/material/table";
+import { StringInputDialogComponent } from './dialogs/string-input-dialog/string-input-dialog.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import {MatTableModule} from "@angular/material/table";
     InitializeComponent,
     InviteMemberComponent,
     EditProfileComponent,
-    ListMembersComponent
+    ListMembersComponent,
+    StringInputDialogComponent
   ],
   imports: [
     BrowserModule,

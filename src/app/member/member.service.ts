@@ -21,6 +21,7 @@ export interface Member {
   photo: string,
   social_media: SocialMedia,
   current_status: CurrentStatus,
+  tags: string[],
 }
 
 export interface Position {
@@ -98,10 +99,9 @@ export class MemberService {
     return this.authService.getRole() == "admin";
   }
 
-  async edit(member: Member, editField: string, newValue: string) {
+  async edit(member: Member, editField: string, newValue: any) {
     try {
       const editProfileField = this.functions.httpsCallable('editProfileField');
-      let data = { email: member.email }
       await editProfileField({
         email: member.email,
         editField: editField,
@@ -181,6 +181,17 @@ export class MemberService {
     }
 
     return [...new Set(entities)];
+  }
+
+  public async deleteTag(member: Member, tag: string): Promise<void> {
+    member.tags = member.tags.filter(item => item !== tag);
+    await this.edit(member, "tags", member.tags);
+  }
+
+  public async addTag(member: Member, tag: string): Promise<void> {
+    if (member.tags == null) member.tags = [tag];
+    else member.tags.unshift(tag);
+    await this.edit(member, "tags", member.tags);
   }
 
 
