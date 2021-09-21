@@ -117,6 +117,25 @@
       </div>
     </div>
 
+  </div>
 
+  <div class="mat-card" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="20px" *ngIf="member"
+       style="padding:20px;">
 
+    <div class="mat-card-title" style="font-size:18px">Additional Information</div>
+
+    <div fxlayout="row" fxLayoutGap="20px">
+      <div class="item_name">
+        Tags
+        <mat-icon *ngIf="memberService.canEdit(member)" (click)="addTag()">add</mat-icon>
+      </div>
+      <div fxLayout="row wrap" fxLayoutGap="10px" style="max-width:200px;">
+        <div *ngFor="let tag of member.tags" class="tag" fxLayout="row" fxLayoutAlign="center center">
+          {{tag}}
+          <mat-icon *ngIf="memberService.canEdit(member)" (click)="memberService.deleteTag(member, tag)" style="color:white">close</mat-icon>
+        </div>
+      </div>
+    </div>
+
+  </div>
 </div>

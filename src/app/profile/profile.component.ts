@@ -7,6 +7,7 @@ import {ErrorComponent} from "../dialogs/error/error.component";
 import {MatDialog} from "@angular/material/dialog";
 import {EditProfileComponent} from "../dialogs/edit-profile/edit-profile.component";
 import {environment} from "../../environments/environment";
+import {StringInputDialogComponent} from "../dialogs/string-input-dialog/string-input-dialog.component";
 
 @Component({
   selector: 'app-profile',
@@ -41,8 +42,16 @@ export class ProfileComponent implements OnInit {
     this.dialog.open(EditProfileComponent, {data: {member: this.member, editField: editField}});
   }
 
-  public getImageBaseUrl(): string {
-    if (!environment.production) return "http://localhost:9199/v0/b/aiesec-hris.appspot.com/o/";
-    return "https://firebasestorage.googleapis.com/v0/b/aiesec-hris.appspot.com/o/";
+  addTag() {
+    const dialogRef = this.dialog.open(StringInputDialogComponent, {
+      data: {
+        message: "Add new tag for " + this.member?.name,
+        confirm_text: "ADD"
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.memberService.addTag(this.member!, result);
+    });
   }
 }

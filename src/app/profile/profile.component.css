@@ -32,3 +32,18 @@
   cursor:pointer;
 }
 
+.tag {
+  background-color: #019875;
+  padding:3px;
+  padding-left:5px;
+  border-radius:5px;
+  color:white;
+  font-weight:500;
+  margin-bottom:5px;
+  font-size:12px;
+}
+
+::ng-deep .tag .mat-icon:hover {
+  color:red !important;
+}
+

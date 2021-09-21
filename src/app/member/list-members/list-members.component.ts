@@ -18,18 +18,20 @@ export class ListMembersComponent implements OnInit {
   dataSource = new MatTableDataSource(this.members);
   renderedData: any;
 
-  columns = ['name', 'email', 'current_status', 'functions', 'roles', 'entity', 'expa_id', 'profile'];
+  columns = ['name', 'email', 'current_status', 'functions', 'roles', 'entity', 'expa_id', 'tags', 'profile'];
   selectedColumns = this.columns;
 
   functions: string[] = []
   roles: string[] = []
   entities: string[] = []
+  tags: string[] = []
 
   filter = {
     quick_filter: "",
     functions: this.functions,
     roles: this.roles,
-    entities: this.entities
+    entities: this.entities,
+    tags: this.tags
   };
 
 
@@ -49,10 +51,11 @@ export class ListMembersComponent implements OnInit {
     this.functions  = this.getAllFunctions().sort();
     this.roles = this.getAllRoles().sort();
     this.entities = this.getAllEntities().sort();
+    this.tags = this.getAllTags().sort();
   }
 
   getDisplayedColumns(): void {
-    this.selectedColumns = ['name', 'email', 'current_status', 'functions', 'roles'];
+    this.selectedColumns = ['name', 'email', 'current_status', 'functions', 'roles', 'tags'];
     if (this.authService.getRole() == "admin") this.selectedColumns.push('entity');
     this.selectedColumns.push("expa_id");
     this.selectedColumns.push("profile");
@@ -89,6 +92,16 @@ export class ListMembersComponent implements OnInit {
       });
     }
 
+    //Filter by tag
+    const filter_tags = this.filter.tags;
+    if (filter_tags.length > 0) {
+      this.dataSource.data = this.dataSource.data.filter(e=> {
+        const tags = e.tags;
+        return filter_tags.some(item => tags.includes(item))
+      });
+    }
+
+
   }
 
   private getAllFunctions(): string[] {
@@ -123,6 +136,18 @@ export class ListMembersComponent implements OnInit {
 
     return [...new Set(entities)];
   }
+
+  private getAllTags(): string[] {
+    let tags: string[] = [];
+    for (const member of this.members) {
+      for (const tag of member.tags) {
+        tags.push(tag);
+      }
+    }
+
+    return [...new Set(tags)];
+  }
+
 
 
 }

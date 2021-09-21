@@ -62,6 +62,7 @@ exports.getProfileInformation = functions.https.onCall(async (data, context) => 
       ) : null,
     social_media: member.data().social_media,
     current_status: member.data().current_status ? member.data().current_status.toUpperCase() : "UNKNOWN",
+    tags: member.data().tags,
     ...expa_data
   };
 
