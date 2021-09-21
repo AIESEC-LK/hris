@@ -69,7 +69,7 @@ export class AuthService {
     this.role = result.tokens['role'];
 
     // If profile is not created
-    if (!result.profile_created) await this.router.navigate(["/profile/initialize"]);
+    if (!result.tokens['profile_created']) await this.router.navigate(["/profile/initialize"]);
   }
 
   public async getEmail(): Promise<string> {
