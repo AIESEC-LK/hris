@@ -5,6 +5,7 @@ import {ProfileComponent} from "./profile/profile.component";
 import {InitializeComponent} from "./profile/initialize/initialize.component";
 import {InviteMemberComponent} from "./member/invite-member/invite-member.component";
 import {ListMembersComponent} from "./member/list-members/list-members.component";
+import {ImportMembersComponent} from "./member/import-members/import-members.component";
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -13,6 +14,7 @@ const routes: Routes = [
   { path: 'profile/:email', component: ProfileComponent },
   { path: 'invite', component: InviteMemberComponent   },
   { path: 'members', component: ListMembersComponent   },
+  { path: 'members/import', component: ImportMembersComponent   },
 
 
 ];

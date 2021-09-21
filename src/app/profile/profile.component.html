@@ -54,18 +54,30 @@
     </div>
 
     <div fxlayout="row" fxLayoutGap="20px">
+      <div class="item_name">Joined Date</div>
+      <div>{{member.joined_date}}
+        <mat-icon *ngIf="memberService.canEdit(member)" (click)="edit('joined_date')">edit</mat-icon>
+      </div>
+    </div>
+
+
+    <div fxlayout="row" fxLayoutGap="20px">
       <div class="item_name">Email Address</div>
       <div>{{member.email}}</div>
     </div>
 
     <div fxlayout="row" fxLayoutGap="20px">
       <div class="item_name">Contact No.</div>
-      <div>{{member.phone}}</div>
+      <div>{{member.phone}}
+        <mat-icon *ngIf="memberService.canEdit(member)" (click)="edit('phone')">edit</mat-icon>
+      </div>
     </div>
 
     <div fxlayout="row" fxLayoutGap="20px">
       <div class="item_name">Date of Birth</div>
-      <div>{{member.dob}}</div>
+      <div>{{member.dob}}
+        <mat-icon *ngIf="memberService.canEdit(member)" (click)="edit('dob')">edit</mat-icon>
+      </div>
     </div>
 
     <div fxlayout="row" fxLayoutGap="20px">
