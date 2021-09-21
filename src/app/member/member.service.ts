@@ -16,12 +16,14 @@ export interface Member {
   entity: string,
   phone: string,
   dob: string,
+  joined_date: string,
   gender: string,
   positions: Position[],
   photo: string,
   social_media: SocialMedia,
   current_status: CurrentStatus,
   tags: string[],
+  faculty: string,
 }
 
 export interface Position {
@@ -172,6 +174,7 @@ export class MemberService {
 
   public getCurrentEntities(member: Member): string[] {
     let entities: string[] = [];
+    entities.push(member.entity);
 
     const today: Date = new Date();
     for (let position of member.positions) {

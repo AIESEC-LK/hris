@@ -18,7 +18,7 @@ export class ListMembersComponent implements OnInit {
   dataSource = new MatTableDataSource(this.members);
   renderedData: any;
 
-  columns = ['name', 'email', 'current_status', 'functions', 'roles', 'entity', 'expa_id', 'tags', 'profile'];
+  columns = ['name', 'email', 'current_status', 'functions', 'roles', 'entity', 'expa_id', 'tags', 'faculty', 'profile'];
   selectedColumns = this.columns;
 
   functions: string[] = []
@@ -55,7 +55,7 @@ export class ListMembersComponent implements OnInit {
   }
 
   getDisplayedColumns(): void {
-    this.selectedColumns = ['name', 'email', 'current_status', 'functions', 'roles', 'tags'];
+    this.selectedColumns = ['name', 'email', 'current_status', 'functions', 'roles', 'tags', 'faculty'];
     if (this.authService.getRole() == "admin") this.selectedColumns.push('entity');
     this.selectedColumns.push("expa_id");
     this.selectedColumns.push("profile");
@@ -97,6 +97,7 @@ export class ListMembersComponent implements OnInit {
     if (filter_tags.length > 0) {
       this.dataSource.data = this.dataSource.data.filter(e=> {
         const tags = e.tags;
+        if (tags == null) return false;
         return filter_tags.some(item => tags.includes(item))
       });
     }
@@ -140,6 +141,7 @@ export class ListMembersComponent implements OnInit {
   private getAllTags(): string[] {
     let tags: string[] = [];
     for (const member of this.members) {
+      if (member.tags == null) continue;
       for (const tag of member.tags) {
         tags.push(tag);
       }

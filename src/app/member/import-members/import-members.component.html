@@ -1,0 +1,56 @@
+<div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="start start">
+
+  <div class="mat-card" fxLayout="column" fxLayoutGap="20px" style="padding:20px;">
+
+    <div class="mat-card-title">Import Members</div>
+    <div class="mat-card-subtitle">to the AIESEC Sri Lanka HRIS</div>
+
+    <div fxFlex="40" id="form" fxLayout="column">
+
+      <div fxLayout="column" fxLayoutGap="0px">
+
+        <div fxLayout="row" fxLayoutGap="20px" style="padding-bottom:20px;" [formGroup]="form">
+
+          <input hidden type="file" accept=".csv" class="file-input" formControlName="file"
+                 (change)="onFileSelected($event, 'file')" #fileUpload>
+
+          <div class="file-upload" fxLayout="column" fxLayoutGap="10px">
+            <mat-label class="label">Upload CSV</mat-label>
+
+            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px" style="width: 300px;">
+              <button [class.mat-elevation-z0]="true" mat-mini-fab color="primary" class="upload-btn" (click)="fileUpload.click()">
+                <mat-icon style="width:24px; height:24px;">attach_file</mat-icon>
+              </button>
+              <div style="font-size:12px;">
+                {{ file_name || "" }}
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+        <button class="submit_button" mat-raised-button color="primary"  (click)="submitForm()" [disabled]="!form.valid || importing">
+          IMPORT MEMBERS
+        </button>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="mat-card" fxLayout="column" fxLayoutGap="20px" style="padding:20px;" *ngIf="messages && messages.length > 0"
+       style="width:500px;">
+
+    <div class="mat-card-subtitle">Import Log</div>
+
+    <mat-progress-bar mode="determinate" value="{{messages.length*100/numEntries!}}"></mat-progress-bar>
+
+    <div *ngFor="let message of messages.slice().reverse(); let i = index">
+      <div style="font-weight:bold;">Importing Member #{{messages.length - i}}</div>
+      <div class="import_item" *ngFor="let m of message">
+        {{m}}
+      </div>
+
+  </div>
+
+</div>

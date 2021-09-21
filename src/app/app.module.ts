@@ -36,6 +36,9 @@ import { ListMembersComponent } from './member/list-members/list-members.compone
 import { MatTableExporterModule } from 'mat-table-exporter';
 import {MatTableModule} from "@angular/material/table";
 import { StringInputDialogComponent } from './dialogs/string-input-dialog/string-input-dialog.component';
+import { ImportMembersComponent } from './member/import-members/import-members.component';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+
 
 @NgModule({
   declarations: [
@@ -48,7 +51,8 @@ import { StringInputDialogComponent } from './dialogs/string-input-dialog/string
     InviteMemberComponent,
     EditProfileComponent,
     ListMembersComponent,
-    StringInputDialogComponent
+    StringInputDialogComponent,
+    ImportMembersComponent
   ],
   imports: [
     BrowserModule,
@@ -71,7 +75,8 @@ import { StringInputDialogComponent } from './dialogs/string-input-dialog/string
     MatSelectModule,
     AngularFireStorageModule,
     MatTableExporterModule,
-    MatTableModule
+    MatTableModule,
+    MatProgressBarModule
   ],
   providers: [
     { provide: AUTH_SETTINGS, useValue: { appVerificationDisabledForTesting: true } },

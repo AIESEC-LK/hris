@@ -63,6 +63,10 @@ exports.getProfileInformation = functions.https.onCall(async (data, context) => 
     social_media: member.data().social_media,
     current_status: member.data().current_status ? member.data().current_status.toUpperCase() : "UNKNOWN",
     tags: member.data().tags,
+    dob: member.data().dob,
+    faculty: member.data().faculty,
+    joined_date: member.data().joined_date,
+    phone: member.data().phone,
     ...expa_data
   };
 
@@ -79,14 +83,12 @@ exports.inviteMember = functions.https.onCall(async (data, context) => {
   if (!(tokenResult.customClaims) || tokenResult.customClaims["role"] != "admin") throw NotAuthorizedException;
 
   await db.collection('users').doc(data.email).set({
-    entity: data.entity,
-    role: data.role,
+    role: "member"
   }, {merge: true});
 
   await db.collection('members').doc(data.email).set({
-    expa_id: data.expa_id,
     current_status: "ACTIVE",
-    email: data.email
+    ...data
   }, {merge: true});
 
   await getMemberExpaInfo(data.email, data.expa_id);
@@ -133,11 +135,7 @@ async function getMemberExpaInfo(email: any, expa_id: any) {
         id
         full_name
         gender
-        dob
         created_at
-        contact_detail {
-            phone
-        }
         home_lc {
             name
         }
@@ -175,12 +173,12 @@ async function getMemberExpaInfo(email: any, expa_id: any) {
 
   let positions = [];
   for (let position of queryResult.getPerson.member_positions) {
-    if (position.function.name.includes("-")) position.function.name = position.function.name.split(" - ")[0];
+    if (position.function && position.function.name.includes("-")) position.function.name = position.function.name.split(" - ")[0];
     const p = {
       name: position.role.name,
       start_date: position.start_date,
       end_date: position.end_date,
-      function: position.function.name,
+      function: position.function ? position.function.name : null,
       entity: position.office.name
     }
     positions.push(p);
@@ -189,9 +187,6 @@ async function getMemberExpaInfo(email: any, expa_id: any) {
   const expa_data = {
     name: queryResult.getPerson.full_name,
     gender: queryResult.getPerson.gender,
-    dob: queryResult.getPerson.dob,
-    created_at: queryResult.getPerson.created_at,
-    phone: queryResult.getPerson.contact_detail.phone,
     entity: queryResult.getPerson.home_lc.name,
     positions: positions
   };
