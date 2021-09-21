@@ -33,7 +33,6 @@ exports.completeLogin = functions.https.onCall(async (data, context) => {
   await admin.auth().setCustomUserClaims(uid, userTokens.data());
 
   return {
-    profile_created: false,
     tokens: userTokens.data()
   };
 });
@@ -71,6 +70,7 @@ exports.getProfileInformation = functions.https.onCall(async (data, context) => 
 exports.addAdditionalInformation = functions.https.onCall(async (data, context) => {
   const email = context.auth?.token.email;
   await db.collection('members').doc(email).set(data, {merge: true});
+  await db.collection('users').doc(email).set({profile_created: true}, {merge: true});
 });
 
 exports.inviteMember = functions.https.onCall(async (data, context) => {
