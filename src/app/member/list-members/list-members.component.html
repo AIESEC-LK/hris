@@ -33,35 +33,35 @@
       <mat-date-range-picker #picker></mat-date-range-picker>
     </mat-form-field>-->
 
-    <mat-form-field>
+    <mat-form-field style="width:100px;">
       <mat-label>Function</mat-label>
       <mat-select multiple [(ngModel)]="filter.functions" (selectionChange)="doFilter()">
         <mat-option *ngFor="let function of functions" [value]="function">{{function}}</mat-option>
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field>
+    <mat-form-field style="width:100px;">
       <mat-label>Role</mat-label>
       <mat-select multiple [(ngModel)]="filter.roles" (selectionChange)="doFilter()">
         <mat-option *ngFor="let role of roles" [value]="role">{{role}}</mat-option>
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field>
+    <mat-form-field style="width:100px;">
       <mat-label>Entity</mat-label>
       <mat-select multiple [(ngModel)]="filter.entities" (selectionChange)="doFilter()">
         <mat-option *ngFor="let entity of entities" [value]="entity">{{entity}}</mat-option>
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field>
+    <mat-form-field style="width:100px;">
       <mat-label>Faculty</mat-label>
       <mat-select multiple [(ngModel)]="filter.faculties" (selectionChange)="doFilter()">
         <mat-option *ngFor="let faculty of faculties" [value]="faculty">{{faculty}}</mat-option>
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field>
+    <mat-form-field style="width:100px;">
       <mat-label>Tags</mat-label>
       <mat-select multiple [(ngModel)]="filter.tags" (selectionChange)="doFilter()">
         <mat-option *ngFor="let tag of tags" [value]="tag">{{tag}}</mat-option>
