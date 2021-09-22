@@ -29,8 +29,8 @@ export class AuthService {
 
     try {
       if (this.logged) throw this.AlreadyLoggedInException;
-      const loginResult = await this.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
-      console.log("User:", loginResult.user);
+      const loginResult = await this.auth.signInWithRedirect(new firebase.auth.GoogleAuthProvider())
+      //console.log("User:", loginResult.user);
       await this.completeLogin();
       //window.location.reload();
     } catch (e) {
@@ -44,7 +44,7 @@ export class AuthService {
     try {
       const logoutResult = await this.auth.signOut();
       console.log("Logout result", logoutResult);
-      window.location.reload();
+      await this.router.navigate(["/"]);
     } catch (e) {
       this.dialog.open(ErrorComponent, {data: e});
     }
@@ -55,6 +55,7 @@ export class AuthService {
     this.logged = user != null;
 
     if (this.logged) {
+      await this.completeLogin();
       const tokenResult = await user.getIdTokenResult(true);
       this.role = tokenResult.claims['role'];
     }

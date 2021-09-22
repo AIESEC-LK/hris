@@ -7,7 +7,8 @@
 
     <div fxFlex="40" id="form" fxLayout="column">
 
-      <div fxLayout="column" fxLayoutGap="0px">
+      <div fxLayout="column" fxLayoutGap="0px" fxLayoutAlign="center center">
+
 
         <div fxLayout="row" fxLayoutGap="20px" style="padding-bottom:20px;" [formGroup]="form">
 
@@ -18,7 +19,8 @@
             <mat-label class="label">Upload CSV</mat-label>
 
             <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px" style="width: 300px;">
-              <button [class.mat-elevation-z0]="true" mat-mini-fab color="primary" class="upload-btn" (click)="fileUpload.click()">
+              <button [class.mat-elevation-z0]="true" mat-mini-fab color="primary" class="upload-btn" (click)="fileUpload.click()"
+                      [disabled]="importing">
                 <mat-icon style="width:24px; height:24px;">attach_file</mat-icon>
               </button>
               <div style="font-size:12px;">
@@ -30,9 +32,13 @@
 
         </div>
 
-        <button class="submit_button" mat-raised-button color="primary"  (click)="submitForm()" [disabled]="!form.valid || importing">
+        <button class="submit_button" mat-raised-button color="primary"  (click)="submitForm()" [disabled]="!form.valid || importing"
+                *ngIf="!importing">
           IMPORT MEMBERS
         </button>
+
+        <mat-spinner *ngIf="importing"></mat-spinner>
+
 
       </div>
     </div>
@@ -43,7 +49,7 @@
 
     <div class="mat-card-subtitle">Import Log</div>
 
-    <mat-progress-bar mode="determinate" value="{{messages.length*100/numEntries!}}"></mat-progress-bar>
+    <mat-progress-bar class="green-progress" mode="determinate" value="{{messages.length*100/numEntries!}}"></mat-progress-bar>
 
     <div *ngFor="let message of messages.slice().reverse(); let i = index">
       <div style="font-weight:bold;">Importing Member #{{messages.length - i}}</div>

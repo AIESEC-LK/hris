@@ -174,7 +174,6 @@ export class MemberService {
 
   public getCurrentEntities(member: Member): string[] {
     let entities: string[] = [];
-    entities.push(member.entity);
 
     const today: Date = new Date();
     for (let position of member.positions) {
@@ -182,6 +181,8 @@ export class MemberService {
       if (end_date < today) continue;
       entities.push(position.entity);
     }
+
+    if (entities.length == 0) entities.push(member.entity);
 
     return [...new Set(entities)];
   }

@@ -24,6 +24,7 @@ export class ListMembersComponent implements OnInit {
   functions: string[] = []
   roles: string[] = []
   entities: string[] = []
+  faculties: string[] = []
   tags: string[] = []
 
   filter = {
@@ -31,6 +32,7 @@ export class ListMembersComponent implements OnInit {
     functions: this.functions,
     roles: this.roles,
     entities: this.entities,
+    faculties: this.faculties,
     tags: this.tags
   };
 
@@ -51,11 +53,12 @@ export class ListMembersComponent implements OnInit {
     this.functions  = this.getAllFunctions().sort();
     this.roles = this.getAllRoles().sort();
     this.entities = this.getAllEntities().sort();
+    this.faculties = this.getAllFaculties().sort();
     this.tags = this.getAllTags().sort();
   }
 
   getDisplayedColumns(): void {
-    this.selectedColumns = ['name', 'email', 'current_status', 'functions', 'roles', 'tags', 'faculty'];
+    this.selectedColumns = ['name', 'current_status', 'functions', 'roles', 'faculty'];
     if (this.authService.getRole() == "admin") this.selectedColumns.push('entity');
     this.selectedColumns.push("expa_id");
     this.selectedColumns.push("profile");
@@ -91,6 +94,16 @@ export class ListMembersComponent implements OnInit {
         return filter_entities.some(item => entities.includes(item))
       });
     }
+
+    //Filter by faculty
+    const filter_faculties = this.filter.faculties;
+    if (filter_faculties.length > 0) {
+      this.dataSource.data = this.dataSource.data.filter(e=> {
+        const faculty = e.faculty;
+        return filter_faculties.includes(faculty);
+      });
+    }
+
 
     //Filter by tag
     const filter_tags = this.filter.tags;
@@ -138,6 +151,16 @@ export class ListMembersComponent implements OnInit {
     return [...new Set(entities)];
   }
 
+  private getAllFaculties(): string[] {
+    let faculties: string[] = [];
+    for (const member of this.members) {
+        faculties.push(member.faculty);
+    }
+
+    return [...new Set(faculties)];
+  }
+
+
   private getAllTags(): string[] {
     let tags: string[] = [];
     for (const member of this.members) {
@@ -149,6 +172,10 @@ export class ListMembersComponent implements OnInit {
 
     return [...new Set(tags)];
   }
+
+  truncate(str: string, n: number){
+    return (str.length > n) ? str.substr(0, n-1) + '...' : str;
+  };
 
 
 

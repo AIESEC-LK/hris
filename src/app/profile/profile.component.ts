@@ -36,6 +36,17 @@ export class ProfileComponent implements OnInit {
     } catch (e) {
       this.dialog.open(ErrorComponent, {data: e});
     }
+
+    this.member?.positions.sort(function(a, b) {
+      var keyA = new Date(a.start_date),
+        keyB = new Date(b.start_date);
+      // Compare the 2 dates
+      if (keyA < keyB) return 1;
+      if (keyA > keyB) return -1;
+      return 0;
+    });
+
+
   }
 
   edit(editField: string) {
