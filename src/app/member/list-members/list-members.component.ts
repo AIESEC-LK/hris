@@ -55,7 +55,7 @@ export class ListMembersComponent implements OnInit {
   }
 
   getDisplayedColumns(): void {
-    this.selectedColumns = ['name', 'email', 'current_status', 'functions', 'roles', 'tags', 'faculty'];
+    this.selectedColumns = ['name', 'current_status', 'functions', 'roles', 'faculty'];
     if (this.authService.getRole() == "admin") this.selectedColumns.push('entity');
     this.selectedColumns.push("expa_id");
     this.selectedColumns.push("profile");
@@ -149,6 +149,10 @@ export class ListMembersComponent implements OnInit {
 
     return [...new Set(tags)];
   }
+
+  truncate(str: string, n: number){
+    return (str.length > n) ? str.substr(0, n-1) + '...' : str;
+  };
 
 
 

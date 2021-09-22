@@ -151,6 +151,20 @@ async function getMemberExpaInfo(email: any, expa_id: any) {
             role {
                 name
             }
+            committee_department {
+                name
+            }
+        }
+        positions {
+            office {
+                name
+            }
+            function {
+                name
+            }
+            position_name
+            start_date
+            end_date
         }
       }
     }
@@ -173,16 +187,30 @@ async function getMemberExpaInfo(email: any, expa_id: any) {
 
   let positions = [];
   for (let position of queryResult.getPerson.member_positions) {
-    if (position.function && position.function.name.includes("-")) position.function.name = position.function.name.split(" - ")[0];
+    if (position.committee_department && position.committee_department.name.includes("-"))
+      position.committee_department.name = position.committee_department.name.split(" - ")[0];
     const p = {
       name: position.role.name,
       start_date: position.start_date,
       end_date: position.end_date,
-      function: position.function ? position.function.name : null,
+      function: position.committee_department ? position.committee_department.name : null,
       entity: position.office.name
     }
     positions.push(p);
   }
+
+  /*for (let position of queryResult.getPerson.positions) {
+    if (position.function && position.function.name.includes("-")) position.function.name = position.function.name.split(" - ")[0];
+    const p = {
+      name: position.position_name,
+      start_date: position.start_date.split("T")[0],
+      end_date: position.end_date.split("T")[0],
+      function: position.function ? position.function.name : null,
+      entity: position.office.name
+    }
+    positions.push(p);
+  }*/
+
 
   const expa_data = {
     name: queryResult.getPerson.full_name,

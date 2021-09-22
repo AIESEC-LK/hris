@@ -98,7 +98,7 @@
 
   <ng-container matColumnDef="functions" [fxHide.lt-sm]="true">
     <th mat-header-cell *matHeaderCellDef mat-sort-header> Function(s) </th>
-    <td mat-cell *matCellDef="let member"> {{memberService.getCurrentFunctions(member).join(", ")}} </td>
+    <td mat-cell *matCellDef="let member"> {{truncate(memberService.getCurrentFunctions(member).join(", "), 50)}} </td>
   </ng-container>
 
   <ng-container matColumnDef="tags" [fxHide.lt-sm]="true">
