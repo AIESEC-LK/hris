@@ -90,6 +90,32 @@
   <div class="mat-card" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="20px" *ngIf="member"
        style="padding:20px;">
 
+    <div class="mat-card-title" style="font-size:18px">Positions</div>
+
+    <div *ngFor="let position of memberService.getPositions(member)">
+      <div class="position_name">
+        <span>{{position.name}}</span>
+        <span *ngIf="position.function"> - {{position.function}}</span>
+        <mat-icon *ngIf="memberService.canEdit(member) && position.type == 'unofficial'"
+                  (click)="memberService.deletePosition(member, position)" style="color:#777777; margin-left:5px;">close</mat-icon>
+      </div>
+      <div class="item_name">AIESEC in {{position.entity}}</div>
+      <div class="item_name">
+        {{position.start_date}} to {{position.end_date}}
+      </div>
+    </div>
+
+    <button class="membership_status" mat-flat-button (click)="addNewPosition()" *ngIf="memberService.canEdit(member)">
+      <mat-icon style="color:#3a539b; margin-left:0;">add</mat-icon>
+      Add new position
+    </button>
+
+
+  </div>
+
+  <div class="mat-card" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="20px" *ngIf="member"
+       style="padding:20px;">
+
     <div fxLayout="row" fxLayoutGap="20px">
 
       <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="0px">
@@ -119,34 +145,54 @@
 
     </div>
 
-    <div class="mat-card-title" style="font-size:18px">Positions</div>
 
-    <div *ngFor="let position of member.positions">
-      <div class="position_name"><span>{{position.name}}</span> <span *ngIf="position.function"> - {{position.function}}</span></div>
-      <div class="item_name">AIESEC in {{position.entity}}</div>
-      <div class="item_name">
-        {{position.start_date}} to {{position.end_date}}
+    <div class="mat-card-title" style="font-size:18px">Attachments</div>
+
+    <div fxLayout="column" fxLayoutGap="10px" style="padding-bottom:10px !important;">
+
+        <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start center" *ngIf="member.cv">
+          <a href="{{member.cv}}" target="_blank" fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="center center">
+            <mat-icon style="color:#3a539b; margin-left:0px !important;">check_circle_outline</mat-icon>
+            <div style="font-size:12px;">Curriculum Vitae</div>
+          </a>
+        </div>
+
+      <div *ngFor="let attachment of member.attachments">
+          <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start center">
+            <a href="{{attachment.value}}" target="_blank" fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="center center">
+              <mat-icon style="color:#3a539b; margin-left:0px !important;">check_circle_outline</mat-icon>
+              <div style="font-size:12px;">{{attachment.name}}</div>
+            </a>
+            <mat-icon *ngIf="memberService.canEdit(member)" (click)="memberService.deleteAttachment(member, attachment)" style="color:#777777">close</mat-icon>
+          </div>
       </div>
+
+      <button class="membership_status" mat-flat-button (click)="addNewAttachment()" *ngIf="memberService.canEdit(member)">
+        <mat-icon style="color:#3a539b; margin-left:0;">add</mat-icon>
+        Add new attachment
+      </button>
+
     </div>
 
-  </div>
 
-  <div class="mat-card" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="20px" *ngIf="member"
-       style="padding:20px;">
 
-    <div class="mat-card-title" style="font-size:18px">Additional Information</div>
+    <div class="mat-card-title" style="font-size:18px">Tags</div>
 
     <div fxlayout="row" fxLayoutGap="20px">
-      <div class="item_name">
-        Tags
-        <mat-icon *ngIf="memberService.canEdit(member)" (click)="addTag()">add</mat-icon>
-      </div>
+
       <div fxLayout="row wrap" fxLayoutGap="10px" style="max-width:200px;">
         <div *ngFor="let tag of member.tags" class="tag" fxLayout="row" fxLayoutAlign="center center">
           {{tag}}
-          <mat-icon *ngIf="memberService.canEdit(member)" (click)="memberService.deleteTag(member, tag)" style="color:white">close</mat-icon>
+          <mat-icon *ngIf="memberService.canEdit(member)" (click)="memberService.deleteTag(member, tag)" style="color:white; margin-left:5px">close</mat-icon>
         </div>
       </div>
+
+      <button class="membership_status" mat-flat-button (click)="addTag()" *ngIf="memberService.canEdit(member)">
+        <mat-icon style="color:#3a539b; margin-left:0;">add</mat-icon>
+        Add new tag
+      </button>
+
+
     </div>
 
   </div>

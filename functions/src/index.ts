@@ -67,6 +67,8 @@ exports.getProfileInformation = functions.https.onCall(async (data, context) => 
     faculty: member.data().faculty,
     joined_date: member.data().joined_date,
     phone: member.data().phone,
+    attachments: member.data().attachments,
+    unofficial_positions: member.data().unofficial_positions,
     ...expa_data
   };
 
