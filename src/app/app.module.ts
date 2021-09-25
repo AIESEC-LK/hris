@@ -36,8 +36,12 @@ import { ListMembersComponent } from './member/list-members/list-members.compone
 import { MatTableExporterModule } from 'mat-table-exporter';
 import {MatTableModule} from "@angular/material/table";
 import { StringInputDialogComponent } from './dialogs/string-input-dialog/string-input-dialog.component';
+import { TwoStringInputDialogComponent } from './dialogs/two-string-input-dialog/two-string-input-dialog.component';
 import { ImportMembersComponent } from './member/import-members/import-members.component';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { AddPositionDialogComponent } from './dialogs/add-position-dialog/add-position-dialog.component';
+import { MatDatepickerModule } from "@angular/material/datepicker";
+import {MatNativeDateModule} from "@angular/material/core";
 
 
 @NgModule({
@@ -52,7 +56,9 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
     EditProfileComponent,
     ListMembersComponent,
     StringInputDialogComponent,
-    ImportMembersComponent
+    TwoStringInputDialogComponent,
+    ImportMembersComponent,
+    AddPositionDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -76,7 +82,9 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
     AngularFireStorageModule,
     MatTableExporterModule,
     MatTableModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   providers: [
     { provide: AUTH_SETTINGS, useValue: { appVerificationDisabledForTesting: true } },

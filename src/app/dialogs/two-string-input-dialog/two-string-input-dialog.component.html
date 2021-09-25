@@ -1,0 +1,22 @@
+<div class="containerx">
+  <div class="dialogx">
+    <h1 mat-dialog-title class="titlex">{{title}}</h1>
+    <div mat-dialog-content class="contentx" fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="center center">
+      <mat-form-field fxFlex="40">
+        <mat-label>{{input_name}}</mat-label>
+        <input matInput [(ngModel)]="input_name_value" required>
+      </mat-form-field>
+
+      <mat-form-field fxFlex="100">
+        <mat-label>{{input_value}}</mat-label>
+        <input matInput [(ngModel)]="input_value_value" required>
+      </mat-form-field>
+
+
+      <button class="submit_button" mat-raised-button color="primary" [disabled]="input_name_value == null || input_value_value == null"
+              (click)="submit()">
+        {{confirm_text}}
+      </button>
+    </div>
+  </div>
+</div>

@@ -19,11 +19,14 @@ export interface Member {
   joined_date: string,
   gender: string,
   positions: Position[],
+  unofficial_positions: Position[],
   photo: string,
+  cv: string,
   social_media: SocialMedia,
   current_status: CurrentStatus,
   tags: string[],
   faculty: string,
+  attachments: Attachment[],
 }
 
 export interface Position {
@@ -45,6 +48,11 @@ export enum CurrentStatus {
   PROBATION = "PROBATION",
   TERMINATED = "TERMINATED",
   ALUMNI = "ALUMNI"
+}
+
+export interface Attachment {
+  name: string,
+  value: string
 }
 
 @Injectable({
@@ -196,6 +204,32 @@ export class MemberService {
     if (member.tags == null) member.tags = [tag];
     else member.tags.unshift(tag);
     await this.edit(member, "tags", member.tags);
+  }
+
+  public async addAttachment(member: Member, attachment: Attachment): Promise<void> {
+    if (member.attachments == null) member.attachments = [attachment];
+    else member.attachments.push(attachment);
+    await this.edit(member, "attachments", member.attachments);
+  }
+
+  public async deleteAttachment(member: Member, attachment: Attachment): Promise<void> {
+    member.attachments = member.attachments.filter(item => item !== attachment);
+    await this.edit(member, "attachments", member.attachments);
+  }
+
+  public async addPosition(member: Member, position: Position): Promise<void> {
+    if (member.unofficial_positions == null) member.unofficial_positions = [position];
+    else member.unofficial_positions.push(position);
+    await this.edit(member, "unofficial_positions", member.unofficial_positions);
+  }
+
+  public getPositions(member: Member): Position[] {
+    let positions: Position[] = [];
+    for (const position of member.positions) positions.push(position);
+    if (member.unofficial_positions != null) {
+      for (const position of member.unofficial_positions) positions.push(position);
+    }
+    return positions;
   }
 
 

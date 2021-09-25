@@ -8,6 +8,8 @@ import {MatDialog} from "@angular/material/dialog";
 import {EditProfileComponent} from "../dialogs/edit-profile/edit-profile.component";
 import {environment} from "../../environments/environment";
 import {StringInputDialogComponent} from "../dialogs/string-input-dialog/string-input-dialog.component";
+import {TwoStringInputDialogComponent} from "../dialogs/two-string-input-dialog/two-string-input-dialog.component";
+import {AddPositionDialogComponent} from "../dialogs/add-position-dialog/add-position-dialog.component";
 
 @Component({
   selector: 'app-profile',
@@ -62,7 +64,40 @@ export class ProfileComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      if (result == null) return;
       this.memberService.addTag(this.member!, result);
     });
   }
+
+  addNewAttachment() {
+    const dialogRef = this.dialog.open(TwoStringInputDialogComponent, {
+      data: {
+        title: "Add new attachment for " + this.member?.name,
+        input_name: "Attachment Name",
+        input_name_value: null,
+        input_value: "Link",
+        input_value_value: null,
+        confirm_text: "ADD"
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(async result => {
+      if (result == null) return;
+      await this.memberService.addAttachment(this.member!, result);
+    });
+  }
+
+  addNewPosition() {
+    const dialogRef = this.dialog.open(AddPositionDialogComponent, {
+      data: {
+        name: this.member?.name
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(async result => {
+      if (result == null) return;
+      await this.memberService.addPosition(this.member!, result);
+    });
+  }
+
 }
