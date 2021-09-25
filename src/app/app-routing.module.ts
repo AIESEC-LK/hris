@@ -8,6 +8,7 @@ import {ListMembersComponent} from "./member/list-members/list-members.component
 import {ImportMembersComponent} from "./member/import-members/import-members.component";
 
 const routes: Routes = [
+  { path: '', component: ProfileComponent },
   { path: 'login', component: LoginComponent },
   { path: 'profile', component: ProfileComponent },
   { path: 'profile/initialize', component: InitializeComponent },
