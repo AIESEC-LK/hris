@@ -35,6 +35,7 @@ export interface Position {
   end_date: string,
   function:string,
   entity: string
+  type: string
 }
 
 export interface SocialMedia {
@@ -158,7 +159,7 @@ export class MemberService {
     let functions: string[] = [];
 
     const today: Date = new Date();
-    for (let position of member.positions) {
+    for (let position of this.getPositions(member)) {
       const end_date: Date = new Date(Date.parse(position.end_date));
       if (end_date < today) continue;
       functions.push(position.function);
@@ -171,7 +172,7 @@ export class MemberService {
     let roles: string[] = [];
 
     const today: Date = new Date();
-    for (let position of member.positions) {
+    for (let position of this.getPositions(member)) {
       const end_date: Date = new Date(Date.parse(position.end_date));
       if (end_date < today) continue;
       roles.push(position.name);
@@ -184,7 +185,7 @@ export class MemberService {
     let entities: string[] = [];
 
     const today: Date = new Date();
-    for (let position of member.positions) {
+    for (let position of this.getPositions(member)) {
       const end_date: Date = new Date(Date.parse(position.end_date));
       if (end_date < today) continue;
       entities.push(position.entity);
@@ -225,11 +226,32 @@ export class MemberService {
 
   public getPositions(member: Member): Position[] {
     let positions: Position[] = [];
-    for (const position of member.positions) positions.push(position);
-    if (member.unofficial_positions != null) {
-      for (const position of member.unofficial_positions) positions.push(position);
+    for (const position of member.positions) {
+      position.type = "official";
+      positions.push(position);
     }
+    if (member.unofficial_positions != null) {
+      for (const position of member.unofficial_positions) {
+        position.type = "unofficial";
+        positions.push(position);
+      }
+    }
+
+    positions.sort(function(a, b) {
+      var keyA = new Date(a.start_date),
+        keyB = new Date(b.start_date);
+      // Compare the 2 dates
+      if (keyA < keyB) return 1;
+      if (keyA > keyB) return -1;
+      return 0;
+    });
+
     return positions;
+  }
+
+  public async deletePosition(member: Member, position: Position): Promise<void> {
+    member.unofficial_positions = member.unofficial_positions.filter(item => item !== position);
+    await this.edit(member, "unofficial_positions", member.unofficial_positions);
   }
 
 

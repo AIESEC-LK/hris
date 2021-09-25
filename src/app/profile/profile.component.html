@@ -93,7 +93,12 @@
     <div class="mat-card-title" style="font-size:18px">Positions</div>
 
     <div *ngFor="let position of memberService.getPositions(member)">
-      <div class="position_name"><span>{{position.name}}</span> <span *ngIf="position.function"> - {{position.function}}</span></div>
+      <div class="position_name">
+        <span>{{position.name}}</span>
+        <span *ngIf="position.function"> - {{position.function}}</span>
+        <mat-icon *ngIf="memberService.canEdit(member) && position.type == 'unofficial'"
+                  (click)="memberService.deletePosition(member, position)" style="color:#777777; margin-left:5px;">close</mat-icon>
+      </div>
       <div class="item_name">AIESEC in {{position.entity}}</div>
       <div class="item_name">
         {{position.start_date}} to {{position.end_date}}

@@ -121,7 +121,7 @@ export class ListMembersComponent implements OnInit {
   private getAllFunctions(): string[] {
     let functions: string[] = [];
     for (const member of this.members) {
-      for (const position of member.positions) {
+      for (const position of this.memberService.getPositions(member)) {
         functions.push(position.function);
       }
     }
@@ -132,7 +132,7 @@ export class ListMembersComponent implements OnInit {
   private getAllRoles(): string[] {
     let roles: string[] = [];
     for (const member of this.members) {
-      for (const position of member.positions) {
+      for (const position of this.memberService.getPositions(member)) {
         roles.push(position.name);
       }
     }
@@ -143,7 +143,7 @@ export class ListMembersComponent implements OnInit {
   private getAllEntities(): string[] {
     let entities: string[] = [];
     for (const member of this.members) {
-      for (const position of member.positions) {
+      for (const position of this.memberService.getPositions(member)) {
         entities.push(position.entity);
       }
     }
