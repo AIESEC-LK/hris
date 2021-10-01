@@ -49,7 +49,7 @@
     <div fxlayout="row" fxLayoutGap="20px">
       <div class="item_name">Expa ID</div>
       <div>{{member.expa_id}}
-        <mat-icon *ngIf="memberService.canEdit(member)" (click)="edit('expa_id')">edit</mat-icon>
+        <mat-icon *ngIf="authService.isEBOrAbove()" (click)="edit('expa_id')">edit</mat-icon>
       </div>
     </div>
 
@@ -118,7 +118,16 @@
 
     <div fxLayout="row" fxLayoutGap="20px">
 
-      <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="0px">
+      <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="0px" *ngIf="!authService.isEBOrAbove()">
+        <div style="font-size:10px;">Current membership status</div>
+        <button class="membership_status" mat-flat-button color="primary" [class]="'btn-'+member.current_status">
+          {{member.current_status}}
+        </button>
+
+      </div>
+
+
+      <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="0px" *ngIf="authService.isEBOrAbove()">
         <div style="font-size:10px;">Current membership status</div>
         <button class="membership_status" mat-flat-button color="primary" (click)=currentStatusSelect.open()
                 [class]="'btn-'+member.current_status">
@@ -183,11 +192,11 @@
       <div fxLayout="row wrap" fxLayoutGap="10px" style="max-width:200px;">
         <div *ngFor="let tag of member.tags" class="tag" fxLayout="row" fxLayoutAlign="center center">
           {{tag}}
-          <mat-icon *ngIf="memberService.canEdit(member)" (click)="memberService.deleteTag(member, tag)" style="color:white; margin-left:5px">close</mat-icon>
+          <mat-icon *ngIf="authService.isEBOrAbove()" (click)="memberService.deleteTag(member, tag)" style="color:white; margin-left:5px">close</mat-icon>
         </div>
       </div>
 
-      <button class="membership_status" mat-flat-button (click)="addTag()" *ngIf="memberService.canEdit(member)">
+      <button class="membership_status" mat-flat-button (click)="addTag()" *ngIf="authService.isEBOrAbove()">
         <mat-icon style="color:#3a539b; margin-left:0;">add</mat-icon>
         Add new tag
       </button>

@@ -67,14 +67,14 @@ export class MemberService {
   }
 
   public async getMemberInformation(email: string): Promise<Member> {
-      const getMemberInformation = this.functions.httpsCallable('getProfileInformation');
+      const getMemberInformation = this.functions.httpsCallable('member-getProfileInformation');
       return await getMemberInformation({email: email}).toPromise();
   }
 
   public async addAdditionalInformation(data: {}) {
     const loadingDialog = this.dialog.open(LoadingComponent);
     try {
-      const addAdditionalInformation = this.functions.httpsCallable('addAdditionalInformation');
+      const addAdditionalInformation = this.functions.httpsCallable('member-addAdditionalInformation');
       await addAdditionalInformation(data).toPromise();
     } catch (e) {
       this.dialog.open(ErrorComponent, {data: e});
@@ -85,7 +85,7 @@ export class MemberService {
   public async inviteMember(data: {}) {
     const loadingDialog = this.dialog.open(LoadingComponent);
     try {
-      const inviteMember = this.functions.httpsCallable('inviteMember');
+      const inviteMember = this.functions.httpsCallable('member-inviteMember');
       await inviteMember(data).toPromise();
     } catch (e) {
       this.dialog.open(ErrorComponent, {data: e});
@@ -96,7 +96,7 @@ export class MemberService {
   async changeCurrentStatus(member: Member, newStatus: CurrentStatus) {
     member.current_status = newStatus;
     try {
-      const changeCurrentStatus = this.functions.httpsCallable('changeCurrentStatus');
+      const changeCurrentStatus = this.functions.httpsCallable('member-changeCurrentStatus');
       await changeCurrentStatus({
         email: member.email,
         current_status: member.current_status
@@ -106,13 +106,13 @@ export class MemberService {
     }
   }
 
-  canEdit(member: Member): boolean {
-    return this.authService.getRole() == "admin";
+  async canEdit(member: Member): Promise<boolean> {
+    return this.authService.isEBOrAbove() || this.authService.getEmail() == member.email;
   }
 
   async edit(member: Member, editField: string, newValue: any) {
     try {
-      const editProfileField = this.functions.httpsCallable('editProfileField');
+      const editProfileField = this.functions.httpsCallable('member-editProfileField');
       await editProfileField({
         email: member.email,
         editField: editField,
@@ -135,7 +135,7 @@ export class MemberService {
   }
 
   public async getMembers(): Promise<Member[]> {
-    const getMembers = this.functions.httpsCallable('getMembers');
+    const getMembers = this.functions.httpsCallable('member-getMembers');
     return <Member[]> await getMembers({}).toPromise();
   }
 

@@ -59,7 +59,7 @@ export class ListMembersComponent implements OnInit {
 
   getDisplayedColumns(): void {
     this.selectedColumns = ['name', 'current_status', 'functions', 'roles', 'faculty'];
-    if (this.authService.getRole() == "admin") this.selectedColumns.push('entity');
+    if (this.authService.isAdmin()) this.selectedColumns.push('entity');
     this.selectedColumns.push("expa_id");
     this.selectedColumns.push("profile");
   }

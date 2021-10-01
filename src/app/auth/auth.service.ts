@@ -17,7 +17,8 @@ export class AuthService {
   private NotLoggedInException:Error  = { name: "Not logged in", message: "You are not logged in." }
 
   public logged: boolean = false;
-  public role: string = "";
+  public role: string[] = [];
+  public email: string = "";
 
   constructor(private auth: AngularFireAuth, private functions: AngularFireFunctions, private dialog: MatDialog,
               private router: Router) {
@@ -44,7 +45,7 @@ export class AuthService {
     try {
       const logoutResult = await this.auth.signOut();
       console.log("Logout result", logoutResult);
-      await this.router.navigate(["/"]);
+      await this.router.navigate(["/login"]);
     } catch (e) {
       this.dialog.open(ErrorComponent, {data: e});
     }
@@ -58,12 +59,13 @@ export class AuthService {
       await this.completeLogin();
       const tokenResult = await user.getIdTokenResult(true);
       this.role = tokenResult.claims['role'];
+      this.email = user.email!;
     }
     return this.logged;
   }
 
   private async completeLogin() {
-    const completeLogin = this.functions.httpsCallable('completeLogin');
+    const completeLogin = this.functions.httpsCallable('auth-completeLogin');
     const result = await completeLogin(null).toPromise();
     console.log("Tokens", result.tokens)
 
@@ -73,14 +75,18 @@ export class AuthService {
     if (!result.tokens['profile_created']) await this.router.navigate(["/profile/initialize"]);
   }
 
-  public async getEmail(): Promise<string> {
-    const user = await this.auth.authState.pipe(first()).toPromise();
-    if (user != null) return user.email!;
-    return "";
+  public getEmail(): string {
+    return this.email;
   }
 
-  public getRole(): string {
-      return this.role;
+  public isEBOrAbove(): boolean {
+    if (this.role.includes("admin")) return true;
+    if (this.role.includes("eb")) return true;
+    return false;
+  }
+
+  public isAdmin(): boolean {
+    return this.role.includes("admin");
   }
 
 }
