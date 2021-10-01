@@ -1,14 +1,13 @@
 #header {
-  background-color:#3a539b;
+  background-color:white;
 }
 
-#header img {
+#menu img {
   width:100px;
-  margin-left:-20px;
 }
 
 #header .title {
-  color:white;
+  color:#3a539b;
   font-weight:bold;
   font-size:16px;
 }
@@ -19,7 +18,7 @@
 
 .links span {
   font-weight:lighter;
-  color:white;
+  color:#3a539b;
 }
 
 .links span:hover {
@@ -35,4 +34,31 @@
   border-top-width:5px;
   border-top-style:solid;
   border-top-color:#3a539b;
+}
+
+#menu {
+  position:fixed;
+  top:0px;
+  left:0px;
+  background-color: #3a539b;
+  padding:5px;
+  width:60px;
+  font-size:30px;
+  min-height:1000px;
+}
+
+#menu .mat-icon {
+  color: #8ca5ec;
+  height:30px !important;
+  width:30px !important;
+  transition: all 0.3s;
+  cursor:pointer;
+}
+
+#menu .mat-icon:hover {
+  color:white;
+}
+
+#menu .material-icons {
+  font-size:30px;
 }

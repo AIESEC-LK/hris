@@ -2,22 +2,28 @@
 
   <div id="header" fxLayout="row" fxLayoutAlign="space-between center">
 
-    <div fxLayout="row" fxLayoutAlign="start center">
-      <img alt="AIESEC man" src="assets/images/monophy.gif"/>
+    <div fxLayout="row" fxLayoutAlign="start center" style="height:60px; margin-left:80px;">
       <span class="title">AIESEC Sri Lanka HRIS</span>
     </div>
 
     <div class="links" style="margin-right:20px;" fxLayoutGap="10px" fxLayout="row">
-      <span *ngIf="authService.logged && authService.getRole() == 'admin'" [routerLink]="['/members/import']">Import</span>
-      <span *ngIf="authService.logged && authService.getRole() == 'admin'" [routerLink]="['/members']">Members</span>
-      <span *ngIf="authService.logged && authService.getRole() == 'admin'" [routerLink]="['/profile']">Profile</span>
       <span *ngIf="!authService.logged" (click)="authService.login()">Log In</span>
       <span *ngIf="authService.logged" (click)="authService.logout()">Log Out</span>
     </div>
   </div>
 
-  <div id="content" fxLayout="column" fxLayoutAlign="start center" fxFlex>
-    <router-outlet></router-outlet>
+  <div fxLayout="row" fxLayoutAlign="stretch stretch">
+    <div id="menu" fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="20px">
+      <img alt="AIESEC man" src="assets/images/monophy.gif"/>
+      <mat-icon *ngIf="authService.logged" [routerLink]="['/profile']">face</mat-icon>
+      <mat-icon *ngIf="authService.logged && authService.isEBOrAbove()" [routerLink]="['/members']">people</mat-icon>
+      <mat-icon *ngIf="authService.logged && authService.isEBOrAbove()" [routerLink]="['/members/import']">file_upload</mat-icon>
+    </div>
+
+    <div id="content" fxLayout="column" fxLayoutAlign="start center" fxFlex>
+      <router-outlet></router-outlet>
+    </div>
+
   </div>
 
 

@@ -59,7 +59,7 @@ export class ImportMembersComponent implements OnInit {
           if (row[5]) data['faculty'] = row[5];
 
           try {
-            const inviteMember = original.functions.httpsCallable('inviteMember');
+            const inviteMember = original.functions.httpsCallable('member-inviteMember');
             await inviteMember(data).toPromise();
           }
           catch (e) {

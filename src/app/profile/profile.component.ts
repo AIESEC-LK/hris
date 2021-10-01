@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {AuthService} from "../auth/auth.service";
 import {AngularFireFunctions} from "@angular/fire/compat/functions";
 import {Member, MemberService, CurrentStatus} from "../member/member.service";
@@ -23,14 +23,17 @@ export class ProfileComponent implements OnInit {
   public CurrentStatus = CurrentStatus;
 
   constructor(private route: ActivatedRoute, public authService:AuthService, private functions: AngularFireFunctions,
-              public memberService: MemberService, private dialog: MatDialog) {
+              public memberService: MemberService, private dialog: MatDialog, private router: Router) {
   }
 
   async ngOnInit() {
     if (!await this.authService.isLoggedIn()) await this.authService.login();
 
-    if (!this.route.snapshot.paramMap.get("email")) this.email = await this.authService.getEmail();
-    else this.email = <string>this.route.snapshot.paramMap.get("email");
+    if (!this.route.snapshot.paramMap.get("email")) {
+      await this.router.navigate(["/profile/" + this.authService.getEmail()]);
+      return;
+    }
+    this.email = <string>this.route.snapshot.paramMap.get("email");
 
     try {
       this.member = await this.memberService.getMemberInformation(this.email!);
