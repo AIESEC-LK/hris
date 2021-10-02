@@ -1,4 +1,3 @@
-
 export {}
 
 import {CallableContext} from "firebase-functions/lib/common/providers/https";

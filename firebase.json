@@ -20,25 +20,12 @@
     }
   },
   "hosting": {
-    "public": "dist/hris",
+    "public": "public",
     "ignore": [
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
-    ],
-    "rewrites": [
-      {
-        "source": "**",
-        "destination": "/index.html"
-      }
-    ],
-    "headers": [ {
-      "source" : "**/*.@(jpg|jpeg|gif|png)",
-      "headers" : [ {
-        "key" : "Access-Control-Allow-Origin",
-        "value" : "*"
-      } ]
-    } ]
+    ]
   },
   "functions": {
     "source": "functions",
@@ -49,13 +36,6 @@
     "indexes": "firestore.indexes.json"
   },
   "storage": {
-    "rules": "storage.rules",
-    "headers": [ {
-      "source" : "**/*.@(jpg|jpeg|gif|png)",
-      "headers" : [ {
-        "key" : "Access-Control-Allow-Origin",
-        "value" : "*"
-      } ]
-    } ]
+    "rules": "storage.rules"
   }
 }

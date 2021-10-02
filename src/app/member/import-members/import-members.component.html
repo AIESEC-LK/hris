@@ -16,7 +16,9 @@
                  (change)="onFileSelected($event, 'file')" #fileUpload>
 
           <div class="file-upload" fxLayout="column" fxLayoutGap="10px">
-            <mat-label class="label">Upload CSV</mat-label>
+            <mat-label class="label" style="margin-top:10px; margin-bottom:10px;">Download
+              <a href="https://docs.google.com/spreadsheets/d/18olEuMziZWhojUH8Yru7CM2CQ8rtd06zfo0FTOpMX2k/edit?usp=sharing" target="_blank">template</a>
+                 , fill and upload as CSV.</mat-label>
 
             <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px" style="width: 300px;">
               <button [class.mat-elevation-z0]="true" mat-mini-fab color="primary" class="upload-btn" (click)="fileUpload.click()"
