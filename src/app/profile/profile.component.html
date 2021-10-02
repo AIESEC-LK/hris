@@ -34,6 +34,26 @@
       </div>
 
     </div>
+
+    <div class="mat-card" fxLayout="column" fxLayoutGap="10px" style="padding:20px;" *ngIf="member.social_media">
+
+      <div class="mat-card-title" style="font-size:18px;">Education</div>
+
+      <div fxlayout="row" fxLayoutGap="20px">
+        <div class="item_name">Faculty</div>
+        <div>{{member.faculty}}
+          <mat-icon *ngIf="authService.isEBOrAbove()" (click)="edit('faculty')">edit</mat-icon>
+        </div>
+      </div>
+
+      <div fxlayout="row" fxLayoutGap="20px">
+        <div class="item_name">Field of Study</div>
+        <div>{{member.field_of_study}}
+          <mat-icon *ngIf="authService.isEBOrAbove()" (click)="edit('field_of_study')">edit</mat-icon>
+        </div>
+      </div>
+
+    </div>
   </div>
 
   <div class="mat-card" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="20px" *ngIf="member"
