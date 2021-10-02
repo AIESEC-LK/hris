@@ -8,11 +8,13 @@ const db = admin.firestore();
 const AuthService = require("../services/auth-service");
 import {gql, GraphQLClient} from 'graphql-request'
 const config = require("../config");
+const logger = require("../middleware/logger");
 
 const MemberDoesNotExistException = new functions.https.HttpsError('not-found', "Member not found",
   {message: "This member has not been added to the system."})
 
 const getProfileInformation = functions.https.onCall(async (data:any, context:CallableContext) => {
+  logger.logFunctionInvocation(context, data);
   if(!await AuthService.canView(context, data.email)) throw AuthService.exceptions.NotAuthorizedException
 
   const email = data.email;
@@ -39,6 +41,7 @@ const getProfileInformation = functions.https.onCall(async (data:any, context:Ca
     tags: member.data().tags,
     dob: member.data().dob,
     faculty: member.data().faculty,
+    field_of_study: member.data().field_of_study,
     joined_date: member.data().joined_date,
     phone: member.data().phone,
     attachments: member.data().attachments,
@@ -48,13 +51,17 @@ const getProfileInformation = functions.https.onCall(async (data:any, context:Ca
 });
 
 const addAdditionalInformation = functions.https.onCall(async (data:any, context:CallableContext) => {
+  logger.logFunctionInvocation(context, data);
+
   const email = context.auth?.token.email;
   await db.collection('members').doc(email).set(data, {merge: true});
   await db.collection('users').doc(email).set({profile_created: true}, {merge: true});
 });
 
 const inviteMember = functions.https.onCall(async (data:any, context:CallableContext) => {
-  if(!await AuthService.checkPrivileged(context, data.email)) throw AuthService.exceptions.NotAuthorizedException
+  logger.logFunctionInvocation(context, data);
+
+  if(!await AuthService.checkPrivileged(context)) throw AuthService.exceptions.NotAuthorizedException
 
   await db.collection('users').doc(data.email).set({
     role: ["member"]
@@ -69,12 +76,16 @@ const inviteMember = functions.https.onCall(async (data:any, context:CallableCon
 });
 
 const changeCurrentStatus = functions.https.onCall(async (data:any, context:CallableContext) => {
+  logger.logFunctionInvocation(context, data);
+
   if(!await AuthService.canSuperEdit(context, data.email)) throw AuthService.exceptions.NotAuthorizedException
   const email = data.email;
   await db.collection('members').doc(email).set(data, {merge: true});
 });
 
 const editProfileField = functions.https.onCall(async (data:any, context:CallableContext) => {
+  logger.logFunctionInvocation(context, data);
+
   if(!await AuthService.canEdit(context, data.email)) throw AuthService.exceptions.NotAuthorizedException
   const privilegedEdits = ["expa_id", "email", "entity", "tags", "current_status"];
   if (privilegedEdits.includes(data.editField)) {
@@ -82,11 +93,12 @@ const editProfileField = functions.https.onCall(async (data:any, context:Callabl
   }
 
   const edits = createNestedObject(data.editField.split("."), data.newValue);
-  console.log("edits", edits);
   await db.collection('members').doc(data.email).set(edits, {merge: true});
 });
 
 const getMembers = functions.https.onCall(async (data:any, context:CallableContext) => {
+  logger.logFunctionInvocation(context, data);
+
   if(!await AuthService.checkPrivileged(context)) throw AuthService.exceptions.NotAuthorizedException
 
   let members;
@@ -210,7 +222,6 @@ function createNestedObject(names: string[], value: string ) {
   for( var i = 0; i < names.length; i++ ) {
     // @ts-ignore
     base = base[ names[i] ] = base[ names[i] ] || {};
-    console.log(base);
   }
 
   // If a value was given, set it to the last name:

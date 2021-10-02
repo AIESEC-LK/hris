@@ -12,11 +12,11 @@ const bucket = 'gs://hris-firestore-exports';
 exports.scheduledFirestoreExport = functions.pubsub
   .schedule('every 24 hours')
   .onRun(async (context:EventContext) => {
-    console.log(await backup());
+    await backup();
   });
 
 exports.backup = functions.https.onRequest(async (req:Request, res:Response) => {
-  console.log(await backup())
+  await backup();
 });
 
 

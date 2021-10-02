@@ -26,6 +26,7 @@ export interface Member {
   current_status: CurrentStatus,
   tags: string[],
   faculty: string,
+  field_of_study: string
   attachments: Attachment[],
 }
 
