@@ -6,6 +6,7 @@ import {InitializeComponent} from "./profile/initialize/initialize.component";
 import {InviteMemberComponent} from "./member/invite-member/invite-member.component";
 import {ListMembersComponent} from "./member/list-members/list-members.component";
 import {ImportMembersComponent} from "./member/import-members/import-members.component";
+import {OpportunityCreateComponent} from "./opportunity/opportunity-create/opportunity-create.component";
 
 const routes: Routes = [
   { path: '', component: ProfileComponent },
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: 'invite', component: InviteMemberComponent   },
   { path: 'members', component: ListMembersComponent   },
   { path: 'members/import', component: ImportMembersComponent   },
+  { path: 'opportunities/create', component: OpportunityCreateComponent   },
 
 
 ];

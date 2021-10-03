@@ -5,9 +5,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {LoadingComponent} from "../dialogs/loading/loading.component";
 import {Router} from "@angular/router";
 import {AuthService} from "../auth/auth.service";
-import {EditProfileComponent} from "../dialogs/edit-profile/edit-profile.component";
 import {AngularFireStorage} from "@angular/fire/compat/storage";
-import {environment} from "../../environments/environment";
 
 export interface Member {
   name: string,

@@ -87,6 +87,10 @@ async function getEntity(context: CallableContext) {
   return (await db.collection('members').doc(context.auth?.token.email!).get()).data().entity;
 }
 
+function getEmail(context: CallableContext): string {
+  return context.auth?.token.email!;
+}
+
 module.exports = {
   canView: canView,
   canEdit: canEdit,
@@ -96,6 +100,7 @@ module.exports = {
   checkLoggedIn: checkLoggedIn,
   isAdmin: isAdmin,
   getEntity: getEntity,
+  getEmail: getEmail,
   exceptions : {
     NotLoggedInException: NotLoggedInException,
     NotAuthorizedException: NotAuthorizedException
