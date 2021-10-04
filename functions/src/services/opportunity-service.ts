@@ -17,6 +17,22 @@ async function canView(context: CallableContext, id: string): Promise<boolean> {
   return false;
 }
 
+async function canEdit(context: CallableContext, id: string): Promise<boolean> {
+  const currentUserRoles: string[] = await AuthService.getCurrentUserRoles(context);
+
+  // if current user is an admin, obviously can see all.
+  if (currentUserRoles.includes("admin")) return true;
+
+  // Current user must be EB or above and from the same entity.
+  if (!currentUserRoles.includes("eb")) return false;
+  const targetEntity = (await db.collection('opportunities').doc(id).get()).data().entity;
+  if (await AuthService.getCurrentUserEntity(context) == targetEntity) return true;
+
+  return false;
+}
+
+
 module.exports = {
   canView: canView,
+  canEdit: canEdit
 }

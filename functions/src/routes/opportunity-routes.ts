@@ -33,12 +33,13 @@ const createOpportunity = functions.https.onCall(async (data:Opportunity, contex
 
   await db.collection('opportunities').doc(unique_id).set(
     {
+      ...data,
       entity: await AuthService.getEntity(context),
       created_by: await AuthService.getEmail(context),
       created_at: logger.getSLTimestamp(),
       last_modified_by: await AuthService.getEmail(context),
       last_modified_at: logger.getSLTimestamp(),
-      ...data
+      id: unique_id
     }, {merge: true});
 
   return unique_id;
@@ -69,6 +70,23 @@ const getOpportunity = functions.https.onCall(async (data:any, context:CallableC
   };
 });
 
+const editOpportunity = functions.https.onCall(async (data:Opportunity, context:CallableContext) => {
+  logger.logFunctionInvocation(context, data);
+  if(!await OpportunityService.canEdit(context, data.id)) throw AuthService.exceptions.NotAuthorizedException
+
+  console.log(data);
+  if (!await checkOpportunityExists(data.id)) throw OpportunityDoesNotExistException;
+
+  await db.collection('opportunities').doc(data.id).set(
+    {
+      ...data,
+      last_modified_by: await AuthService.getEmail(context),
+      last_modified_at: logger.getSLTimestamp(),
+    }, {merge: true});
+
+  return data.id;
+});
+
 
 function makeUrlFriendly(value: string) {
   return value == undefined ? '' : value.replace(/[^a-z0-9_]+/gi, '-').replace(/^-|-$/g, '').toLowerCase();
@@ -82,5 +100,6 @@ async function checkOpportunityExists(id: string): Promise<boolean> {
 
 module.exports = {
   createOpportunity: createOpportunity,
-  getOpportunity: getOpportunity
+  getOpportunity: getOpportunity,
+  editOpportunity: editOpportunity
 }

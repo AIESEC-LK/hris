@@ -28,7 +28,7 @@
           </button>
         </a>
 
-        <a routerLink="/opportunities/edit/{{opportunity.id}}">
+        <a routerLink="/opportunities/edit/{{opportunity.id}}" *ngIf="authService.isEBOrAbove()">
           <button mat-flat-button color="primary">
             EDIT
           </button>

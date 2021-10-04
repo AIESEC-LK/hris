@@ -10,7 +10,7 @@ import {AngularFireStorage} from "@angular/fire/compat/storage";
 export interface Opportunity {
   id: string,
   title: string,
-  photo: string,
+  photo?: string,
   description: string,
   link: string,
   deadline: string
@@ -33,9 +33,10 @@ export class OpportunityService {
     return await getOpportunity({id: id}).toPromise();
   }
 
-  public async editOpportunity(id: string) {
-    const getOpportunity = this.functions.httpsCallable('opportunity-getOpportunity');
-    return await getOpportunity({id: id}).toPromise();
+  public async editOpportunity(data: Opportunity) {
+    if (!data.photo) delete data.photo;
+    const editOpportunity = this.functions.httpsCallable('opportunity-editOpportunity');
+    return await editOpportunity(data).toPromise();
   }
 
 }

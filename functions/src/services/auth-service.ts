@@ -95,6 +95,7 @@ module.exports = {
   canEdit: canEdit,
   canSuperEdit: canSuperEdit,
   getCurrentUserRoles: getCurrentUserRoles,
+  getCurrentUserEntity: getCurrentUserEntity,
   checkPrivileged: checkPrivileged,
   checkLoggedIn: checkLoggedIn,
   isAdmin: isAdmin,
