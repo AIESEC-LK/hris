@@ -63,16 +63,24 @@ const inviteMember = functions.https.onCall(async (data:any, context:CallableCon
 
   if(!await AuthService.checkPrivileged(context)) throw AuthService.exceptions.NotAuthorizedException
 
-  await db.collection('users').doc(data.email).set({
-    role: ["member"]
-  }, {merge: true});
+  const entity = (await getMemberExpaInfo(data.email, data.expa_id)).entity;
+  const userEntity = await AuthService.getCurrentUserEntity(context);
+  console.log(entity, userEntity);
+  if (!(await AuthService.getCurrentUserRoles(context)).includes("admin") && entity != userEntity)
+    throw AuthService.exceptions.NotAuthorizedException
 
-  await db.collection('members').doc(data.email).set({
-    current_status: "ACTIVE",
-    ...data
-  }, {merge: true});
+  const docRef = await db.collection("users").doc(data.email).get();
+  if (docRef.exists) {
+    await db.collection('users').doc(data.email).set({
+      entity: entity
+    }, {merge: true});
+  } else {
+    await db.collection('users').doc(data.email).set({
+      entity: entity,
+      role: ["member"]
+    }, {merge: true});
 
-  await getMemberExpaInfo(data.email, data.expa_id);
+  }
 });
 
 const changeCurrentStatus = functions.https.onCall(async (data:any, context:CallableContext) => {
