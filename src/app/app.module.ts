@@ -42,7 +42,9 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { AddPositionDialogComponent } from './dialogs/add-position-dialog/add-position-dialog.component';
 import {MatDatepickerModule, MatDateRangeInput} from "@angular/material/datepicker";
 import {MatNativeDateModule} from "@angular/material/core";
-
+import { OpportunityCreateComponent } from './opportunity/opportunity-create/opportunity-create.component';
+import { EditorModule } from "@tinymce/tinymce-angular";
+import { ViewOpportunityComponent } from './opportunity/view-opportunity/view-opportunity.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +60,9 @@ import {MatNativeDateModule} from "@angular/material/core";
     StringInputDialogComponent,
     TwoStringInputDialogComponent,
     ImportMembersComponent,
-    AddPositionDialogComponent
+    AddPositionDialogComponent,
+    OpportunityCreateComponent,
+    ViewOpportunityComponent,
   ],
   imports: [
     BrowserModule,
@@ -85,6 +89,7 @@ import {MatNativeDateModule} from "@angular/material/core";
     MatProgressBarModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    EditorModule
   ],
   providers: [
     { provide: AUTH_SETTINGS, useValue: { appVerificationDisabledForTesting: true } },

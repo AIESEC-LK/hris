@@ -29,5 +29,6 @@ function getSLTimestamp(): string {
 }
 
 module.exports = {
-  logFunctionInvocation: logFunctionInvocation
+  logFunctionInvocation: logFunctionInvocation,
+  getSLTimestamp: getSLTimestamp
 }

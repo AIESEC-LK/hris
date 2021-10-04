@@ -8,4 +8,6 @@ admin.initializeApp({
 
 exports.member = require("./routes/member-routes");
 exports.auth = require("./routes/auth-routes");
+exports.opportunity = require("./routes/opportunity-routes");
+
 exports.data = require("./data/data");

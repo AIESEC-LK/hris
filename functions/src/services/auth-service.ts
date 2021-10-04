@@ -12,7 +12,6 @@ const NotAuthorizedException = new HttpsError('unauthenticated', "Not authorized
 
 async function canView(context: CallableContext, email: string): Promise<boolean> {
   const currentUserRoles: string[] = await module.exports.getCurrentUserRoles(context);
-  console.log("currentUserRoles", currentUserRoles);
 
   // if current user ia admin, obviously can see all.
   if (currentUserRoles.includes("admin")) return true;
@@ -87,15 +86,21 @@ async function getEntity(context: CallableContext) {
   return (await db.collection('members').doc(context.auth?.token.email!).get()).data().entity;
 }
 
+function getEmail(context: CallableContext): string {
+  return context.auth?.token.email!;
+}
+
 module.exports = {
   canView: canView,
   canEdit: canEdit,
   canSuperEdit: canSuperEdit,
   getCurrentUserRoles: getCurrentUserRoles,
+  getCurrentUserEntity: getCurrentUserEntity,
   checkPrivileged: checkPrivileged,
   checkLoggedIn: checkLoggedIn,
   isAdmin: isAdmin,
   getEntity: getEntity,
+  getEmail: getEmail,
   exceptions : {
     NotLoggedInException: NotLoggedInException,
     NotAuthorizedException: NotAuthorizedException
