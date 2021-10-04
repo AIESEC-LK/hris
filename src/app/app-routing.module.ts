@@ -7,6 +7,7 @@ import {InviteMemberComponent} from "./member/invite-member/invite-member.compon
 import {ListMembersComponent} from "./member/list-members/list-members.component";
 import {ImportMembersComponent} from "./member/import-members/import-members.component";
 import {OpportunityCreateComponent} from "./opportunity/opportunity-create/opportunity-create.component";
+import {ViewOpportunityComponent} from "./opportunity/view-opportunity/view-opportunity.component";
 
 const routes: Routes = [
   { path: '', component: ProfileComponent },
@@ -18,8 +19,8 @@ const routes: Routes = [
   { path: 'members', component: ListMembersComponent   },
   { path: 'members/import', component: ImportMembersComponent   },
   { path: 'opportunities/create', component: OpportunityCreateComponent   },
-
-
+  { path: 'opportunities/:id', component: ViewOpportunityComponent   },
+  { path: 'opportunities/edit/:id', component: OpportunityCreateComponent   },
 ];
 
 @NgModule({

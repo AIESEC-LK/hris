@@ -8,6 +8,7 @@ import {AuthService} from "../auth/auth.service";
 import {AngularFireStorage} from "@angular/fire/compat/storage";
 
 export interface Opportunity {
+  id: string,
   title: string,
   photo: string,
   description: string,
@@ -25,6 +26,16 @@ export class OpportunityService {
   public async createOpportunity(data: Opportunity) {
     const createOpportunity = this.functions.httpsCallable('opportunity-createOpportunity');
     return await createOpportunity(data).toPromise();
+  }
+
+  public async getOpportunity(id: string) {
+    const getOpportunity = this.functions.httpsCallable('opportunity-getOpportunity');
+    return await getOpportunity({id: id}).toPromise();
+  }
+
+  public async editOpportunity(id: string) {
+    const getOpportunity = this.functions.httpsCallable('opportunity-getOpportunity');
+    return await getOpportunity({id: id}).toPromise();
   }
 
 }

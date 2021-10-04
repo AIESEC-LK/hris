@@ -12,7 +12,6 @@ const NotAuthorizedException = new HttpsError('unauthenticated', "Not authorized
 
 async function canView(context: CallableContext, email: string): Promise<boolean> {
   const currentUserRoles: string[] = await module.exports.getCurrentUserRoles(context);
-  console.log("currentUserRoles", currentUserRoles);
 
   // if current user ia admin, obviously can see all.
   if (currentUserRoles.includes("admin")) return true;

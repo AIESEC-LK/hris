@@ -44,6 +44,7 @@ import {MatDatepickerModule, MatDateRangeInput} from "@angular/material/datepick
 import {MatNativeDateModule} from "@angular/material/core";
 import { OpportunityCreateComponent } from './opportunity/opportunity-create/opportunity-create.component';
 import { EditorModule } from "@tinymce/tinymce-angular";
+import { ViewOpportunityComponent } from './opportunity/view-opportunity/view-opportunity.component';
 
 @NgModule({
   declarations: [
@@ -61,6 +62,7 @@ import { EditorModule } from "@tinymce/tinymce-angular";
     ImportMembersComponent,
     AddPositionDialogComponent,
     OpportunityCreateComponent,
+    ViewOpportunityComponent,
   ],
   imports: [
     BrowserModule,
