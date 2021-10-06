@@ -62,3 +62,7 @@
 #menu .material-icons {
   font-size:30px;
 }
+
+.active {
+  color:white !important;
+}
