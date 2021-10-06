@@ -37,7 +37,7 @@ export class ListMembersComponent implements OnInit {
   };
 
 
-  constructor(public memberService: MemberService, private authService: AuthService) { }
+  constructor(public memberService: MemberService, public authService: AuthService) { }
 
   async ngOnInit() {
     if (!await this.authService.isLoggedIn()) await this.authService.login();

@@ -83,7 +83,7 @@ async function isAdmin(context: CallableContext) {
 }
 
 async function getEntity(context: CallableContext) {
-  return (await db.collection('members').doc(context.auth?.token.email!).get()).data().entity;
+  return (await db.collection('users').doc(context.auth?.token.email!).get()).data().entity;
 }
 
 function getEmail(context: CallableContext): string {

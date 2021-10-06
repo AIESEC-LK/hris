@@ -1,0 +1,28 @@
+<div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="20px">
+
+  <div class="control-bar mat-card" style="padding:20px;" fxLayoutGap="20px" fxLayout="row"
+       fxLayoutAlign="space-between center" *ngIf="authService.isEBOrAbove()">
+    <div class="mat-card-title">Opportunities Admin Panel</div>
+
+    <button mat-flat-button color="primary" [routerLink]="['/opportunities/create']">
+      CREATE NEW OPPORTUNITY
+    </button>
+  </div>
+
+  <mat-spinner *ngIf="!opportunities"></mat-spinner>
+
+  <div fxLayout="row" fxLayoutGap="50px" *ngIf="opportunities">
+
+    <div *ngFor="let opportunity of opportunities"
+         style="width:370px; height:200px;" [routerLink]="['/opportunities/'+opportunity.id]">
+      <div class="mat-card opportunity" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px"
+           style="padding:20px; max-width:600px; padding:50px; background-image:url('{{opportunity.photo}}')">
+        <div class="mat-card-title" style="padding-bottom:40px;">{{opportunity.title}}</div>
+        <div>AIESEC in {{opportunity.entity}}</div>
+        <div style="font-size:10px;">Deadline: {{opportunity.deadline}}</div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
