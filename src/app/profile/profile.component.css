@@ -62,4 +62,13 @@ a :hover {
   color:black;
 }
 
+.profile_photo {
+  width:200px;
+}
+
+@media only screen and (max-width: 960px) {
+  .profile_photo {
+    width:100%;
+  }
+}
 
