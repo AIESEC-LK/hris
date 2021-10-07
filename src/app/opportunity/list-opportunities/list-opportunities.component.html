@@ -1,7 +1,10 @@
 <div fxLayout="column" fxLayoutGap="20px">
 
-  <div class="control-bar mat-card" style="padding:20px;" fxLayoutGap="20px" fxLayout="row"
-       fxLayoutAlign="space-between center" *ngIf="authService.isEBOrAbove()">
+  <div class="control-bar mat-card" style="padding:20px;" fxLayoutGap="20px"
+       fxLayout="row" fxLayout.lt-md="column"
+       fxLayoutAlign="space-between center"
+       fxLayoutAlign.lt-md="center center"
+       *ngIf="authService.isEBOrAbove()">
     <div class="mat-card-title">Opportunities Admin Panel</div>
 
     <button mat-flat-button color="primary" [routerLink]="['/opportunities/create']">
@@ -13,12 +16,13 @@
     <mat-spinner *ngIf="!opportunities && loading"></mat-spinner>
   </div>
 
-  <div fxLayout="row wrap" fxLayoutGap="50px grid" *ngIf="opportunities" fxLayoutAlign="center center">
+  <div fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutGap="50px grid" fxLayoutGap.lt-md="0px"
+       *ngIf="opportunities" fxLayoutAlign="center center">
 
-    <div *ngFor="let opportunity of opportunities"
-         style="width:370px; height:200px;" [routerLink]="['/opportunities/'+opportunity.id]">
+    <div *ngFor="let opportunity of opportunities" class="opportunity_x"
+        [routerLink]="['/opportunities/'+opportunity.id]">
       <div class="mat-card opportunity" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px"
-           style="padding:20px; max-width:600px; padding:50px; background-image:url('{{opportunity.photo}}')">
+           style="background-image:url('{{opportunity.photo}}')">
         <div class="mat-card-title" style="padding-bottom:40px; color:white;">{{opportunity.title}}</div>
         <div>AIESEC in {{opportunity.entity}}</div>
         <div style="font-size:10px;">Deadline: {{opportunity.deadline}}</div>

@@ -5,8 +5,8 @@
   background-position: center center;
   box-shadow:inset 0 0 0 2000px rgba(0, 0, 0, 0.6);
   transition: all 0.3s;
-
   text-shadow: 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black;
+  padding:50px;
 }
 
 .opportunity:hover {
@@ -17,4 +17,19 @@
 
 .mat-card {
   border:none;
+}
+
+.opportunity_x {
+  width:370px;
+  height:200px;
+}
+
+@media only screen and (max-width: 960px) {
+  .opportunity_x {
+    width:100%;
+  }
+
+  .opportunity {
+    padding:20px;
+  }
 }
