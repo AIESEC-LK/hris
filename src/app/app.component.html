@@ -15,9 +15,12 @@
   <div fxLayout="row" fxLayoutAlign="stretch stretch">
     <div id="menu" fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="20px">
       <img alt="AIESEC man" src="assets/images/monophy.gif"/>
-      <mat-icon *ngIf="authService.logged" [routerLink]="['/profile']">face</mat-icon>
-      <mat-icon *ngIf="authService.logged && authService.isEBOrAbove()" [routerLink]="['/members']">people</mat-icon>
-      <mat-icon *ngIf="authService.logged && authService.isEBOrAbove()" [routerLink]="['/members/import']">file_upload</mat-icon>
+      <mat-icon *ngIf="authService.logged" [routerLink]="['/profile']"
+                [class.active] = "isActive('profile')">face</mat-icon>
+      <mat-icon *ngIf="authService.logged && authService.isEBOrAbove()" [routerLink]="['/members']"
+                [class.active] = "isActive('members')">people</mat-icon>
+      <mat-icon *ngIf="authService.logged && authService.isEBOrAbove()" [routerLink]="['/opportunities']"
+                [class.active] = "isActive('opportunities')">stars</mat-icon>
     </div>
 
     <div id="content" fxLayout="column" fxLayoutAlign="start center" fxFlex>

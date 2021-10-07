@@ -45,6 +45,7 @@ import {MatNativeDateModule} from "@angular/material/core";
 import { OpportunityCreateComponent } from './opportunity/opportunity-create/opportunity-create.component';
 import { EditorModule } from "@tinymce/tinymce-angular";
 import { ViewOpportunityComponent } from './opportunity/view-opportunity/view-opportunity.component';
+import { ListOpportunitiesComponent } from './opportunity/list-opportunities/list-opportunities.component';
 
 @NgModule({
   declarations: [
@@ -63,6 +64,7 @@ import { ViewOpportunityComponent } from './opportunity/view-opportunity/view-op
     AddPositionDialogComponent,
     OpportunityCreateComponent,
     ViewOpportunityComponent,
+    ListOpportunitiesComponent,
   ],
   imports: [
     BrowserModule,

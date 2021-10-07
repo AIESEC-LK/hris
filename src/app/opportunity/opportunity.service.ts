@@ -14,6 +14,7 @@ export interface Opportunity {
   description: string,
   link: string,
   deadline: string
+  entity: string
 }
 
 @Injectable({
@@ -37,6 +38,11 @@ export class OpportunityService {
     if (!data.photo) delete data.photo;
     const editOpportunity = this.functions.httpsCallable('opportunity-editOpportunity');
     return await editOpportunity(data).toPromise();
+  }
+
+  public async getOpportunities() {
+    const getOpportunities = this.functions.httpsCallable('opportunity-getOpportunities');
+    return await getOpportunities({}).toPromise();
   }
 
 }
