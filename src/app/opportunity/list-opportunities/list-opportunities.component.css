@@ -3,12 +3,14 @@
   background-size:     cover;                      /* <------ */
   background-repeat:   no-repeat;
   background-position: center center;
-  box-shadow:inset 0 0 0 2000px rgba(0, 0, 0, 0.7);
+  box-shadow:inset 0 0 0 2000px rgba(0, 0, 0, 0.6);
   transition: all 0.3s;
+
+  text-shadow: 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black;
 }
 
 .opportunity:hover {
-  box-shadow:inset 0 0 0 2000px rgba(0, 0, 0, 0.6);
+  box-shadow:inset 0 0 0 2000px rgba(0, 0, 0, 0.7);
   cursor:pointer;
   background-size:120%;
 }

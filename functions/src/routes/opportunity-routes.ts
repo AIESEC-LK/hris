@@ -61,7 +61,6 @@ const getOpportunity = functions.https.onCall(async (data:any, context:CallableC
 });
 
 const getOpportunities = functions.https.onCall(async (data:any, context:CallableContext) => {
-  await new Promise(r => setTimeout(r, 2000));
   logger.logFunctionInvocation(context, data);
   await AuthService.checkLoggedIn(context);
 
@@ -77,7 +76,7 @@ const getOpportunities = functions.https.onCall(async (data:any, context:Callabl
   let result: Opportunity[] = [];
   const querySnapshot = await opportunities.get()
   querySnapshot.forEach((doc: any) => {
-    result.push(doc.data());
+    //result.push(doc.data());
   });
 
   for (let i = 0; i < result.length; i++) {

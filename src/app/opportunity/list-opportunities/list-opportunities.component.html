@@ -1,4 +1,4 @@
-<div fxLayout="column" fxLayoutAlign="stretch stretch" fxLayoutGap="20px">
+<div fxLayout="column" fxLayoutGap="20px">
 
   <div class="control-bar mat-card" style="padding:20px;" fxLayoutGap="20px" fxLayout="row"
        fxLayoutAlign="space-between center" *ngIf="authService.isEBOrAbove()">
@@ -10,10 +10,10 @@
   </div>
 
   <div fxLayoutAlign="center center">
-    <mat-spinner *ngIf="!opportunities"></mat-spinner>
+    <mat-spinner *ngIf="!opportunities && loading"></mat-spinner>
   </div>
 
-  <div fxLayout="row" fxLayoutGap="50px" *ngIf="opportunities">
+  <div fxLayout="row wrap" fxLayoutGap="50px grid" *ngIf="opportunities" fxLayoutAlign="center center">
 
     <div *ngFor="let opportunity of opportunities"
          style="width:370px; height:200px;" [routerLink]="['/opportunities/'+opportunity.id]">
