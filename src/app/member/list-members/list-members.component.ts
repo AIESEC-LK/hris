@@ -62,7 +62,10 @@ export class ListMembersComponent implements OnInit {
     if (this.authService.isAdmin()) this.selectedColumns.push('entity');
     this.selectedColumns.push("expa_id");
     this.selectedColumns.push("profile");
+
+    if (window.innerWidth < 960) this.selectedColumns = ['name', 'profile'];
   }
+
 
   public doFilter() {
     this.dataSource.data = this.members;
