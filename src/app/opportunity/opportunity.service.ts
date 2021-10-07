@@ -42,7 +42,14 @@ export class OpportunityService {
 
   public async getOpportunities() {
     const getOpportunities = this.functions.httpsCallable('opportunity-getOpportunities');
-    return await getOpportunities({}).toPromise();
+    const opportunities: Opportunity[] =  await getOpportunities({}).toPromise();
+    if (opportunities.length == 0) throw {
+      message: "No opportunities available",
+      details: {
+        message: "There are no opportunities available at the moment."
+      }
+    }
+    return opportunities;
   }
 
 }

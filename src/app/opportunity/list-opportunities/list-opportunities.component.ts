@@ -13,6 +13,7 @@ import {ErrorComponent} from "../../dialogs/error/error.component";
 export class ListOpportunitiesComponent implements OnInit {
 
   opportunities? : Opportunity[];
+  loading = true;
 
   constructor(private route: ActivatedRoute, public authService:AuthService,
               public opportunityService: OpportunityService, private dialog: MatDialog) {
@@ -26,6 +27,8 @@ export class ListOpportunitiesComponent implements OnInit {
     } catch (e) {
       this.dialog.open(ErrorComponent, {data: e});
     }
+
+    this.loading = false;
   }
 
 }

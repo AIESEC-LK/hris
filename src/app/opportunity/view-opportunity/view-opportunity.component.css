@@ -2,3 +2,15 @@
   color:#888888;
   font-size:12px;
 }
+
+.opportunity_photo {
+  border-radius:5px;
+  max-width:600px;
+}
+
+@media only screen and (max-width: 960px) {
+  .opportunity_photo {
+    width:100%;
+  }
+
+}

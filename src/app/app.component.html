@@ -17,9 +17,9 @@
       <img alt="AIESEC man" src="assets/images/monophy.gif"/>
       <mat-icon *ngIf="authService.logged" [routerLink]="['/profile']"
                 [class.active] = "isActive('profile')">face</mat-icon>
-      <mat-icon *ngIf="authService.logged && authService.isEBOrAbove()" [routerLink]="['/members']"
+      <mat-icon *ngIf="authService.logged" [routerLink]="['/members']"
                 [class.active] = "isActive('members')">people</mat-icon>
-      <mat-icon *ngIf="authService.logged && authService.isEBOrAbove()" [routerLink]="['/opportunities']"
+      <mat-icon *ngIf="authService.logged" [routerLink]="['/opportunities']"
                 [class.active] = "isActive('opportunities')">stars</mat-icon>
     </div>
 

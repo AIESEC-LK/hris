@@ -3,7 +3,7 @@
 <div fxLayout="column" fxLayoutGap="20px" fxLayoutAlign="stretch stretch">
 
   <div fxLayout="column" fxLayoutGap="20px" fxLayoutAlign="stretch stretch" style="padding:0; border:none;" *ngIf="opportunity">
-    <img src="{{opportunity.photo}}" style="border-radius:5px; max-width:600px;"/>
+    <img class="opportunity_photo" src="{{opportunity.photo}}"/>
   </div>
 
   <div class="mat-card" fxLayout="column" fxLayoutGap="10px" style="padding:20px; max-width:600px;" *ngIf="opportunity">
@@ -15,13 +15,14 @@
 
     <div fxFlex="100"></div>
 
-    <div fxLayout="row" fxLayoutAlign="space-between center">
+    <div fxLayout="row" fxLayoutAlign="space-between center" fxLayout.lt-md="column"
+         fxLayoutAlign.lt-md="stretch stretch" fxLayoutGap="20px">
       <div fxlayout="row" fxLayoutGap="20px">
         <div class="item_name">Application deadline</div>
         <div>{{opportunity.deadline}}</div>
       </div>
 
-      <div fxLayout="row" fxLayoutGap="20px">
+      <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="center center">
         <a href="{{opportunity.link}}" target="_blank">
           <button mat-flat-button color="primary">
             APPLY

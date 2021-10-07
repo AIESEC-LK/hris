@@ -61,7 +61,6 @@ const getOpportunity = functions.https.onCall(async (data:any, context:CallableC
 });
 
 const getOpportunities = functions.https.onCall(async (data:any, context:CallableContext) => {
-  await new Promise(r => setTimeout(r, 2000));
   logger.logFunctionInvocation(context, data);
   await AuthService.checkLoggedIn(context);
 
