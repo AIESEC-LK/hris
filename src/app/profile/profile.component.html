@@ -38,17 +38,17 @@
 
       <div class="mat-card-title" style="font-size:18px;">Education</div>
 
-      <div fxlayout="row" fxLayoutGap="20px">
+      <div fxlayout="row" fxLayoutGap="20px" *ngIf="member.faculty || memberService.canEdit(member)">
         <div class="item_name">Faculty</div>
         <div>{{member.faculty}}
           <mat-icon *ngIf="authService.isEBOrAbove()" (click)="edit('faculty')">edit</mat-icon>
         </div>
       </div>
 
-      <div fxlayout="row" fxLayoutGap="20px">
+      <div fxlayout="row" fxLayoutGap="20px" *ngIf="member.field_of_study || memberService.canEdit(member)">
         <div class="item_name">Field of Study</div>
         <div>{{member.field_of_study}}
-          <mat-icon *ngIf="authService.isEBOrAbove()" (click)="edit('field_of_study')">edit</mat-icon>
+          <mat-icon *ngIf="memberService.canEdit(member)" (click)="edit('field_of_study')">edit</mat-icon>
         </div>
       </div>
 
@@ -72,7 +72,7 @@
       </div>
     </div>
 
-    <div fxlayout="row" fxLayoutGap="20px">
+    <div fxlayout="row" fxLayoutGap="20px" *ngIf="member.joined_date || memberService.canEdit(member)">
       <div class="item_name">Joined Date</div>
       <div>{{member.joined_date}}
         <mat-icon *ngIf="memberService.canEdit(member)" (click)="edit('joined_date')">edit</mat-icon>
@@ -85,14 +85,14 @@
       <div>{{member.email}}</div>
     </div>
 
-    <div fxlayout="row" fxLayoutGap="20px">
+    <div fxlayout="row" fxLayoutGap="20px" *ngIf="member.phone || memberService.canEdit(member)">
       <div class="item_name">Contact No.</div>
       <div>{{member.phone}}
         <mat-icon *ngIf="memberService.canEdit(member)" (click)="edit('phone')">edit</mat-icon>
       </div>
     </div>
 
-    <div fxlayout="row" fxLayoutGap="20px">
+    <div fxlayout="row" fxLayoutGap="20px" *ngIf="member.dob || memberService.canEdit(member)">
       <div class="item_name">Date of Birth</div>
       <div>{{member.dob}}
         <mat-icon *ngIf="memberService.canEdit(member)" (click)="edit('dob')">edit</mat-icon>
@@ -106,8 +106,8 @@
 
   </div>
 
-  <div class="mat-card" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="20px" *ngIf="member"
-       style="padding:20px;">
+  <div class="mat-card" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="20px" *ngIf="member && memberService.getPositions(member)"
+       style="padding:20px;" >
 
     <div class="mat-card-title" style="font-size:18px">Positions</div>
 
@@ -174,7 +174,7 @@
     </div>
 
 
-    <div class="mat-card-title" style="font-size:18px">Attachments</div>
+    <div class="mat-card-title" style="font-size:18px" *ngIf="member.cv || member.attachments">Attachments</div>
 
     <div fxLayout="column" fxLayoutGap="10px" style="padding-bottom:10px !important;">
 
@@ -204,7 +204,7 @@
 
 
 
-    <div class="mat-card-title" style="font-size:18px">Tags</div>
+    <div class="mat-card-title" style="font-size:18px" *ngIf="member.tags">Tags</div>
 
     <div fxlayout="row" fxLayoutGap="20px">
 

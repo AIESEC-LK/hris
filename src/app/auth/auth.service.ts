@@ -56,7 +56,7 @@ export class AuthService {
     this.logged = user != null;
 
     if (this.logged) {
-      await this.completeLogin();
+      //await this.completeLogin();
       const tokenResult = await user.getIdTokenResult(true);
       this.role = tokenResult.claims['role'];
       this.email = user.email!;

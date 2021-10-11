@@ -36,8 +36,11 @@ export class ProfileComponent implements OnInit {
     this.email = <string>this.route.snapshot.paramMap.get("email");
 
     try {
-      this.member = await this.memberService.getMemberInformation(this.email!);
+      this.member = await this.memberService.getMemberInformation(this.email!, false);
       console.log(this.member);
+
+      // fetch a second time with refresh
+      this.member = await this.memberService.getMemberInformation(this.email!, true);
     } catch (e) {
       this.dialog.open(ErrorComponent, {data: e});
     }
