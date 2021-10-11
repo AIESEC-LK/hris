@@ -11,6 +11,9 @@ const NotAuthorizedException = new HttpsError('unauthenticated', "Not authorized
   {message: "You are not authorized to access this page."})
 
 async function canView(context: CallableContext, email: string): Promise<boolean> {
+  return true;
+
+  /*
   const currentUserRoles: string[] = await module.exports.getCurrentUserRoles(context);
 
   // if current user ia admin, obviously can see all.
@@ -25,10 +28,24 @@ async function canView(context: CallableContext, email: string): Promise<boolean
   if (getCurrentUserEmail(context) == email) return true;
 
   return false;
+   */
 }
 
 async function canEdit(context: CallableContext, email: string): Promise<boolean> {
-  return module.exports.canView(context, email);
+  const currentUserRoles: string[] = await module.exports.getCurrentUserRoles(context);
+
+  // if current user ia admin, obviously can see all.
+  if (currentUserRoles.includes("admin")) return true;
+
+  // If current user is EB, must be from the same entity.
+  if (currentUserRoles.includes("eb")) {
+    const targetEntity = (await db.collection('members').doc(email).get()).data().entity;
+    if (await getCurrentUserEntity(context) == targetEntity) return true;
+  }
+
+  if (getCurrentUserEmail(context) == email) return true;
+
+  return false;
 }
 
 async function canSuperEdit(context: CallableContext, email: string): Promise<boolean> {

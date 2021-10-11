@@ -65,9 +65,9 @@ export class MemberService {
     //if (!environment.production) this.storage.storage.useEmulator('localhost', 9199);
   }
 
-  public async getMemberInformation(email: string): Promise<Member> {
+  public async getMemberInformation(email: string, refresh: boolean = false): Promise<Member> {
       const getMemberInformation = this.functions.httpsCallable('member-getProfileInformation');
-      return await getMemberInformation({email: email}).toPromise();
+      return await getMemberInformation({email: email, refresh: refresh}).toPromise();
   }
 
   public async addAdditionalInformation(data: {}) {
@@ -105,7 +105,7 @@ export class MemberService {
     }
   }
 
-  async canEdit(member: Member): Promise<boolean> {
+  canEdit(member: Member): boolean {
     return this.authService.isEBOrAbove() || this.authService.getEmail() == member.email;
   }
 

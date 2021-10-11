@@ -2,15 +2,16 @@
 
   <div class="control-bar mat-card" style="padding:20px;" fxLayout="row"
        fxLayout.lt-md="column" fxLayoutGap="20px"
-       fxLayoutAlign="space-between center">
+       fxLayoutAlign="space-between center" *ngIf="authService.isEBOrAbove()">
     <div class="mat-card-title">Members Admin Panel</div>
     <button mat-flat-button color="primary" [routerLink]="['/members/import']">
       IMPORT MEMBERS
     </button>
   </div>
 
-
-  <mat-spinner *ngIf="members.length == 0"></mat-spinner>
+  <div fxLayoutAlign="center center">
+    <mat-spinner *ngIf="members.length == 0"></mat-spinner>
+  </div>
 
   <div fxLayout="column" *ngIf="members.length != 0" class="control">
 

@@ -22,7 +22,25 @@ const getProfileInformation = functions.https.onCall(async (data:any, context:Ca
   const member = await db.collection('members').doc(email).get();
   if (!member.exists) throw MemberDoesNotExistException;
 
-  const expa_data = await getMemberExpaInfo(email, member.data().expa_id);
+  let expa_data
+  if (data.refresh) expa_data = await getMemberExpaInfo(email, member.data().expa_id);
+  else expa_data = {
+    positions: member.data().positions,
+    name: member.data().name,
+    gender: member.data().gender,
+    entity: member.data().entity
+  }
+
+  let sensitive_data = {};
+  if (await AuthService.canEdit(context, data.email)) sensitive_data = {
+    phone: member.data().phone,
+    dob: member.data().dob,
+    cv: member.data().cv ?
+      await admin.storage().bucket("aiesec-hris.appspot.com").file(member.data().cv).getSignedUrl(
+        { action: 'read', expires: "01-01-2500" }
+      ) : null,
+
+  }
 
   return {
     email: email,
@@ -32,20 +50,15 @@ const getProfileInformation = functions.https.onCall(async (data:any, context:Ca
         { action: 'read', expires: "01-01-2500" }
       ) :
       "https://i.pinimg.com/originals/fd/14/a4/fd14a484f8e558209f0c2a94bc36b855.png",
-    cv: member.data().cv ?
-      await admin.storage().bucket("aiesec-hris.appspot.com").file(member.data().cv).getSignedUrl(
-        { action: 'read', expires: "01-01-2500" }
-      ) : null,
     social_media: member.data().social_media,
     current_status: member.data().current_status ? member.data().current_status.toUpperCase() : "UNKNOWN",
     tags: member.data().tags,
-    dob: member.data().dob,
     faculty: member.data().faculty,
     field_of_study: member.data().field_of_study,
     joined_date: member.data().joined_date,
-    phone: member.data().phone,
     attachments: member.data().attachments,
     unofficial_positions: member.data().unofficial_positions,
+    ...sensitive_data,
     ...expa_data
   };
 });
@@ -79,8 +92,14 @@ const inviteMember = functions.https.onCall(async (data:any, context:CallableCon
       entity: entity,
       role: ["member"]
     }, {merge: true});
-
   }
+
+  await db.collection('members').doc(data.email).set({
+    email: data.email,
+    expa_id: data.expa_id,
+    current_status: "ACTIVE"
+  }, {merge: true});
+
 });
 
 const changeCurrentStatus = functions.https.onCall(async (data:any, context:CallableContext) => {
@@ -106,8 +125,7 @@ const editProfileField = functions.https.onCall(async (data:any, context:Callabl
 
 const getMembers = functions.https.onCall(async (data:any, context:CallableContext) => {
   logger.logFunctionInvocation(context, data);
-
-  if(!await AuthService.checkPrivileged(context)) throw AuthService.exceptions.NotAuthorizedException
+  //if(!await AuthService.checkPrivileged(context)) throw AuthService.exceptions.NotAuthorizedException
 
   let members;
   if (await AuthService.isAdmin(context)) members = await db.collection('members').orderBy("name", 'asc');
@@ -117,8 +135,20 @@ const getMembers = functions.https.onCall(async (data:any, context:CallableConte
 
   let result: any[] = [];
   const querySnapshot = await members.get();
+
   querySnapshot.forEach((doc: any) => {
-    result.push(doc.data());
+    const data = {
+      name: doc.data().name,
+      email: doc.data().email ? doc.data().email : doc.id,
+      current_status: doc.data().current_status,
+      positions: doc.data().positions,
+      unofficial_positions: doc.data().unofficial_positions,
+      entity: doc.data().entity,
+      expa_id: doc.data().expa_id,
+      tags: doc.data().tags,
+      faculty: doc.data().faculty,
+    }
+    result.push(data);
   })
   return result;
 });
@@ -213,6 +243,8 @@ async function getMemberExpaInfo(email: any, expa_id: any) {
     entity: queryResult.getPerson.home_lc.name,
     positions: positions
   };
+
+  console.log(expa_data);
 
   await db.collection('members').doc(email).set(expa_data, {merge: true});
   return expa_data;
