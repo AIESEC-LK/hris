@@ -273,7 +273,7 @@ function createNestedObject(names: string[], value: string ) {
 
   // Return the last object in the hierarchy:
   return obj;
-};
+}
 
 module.exports = {
   getProfileInformation: getProfileInformation,
