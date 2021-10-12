@@ -23,6 +23,9 @@ export class InitializeComponent implements OnInit {
     cv: new FormControl(null),
     cv_x: new FormControl(null),
     expa_email: new FormControl(null, [Validators.email]),
+    phone: new FormControl(null),
+    phone2: new FormControl(null),
+    address: new FormControl(null),
     facebook: new FormControl(null, [Validators.pattern(this.url_regex)]),
     instagram: new FormControl(null, [Validators.pattern(this.url_regex)]),
     linked_in: new FormControl(null, [Validators.pattern(this.url_regex)])

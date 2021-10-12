@@ -85,12 +85,23 @@
       <div>{{member.email}}</div>
     </div>
 
-    <div fxlayout="row" fxLayoutGap="20px" *ngIf="member.phone || memberService.canEdit(member)">
+    <div fxlayout="row" fxLayoutGap="20px" *ngIf="member.phone || member.phone2 || memberService.canEdit(member)">
       <div class="item_name">Contact No.</div>
-      <div>{{member.phone}}
+      <div *ngIf="member.phone">{{member.phone}}
         <mat-icon *ngIf="memberService.canEdit(member)" (click)="edit('phone')">edit</mat-icon>
       </div>
+      <div *ngIf="member.phone2">{{member.phone2}}
+        <mat-icon *ngIf="memberService.canEdit(member)" (click)="edit('phone2')">edit</mat-icon>
+      </div>
     </div>
+
+    <div fxlayout="row" fxLayoutGap="20px" *ngIf="member.address || memberService.canEdit(member)">
+      <div class="item_name">Address</div>
+      <div>{{member.address}}
+        <mat-icon *ngIf="memberService.canEdit(member)" (click)="edit('address')">edit</mat-icon>
+      </div>
+    </div>
+
 
     <div fxlayout="row" fxLayoutGap="20px" *ngIf="member.dob || memberService.canEdit(member)">
       <div class="item_name">Date of Birth</div>
