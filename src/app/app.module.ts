@@ -46,6 +46,7 @@ import { OpportunityCreateComponent } from './opportunity/opportunity-create/opp
 import { EditorModule } from "@tinymce/tinymce-angular";
 import { ViewOpportunityComponent } from './opportunity/view-opportunity/view-opportunity.component';
 import { ListOpportunitiesComponent } from './opportunity/list-opportunities/list-opportunities.component';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -91,7 +92,8 @@ import { ListOpportunitiesComponent } from './opportunity/list-opportunities/lis
     MatProgressBarModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    EditorModule
+    EditorModule,
+    MatTooltipModule
   ],
   providers: [
     { provide: AUTH_SETTINGS, useValue: { appVerificationDisabledForTesting: true } },
