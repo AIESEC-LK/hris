@@ -13,6 +13,8 @@ export interface Member {
   expa_id: number,
   entity: string,
   phone: string,
+  phone2: string,
+  address: string,
   dob: string,
   joined_date: string,
   gender: string,

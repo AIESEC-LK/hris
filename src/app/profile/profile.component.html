@@ -85,12 +85,23 @@
       <div>{{member.email}}</div>
     </div>
 
-    <div fxlayout="row" fxLayoutGap="20px" *ngIf="member.phone || memberService.canEdit(member)">
+    <div fxlayout="row" fxLayoutGap="20px" *ngIf="member.phone || member.phone2 || memberService.canEdit(member)">
       <div class="item_name">Contact No.</div>
-      <div>{{member.phone}}
+      <div *ngIf="member.phone">{{member.phone}}
         <mat-icon *ngIf="memberService.canEdit(member)" (click)="edit('phone')">edit</mat-icon>
       </div>
+      <div *ngIf="member.phone2">{{member.phone2}}
+        <mat-icon *ngIf="memberService.canEdit(member)" (click)="edit('phone2')">edit</mat-icon>
+      </div>
     </div>
+
+    <div fxlayout="row" fxLayoutGap="20px" *ngIf="member.address || memberService.canEdit(member)">
+      <div class="item_name">Address</div>
+      <div>{{member.address}}
+        <mat-icon *ngIf="memberService.canEdit(member)" (click)="edit('address')">edit</mat-icon>
+      </div>
+    </div>
+
 
     <div fxlayout="row" fxLayoutGap="20px" *ngIf="member.dob || memberService.canEdit(member)">
       <div class="item_name">Date of Birth</div>
@@ -235,7 +246,6 @@
         <img src="https://cdn3.iconfinder.com/data/icons/capsocial-round/500/facebook-512.png" width="20px"/>
       </a>
 
-
       <a *ngIf="member.social_media.instagram || memberService.canEdit(member)" href="{{member.social_media.instagram}}" target="_blank">
         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Instagram_icon.png/1024px-Instagram_icon.png" width="20px"/>
       </a>
@@ -243,6 +253,7 @@
       <a *ngIf="member.social_media.linked_in || memberService.canEdit(member)" href="{{member.social_media.linked_in}}" target="_blank">
         <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" width="20px"/>
       </a>
+
     </div>
 
     <div fxLayout="row" fxLayoutGap="20px" style="margin-top:20px; margin-bottom:20px;">

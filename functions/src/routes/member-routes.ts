@@ -34,6 +34,8 @@ const getProfileInformation = functions.https.onCall(async (data:any, context:Ca
   let sensitive_data = {};
   if (await AuthService.canEdit(context, data.email)) sensitive_data = {
     phone: member.data().phone,
+    phone2: member.data().phone2,
+    address: member.data().address,
     dob: member.data().dob,
     cv: member.data().cv ?
       await admin.storage().bucket("aiesec-hris.appspot.com").file(member.data().cv).getSignedUrl(

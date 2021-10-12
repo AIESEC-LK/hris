@@ -1,6 +1,6 @@
-<div fxLayout="column" fxlayoutalign="start center" style="min-height:100%">
+<div fxLayout="column" fxlayoutalign="start center">
 
-  <div id="header" fxLayout="row" fxLayoutAlign="space-between center">
+  <!--<div id="header" fxLayout="row" fxLayoutAlign="space-between center">
 
     <div fxLayout="row" fxLayoutAlign="start center" style="height:60px; margin-left:80px;">
       <span class="title">AIESEC Sri Lanka HRIS</span>
@@ -10,17 +10,33 @@
       <span *ngIf="!authService.logged" (click)="authService.login()">Log In</span>
       <span *ngIf="authService.logged" (click)="authService.logout()">Log Out</span>
     </div>
-  </div>
+  </div>-->
 
   <div fxLayout="row" fxLayoutAlign="stretch stretch">
-    <div id="menu" fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="20px">
-      <img alt="AIESEC man" src="assets/images/monophy.gif"/>
-      <mat-icon *ngIf="authService.logged" [routerLink]="['/profile']"
-                [class.active] = "isActive('profile')">face</mat-icon>
-      <mat-icon *ngIf="authService.logged" [routerLink]="['/members']"
-                [class.active] = "isActive('members')">people</mat-icon>
-      <mat-icon *ngIf="authService.logged" [routerLink]="['/opportunities']"
-                [class.active] = "isActive('opportunities')">stars</mat-icon>
+    <div id="menu" fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="20px">
+      <div fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="20px">
+        <img alt="AIESEC man" src="assets/images/monophy.gif"/>
+        <mat-icon *ngIf="authService.logged" [routerLink]="['/profile']"
+                  [class.active] = "isActive('profile')"
+                  matTooltip="Your profile" matTooltipPosition="after">
+          face</mat-icon>
+        <mat-icon *ngIf="authService.logged" [routerLink]="['/members']"
+                  [class.active] = "isActive('members')"
+                  matTooltip="Members" matTooltipPosition="after">
+          people</mat-icon>
+        <mat-icon *ngIf="authService.logged" [routerLink]="['/opportunities']"
+                  [class.active] = "isActive('opportunities')"
+                  matTooltip="Opportunities" matTooltipPosition="after">
+          stars</mat-icon>
+      </div>
+
+      <div fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="20px">
+        <mat-icon *ngIf="authService.logged" (click)="authService.logout()"
+                  [class.active] = "isActive('logout')"
+                  matTooltip="Log out" matTooltipPosition="after">
+          logout</mat-icon>
+      </div>
+
     </div>
 
     <div id="content" fxLayout="column" fxLayoutAlign="start center" fxFlex>
