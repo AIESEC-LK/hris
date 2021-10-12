@@ -163,7 +163,7 @@ export class MemberService {
     for (let position of this.getPositions(member)) {
       const end_date: Date = new Date(Date.parse(position.end_date));
       if (end_date < today) continue;
-      functions.push(position.function);
+      functions.push(MemberService.replaceCommonFunctionNames(position.function));
     }
 
     return [...new Set(functions)];
@@ -253,6 +253,44 @@ export class MemberService {
   public async deletePosition(member: Member, position: Position): Promise<void> {
     member.unofficial_positions = member.unofficial_positions.filter(item => item !== position);
     await this.edit(member, "unofficial_positions", member.unofficial_positions);
+  }
+
+  public static replaceCommonFunctionNames(function_name: string) {
+    let x = function_name;
+    const abbrv = {
+      "Incoming Global Volunteer": "iGV",
+      "Incoming Global Talent": "iGTa",
+      "Incoming Global Teacher": "iGTe",
+      "Incoming Global Talent/Teacher": "iGTa/e",
+      "Outgoing Global Volunteer": "oGV",
+      "Outgoing Global Talent": "oGTa",
+      "Outgoing Global Teacher": "oGTe",
+      "Outgoing Global Talent/Teacher": "oGTa/e",
+      "Business Development": "BD",
+      "Partnership Development": "PD",
+      "People Management": "PM",
+      "Talent Management": "TM",
+      "Information Management": "IM",
+      "Finance & Legal": "F&L",
+      "Finance, Legal": "FL",
+      "Expansions Development": "ED",
+      "Digital Experience": "DXP",
+      "Engage with AIESEC": "EWA",
+      "Business to Customer": "B2C",
+      "Business to Business": "B2B",
+      "Marketing": "Mkt",
+      " and ": "&",
+      "and": "&",
+      "Organizing Committee": "OC"
+    }
+
+    for (const long_form in abbrv) {
+      const regEx = new RegExp(long_form, "ig");
+      // @ts-ignore
+      const replaceMask: string = abbrv[long_form];
+      x = x.replace(regEx, replaceMask)
+    }
+    return x;
   }
 
 

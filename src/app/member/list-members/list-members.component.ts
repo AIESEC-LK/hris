@@ -125,7 +125,7 @@ export class ListMembersComponent implements OnInit {
     let functions: string[] = [];
     for (const member of this.members) {
       for (const position of this.memberService.getPositions(member)) {
-        functions.push(position.function);
+        if (position.function) functions.push(MemberService.replaceCommonFunctionNames(position.function));
       }
     }
 
