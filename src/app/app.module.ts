@@ -47,6 +47,7 @@ import { EditorModule } from "@tinymce/tinymce-angular";
 import { ViewOpportunityComponent } from './opportunity/view-opportunity/view-opportunity.component';
 import { ListOpportunitiesComponent } from './opportunity/list-opportunities/list-opportunities.component';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import { TitleComponent } from './title/title.component';
 
 @NgModule({
   declarations: [
@@ -66,6 +67,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     OpportunityCreateComponent,
     ViewOpportunityComponent,
     ListOpportunitiesComponent,
+    TitleComponent,
   ],
   imports: [
     BrowserModule,

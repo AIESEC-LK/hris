@@ -12,7 +12,7 @@
     </div>
   </div>-->
 
-  <div fxLayout="row" fxLayoutAlign="stretch stretch">
+  <div fxLayout="row" fxLayoutAlign="stretch stretch" style="z-index:999;">
     <div id="menu" fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="20px">
       <div fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="20px">
         <img alt="AIESEC man" src="assets/images/monophy.gif"/>
@@ -30,7 +30,7 @@
           stars</mat-icon>
       </div>
 
-      <div fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="20px">
+      <div fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="20px" style="padding-bottom:20px;">
         <mat-icon *ngIf="authService.logged" (click)="authService.logout()"
                   [class.active] = "isActive('logout')"
                   matTooltip="Log out" matTooltipPosition="after">

@@ -3,6 +3,8 @@ import {Member, MemberService} from "../member.service";
 import {AuthService} from "../../auth/auth.service";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatSort} from "@angular/material/sort";
+import {ErrorComponent} from "../../dialogs/error/error.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-list-members',
@@ -37,24 +39,29 @@ export class ListMembersComponent implements OnInit {
   };
 
 
-  constructor(public memberService: MemberService, public authService: AuthService) { }
+  constructor(public memberService: MemberService, public authService: AuthService, private dialog:MatDialog) { }
 
   async ngOnInit() {
     if (!await this.authService.isLoggedIn()) await this.authService.login();
 
-    this.members = await this.memberService.getMembers();
-    console.log("Members:", this.members);
+    try {
+      this.members = await this.memberService.getMembers();
+      console.log("Members:", this.members);
 
-    this.dataSource = new MatTableDataSource<Member>(this.members);
-    this.dataSource.sort = this.sort;
-    this.dataSource.connect().subscribe(d => this.renderedData = d);
-    this.getDisplayedColumns();
+      this.dataSource = new MatTableDataSource<Member>(this.members);
+      this.dataSource.sort = this.sort;
+      this.dataSource.connect().subscribe(d => this.renderedData = d);
+      this.getDisplayedColumns();
 
-    this.functions  = this.getAllFunctions().sort();
-    this.roles = this.getAllRoles().sort();
-    this.entities = this.getAllEntities().sort();
-    this.faculties = this.getAllFaculties().sort();
-    this.tags = this.getAllTags().sort();
+      this.functions  = this.getAllFunctions().sort();
+      this.roles = this.getAllRoles().sort();
+      this.entities = this.getAllEntities().sort();
+      this.faculties = this.getAllFaculties().sort();
+      this.tags = this.getAllTags().sort();
+    } catch (e) {
+      this.dialog.open(ErrorComponent, {data: e});
+    }
+
   }
 
   getDisplayedColumns(): void {

@@ -9,9 +9,10 @@ import {ImportMembersComponent} from "./member/import-members/import-members.com
 import {OpportunityCreateComponent} from "./opportunity/opportunity-create/opportunity-create.component";
 import {ViewOpportunityComponent} from "./opportunity/view-opportunity/view-opportunity.component";
 import {ListOpportunitiesComponent} from "./opportunity/list-opportunities/list-opportunities.component";
+import {TitleComponent} from "./title/title.component";
 
 const routes: Routes = [
-  { path: '', component: ProfileComponent },
+  { path: '', component: TitleComponent },
   { path: 'login', component: LoginComponent },
   { path: 'profile', component: ProfileComponent },
   { path: 'profile/initialize', component: InitializeComponent },

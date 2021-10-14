@@ -30,10 +30,11 @@ export class ProfileComponent implements OnInit {
     if (!await this.authService.isLoggedIn()) await this.authService.login();
 
     if (!this.route.snapshot.paramMap.get("email")) {
-      await this.router.navigate(["/profile/" + this.authService.getEmail()]);
-      return;
+      //await this.router.navigate(["/profile/" + this.authService.getEmail()]);
+      //return;
+      this.email = <string>this.authService.getEmail();
     }
-    this.email = <string>this.route.snapshot.paramMap.get("email");
+     else this.email = <string>this.route.snapshot.paramMap.get("email");
 
     try {
       this.member = await this.memberService.getMemberInformation(this.email!, false);
