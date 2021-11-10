@@ -5,6 +5,9 @@ const AuthService = require("../services/auth-service");
 
 
 async function canView(context: CallableContext, id: string): Promise<boolean> {
+  // Temporarily everyone can see opportunities
+  return true;
+
   const currentUserRoles: string[] = await AuthService.getCurrentUserRoles(context);
 
   // if current user is an admin, obviously can see all.
@@ -12,6 +15,8 @@ async function canView(context: CallableContext, id: string): Promise<boolean> {
 
   // Current user must be from the same entity.
   const targetEntity = (await db.collection('opportunities').doc(id).get()).data().entity;
+  const openEntites = ["Sri Lanka", "Asia Pacific", "International"];
+  if (openEntites.includes(targetEntity)) return true;
   if (await AuthService.getCurrentUserEntity(context) == targetEntity) return true;
 
   return false;

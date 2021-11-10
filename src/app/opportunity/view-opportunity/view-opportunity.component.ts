@@ -20,7 +20,8 @@ export class ViewOpportunityComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    if (!await this.authService.isLoggedIn()) await this.authService.login();
+    // Temporarily disable login check to allow non-added users
+    // if (!await this.authService.isLoggedIn()) await this.authService.login();
 
     try {
       const id = <string>this.route.snapshot.paramMap.get("id");
