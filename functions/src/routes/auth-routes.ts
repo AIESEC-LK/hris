@@ -26,7 +26,6 @@ const completeLogin = functions.https.onCall(async (data:any, context:any) => {
   }
 
   if (!userTokens.exists) throw AuthService.exceptions.NotAuthorizedException;
-  await admin.auth().setCustomUserClaims(uid, {});
   await admin.auth().setCustomUserClaims(uid, userTokens.data());
 
   return {

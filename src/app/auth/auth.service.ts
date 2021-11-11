@@ -45,7 +45,7 @@ export class AuthService {
     try {
       const logoutResult = await this.auth.signOut();
       console.log("Logout result", logoutResult);
-      await this.router.navigate(["/login"]);
+      await this.router.navigate(["/"]);
     } catch (e) {
       this.dialog.open(ErrorComponent, {data: e});
     }
@@ -61,6 +61,8 @@ export class AuthService {
       if (!tokenResult.claims['role']) {
         await this.completeLogin();
         tokenResult = await user.getIdTokenResult(true);
+      } else {
+        this.completeLogin();
       }
       this.role = tokenResult.claims['role'];
       this.email = user.email!;
@@ -69,7 +71,7 @@ export class AuthService {
   }
 
   private async completeLogin() {
-    const loading = this.dialog.open(LoadingComponent);
+    //const loading = this.dialog.open(LoadingComponent);
     try {
       const completeLogin = this.functions.httpsCallable('auth-completeLogin');
       const result = await completeLogin(null).toPromise();
@@ -83,7 +85,7 @@ export class AuthService {
     catch (e) {
       this.dialog.open(ErrorComponent, {data: e});
     } finally {
-      loading.close();
+      //loading.close();
     }
   }
 

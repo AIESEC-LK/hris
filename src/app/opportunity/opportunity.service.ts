@@ -1,11 +1,5 @@
 import { Injectable } from '@angular/core';
-import {LoadingComponent} from "../dialogs/loading/loading.component";
-import {ErrorComponent} from "../dialogs/error/error.component";
 import {AngularFireFunctions} from "@angular/fire/compat/functions";
-import {MatDialog} from "@angular/material/dialog";
-import {Router} from "@angular/router";
-import {AuthService} from "../auth/auth.service";
-import {AngularFireStorage} from "@angular/fire/compat/storage";
 
 export interface Opportunity {
   id: string,

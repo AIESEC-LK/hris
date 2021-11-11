@@ -48,6 +48,7 @@ import { ViewOpportunityComponent } from './opportunity/view-opportunity/view-op
 import { ListOpportunitiesComponent } from './opportunity/list-opportunities/list-opportunities.component';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { TitleComponent } from './title/title.component';
+import { CreateResourceComponent } from './resources/create-resource/create-resource.component';
 
 @NgModule({
   declarations: [
@@ -68,6 +69,7 @@ import { TitleComponent } from './title/title.component';
     ViewOpportunityComponent,
     ListOpportunitiesComponent,
     TitleComponent,
+    CreateResourceComponent,
   ],
   imports: [
     BrowserModule,

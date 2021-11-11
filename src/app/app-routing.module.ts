@@ -10,6 +10,7 @@ import {OpportunityCreateComponent} from "./opportunity/opportunity-create/oppor
 import {ViewOpportunityComponent} from "./opportunity/view-opportunity/view-opportunity.component";
 import {ListOpportunitiesComponent} from "./opportunity/list-opportunities/list-opportunities.component";
 import {TitleComponent} from "./title/title.component";
+import {CreateResourceComponent} from "./resources/create-resource/create-resource.component";
 
 const routes: Routes = [
   { path: '', component: TitleComponent },
@@ -23,7 +24,8 @@ const routes: Routes = [
   { path: 'opportunities/create', component: OpportunityCreateComponent   },
   { path: 'opportunities/:id', component: ViewOpportunityComponent   },
   { path: 'opportunities/edit/:id', component: OpportunityCreateComponent   },
-  { path: 'opportunities', component: ListOpportunitiesComponent   }
+  { path: 'opportunities', component: ListOpportunitiesComponent   },
+  { path: 'resources/create', component: CreateResourceComponent   }
 ];
 
 @NgModule({
