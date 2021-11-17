@@ -8,7 +8,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {LoadingComponent} from "../../dialogs/loading/loading.component";
 import {AngularFireFunctions} from "@angular/fire/compat/functions";
-import {ResourcesService} from "../resources.service";
+import {Resource, ResourcesService} from "../resources.service";
 
 @Component({
   selector: 'app-create-resource',
@@ -17,8 +17,7 @@ import {ResourcesService} from "../resources.service";
 })
 export class CreateResourceComponent implements OnInit {
 
-  private url_regex = '(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})';
-
+  private url_regex = '(https?://)[^]*'
   form = new FormGroup({
     title: new FormControl(null, [Validators.required]),
     functions: new FormControl(null),
@@ -27,20 +26,39 @@ export class CreateResourceComponent implements OnInit {
   });
 
   edit = false;
+  edit_id?: string;
 
   functions_list = []
 
   constructor(private memberService:MemberService, private authService: AuthService, private router:Router,
               private dialog: MatDialog, private functions: AngularFireFunctions, private route: ActivatedRoute,
               private resourceService: ResourcesService) {
+    if (this.route.snapshot.paramMap.get("id")) {
+      this.edit = true;
+    }
+
   }
 
   async ngOnInit(): Promise<void> {
     if (!await this.authService.isLoggedIn()) await this.authService.login();
 
+    if (this.edit) {
+      try {
+        this.edit_id = <string>this.route.snapshot.paramMap.get("id");
+        const resource:Resource = await this.resourceService.getResource(this.edit_id);
+        this.form.setValue({
+          title: resource.title,
+          link: resource.link,
+          functions: resource.functions,
+          keywords: resource.keywords,
+        })
+      } catch (e) {
+        this.dialog.open(ErrorComponent, {data: e});
+      }
+    }
+
     const getFunctions = this.functions.httpsCallable('config-getFunctions');
     this.functions_list =  await getFunctions(null).toPromise();
-
   }
 
   async submitForm() {
@@ -48,9 +66,10 @@ export class CreateResourceComponent implements OnInit {
     try {
       if (!this.form.valid) throw "There was an error with your form";
 
-      const id = await this.resourceService.createResource(this.form.value);
-      console.log(id);
-      await this.router.navigate(["/resources/" + id]);
+      if (this.edit) await this.resourceService.editResource(this.form.value, this.edit_id!);
+      else await this.resourceService.createResource(this.form.value);
+
+      await this.router.navigate(["/resources/"]);
     } catch (e) {
       this.dialog.open(ErrorComponent, {data: e});
     } finally {
