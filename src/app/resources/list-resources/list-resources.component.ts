@@ -7,6 +7,7 @@ import {Resource, ResourcesService} from "../resources.service";
 import {MatTableDataSource} from "@angular/material/table";
 import {Member} from "../../member/member.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {LoadingComponent} from "../../dialogs/loading/loading.component";
 
 @Component({
   selector: 'app-list-opportunities',
@@ -51,6 +52,20 @@ export class ListResourcesComponent implements OnInit {
     this._snackBar.open("Link has been copied to your clipboard.", 'OK', {
       duration: 3000
     });
+  }
+
+  async delete(resource: Resource) {
+    let loadingDialog = this.dialog.open(LoadingComponent);
+    try {
+      await this.resourceService.deleteResource(resource);
+      this.resources = this.resources?.filter(item => item !== resource)
+      this.dataSource = new MatTableDataSource<Resource>(this.resources);
+    } catch (e) {
+      this.dialog.open(ErrorComponent, {data: e});
+    } finally {
+      loadingDialog.close();
+    }
+    return;
   }
 
   getDisplayedColumns(): void {

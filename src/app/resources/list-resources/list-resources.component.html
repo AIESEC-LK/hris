@@ -16,10 +16,10 @@
     <mat-spinner *ngIf="!resources && loading"></mat-spinner>
   </div>
 
-  <div fxLayout="column" *ngIf="resources!.length != 0" class="control">
+  <div fxLayout="column" *ngIf="resources && resources.length != 0" class="control">
 
     <table mat-table matSort [dataSource]="dataSource"
-           class="mat-elevation-z1" *ngIf="!resources || resources.length != 0">
+           class="mat-elevation-z1" *ngIf="resources && resources.length != 0">
 
       <ng-container matColumnDef="title">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Title </th>
@@ -71,7 +71,7 @@
       <ng-container matColumnDef="delete">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> </th>
         <td mat-cell *matCellDef="let resource">
-          <button mat-flat-button color="warn">DELETE</button>
+          <button mat-flat-button color="warn" (click)="delete(resource)">DELETE</button>
         </td>
       </ng-container>
 

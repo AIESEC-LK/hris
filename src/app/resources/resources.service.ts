@@ -48,4 +48,9 @@ export class ResourcesService {
     return await editResource(data).toPromise();
   }
 
+  public async deleteResource(data: Resource) {
+    const deleteResource = this.functions.httpsCallable('resource-deleteResource');
+    return await deleteResource(data).toPromise();
+  }
+
 }

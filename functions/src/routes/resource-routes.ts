@@ -95,6 +95,16 @@ const editResource = functions.https.onCall(async (data:Opportunity, context:Cal
   return data.id;
 });
 
+const deleteResource = functions.https.onCall(async (data:Opportunity, context:CallableContext) => {
+  logger.logFunctionInvocation(context, data);
+  if(!await ResourceService.canEdit(context, data.id)) throw AuthService.exceptions.NotAuthorizedException
+
+  if (!await checkResourceExists(data.id)) throw ResourceDoesNotExistException;
+
+  await db.collection('resources').doc(data.id).delete();
+  return;
+});
+
 
 function makeUrlFriendly(value: string) {
   return value == undefined ? '' : value.replace(/[^a-z0-9_]+/gi, '-').replace(/^-|-$/g, '').toLowerCase();
@@ -110,5 +120,6 @@ module.exports = {
   createResource: createResource,
   getResource: getResource,
   getResources: getResources,
-  editResource: editResource
+  editResource: editResource,
+  deleteResource: deleteResource
 }
