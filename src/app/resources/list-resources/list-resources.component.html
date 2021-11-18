@@ -18,6 +18,21 @@
 
   <div fxLayout="column" *ngIf="resources && resources.length != 0" class="control">
 
+    <div fxLayout="row" fxLayoutGap="20px">
+
+      <mat-form-field>
+        <input matInput type="text" (keyup)="doFilter()" placeholder="Quick Filter" [(ngModel)]="filter.quick_filter">
+      </mat-form-field>
+
+      <mat-form-field style="width:100px;" fxHide.lt-md>
+        <mat-label>Function</mat-label>
+        <mat-select multiple [(ngModel)]="filter.functions" (selectionChange)="doFilter()">
+          <mat-option *ngFor="let function of functions" [value]="function">{{function}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+    </div>
+
     <table mat-table matSort [dataSource]="dataSource"
            class="mat-elevation-z1" *ngIf="resources && resources.length != 0">
 

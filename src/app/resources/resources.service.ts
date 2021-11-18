@@ -53,4 +53,12 @@ export class ResourcesService {
     return await deleteResource(data).toPromise();
   }
 
+  public static getFunctions(resources: Resource[]): string[] {
+    let functions: string[] = [];
+    for (let resource of resources) {
+      functions = functions.concat(resource.functions!);
+    }
+    return [...new Set(functions)];
+  }
+
 }

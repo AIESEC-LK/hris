@@ -124,8 +124,6 @@ export class ListMembersComponent implements OnInit {
         return filter_tags.some(item => tags.includes(item))
       });
     }
-
-
   }
 
   private getAllFunctions(): string[] {

@@ -178,8 +178,8 @@ export class MemberService {
       if (end_date < today) continue;
       roles.push(position.name);
     }
-
     return [...new Set(roles)];
+
   }
 
   public getCurrentEntities(member: Member): string[] {

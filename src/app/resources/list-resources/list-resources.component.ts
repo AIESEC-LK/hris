@@ -17,12 +17,18 @@ import {LoadingComponent} from "../../dialogs/loading/loading.component";
 export class ListResourcesComponent implements OnInit {
 
   resources? : Resource[];
+  functions: string[] = [];
+
   loading = true;
 
   dataSource = new MatTableDataSource(this.resources);
 
   selectedColumns = ['title', 'functions', 'link', 'open'];
 
+  filter = {
+    quick_filter: "",
+    functions: this.functions,
+  };
 
   constructor(private route: ActivatedRoute, public authService:AuthService,
               public resourceService: ResourcesService, private dialog: MatDialog,
@@ -34,6 +40,7 @@ export class ListResourcesComponent implements OnInit {
 
     try {
       this.resources = await this.resourceService.getResources();
+      this.functions = ResourcesService.getFunctions(this.resources);
       this.dataSource = new MatTableDataSource<Resource>(this.resources);
       this.getDisplayedColumns();
     } catch (e) {
@@ -76,6 +83,20 @@ export class ListResourcesComponent implements OnInit {
     }
 
     if (window.innerWidth < 960) this.selectedColumns = ['title', 'open'];
+  }
+
+
+  public doFilter() {
+    this.dataSource.data = this.resources!;
+    this.dataSource.filter = this.filter.quick_filter.trim().toLocaleLowerCase();
+
+    //Filter by function
+    const filter_functions = this.filter.functions;
+    if (filter_functions.length > 0) {
+      this.dataSource.data = this.dataSource.data.filter(e=> {
+        return filter_functions.some(item => e.functions!.includes(item))
+      });
+    }
   }
 
 }
