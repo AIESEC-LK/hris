@@ -1,0 +1,44 @@
+<div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="start start"
+     *ngIf="!edit || form.get('title')?.value || form.get('description')?.value">
+
+  <div class="mat-card" fxLayout="column" fxLayoutGap="20px" style="padding:20px;">
+
+    <div class="mat-card-title" *ngIf="!edit">Create a New Resource</div>
+    <div class="mat-card-title" *ngIf="edit">Update Opportunity</div>
+    <div class="mat-card-subtitle">Please provide the following details</div>
+
+    <div fxFlex="40" id="form" fxLayout="column">
+
+      <div fxLayout="column" fxLayoutGap="0px" [formGroup]="form">
+
+        <mat-form-field fxFlex="50">
+          <mat-label>Title</mat-label>
+          <input matInput formControlName="title" required>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="50">
+          <mat-label>Link</mat-label>
+          <input matInput formControlName="link" required>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="50">
+          <mat-label>Function(s)</mat-label>
+          <mat-select formControlName="functions" multiple>
+            <mat-option *ngFor="let function of functions_list" [value]="function">{{function}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="50">
+          <mat-label>Keywords (comma separated)</mat-label>
+          <input matInput formControlName="keywords">
+        </mat-form-field>
+
+        <button class="submit_button" mat-raised-button color="primary"  (click)="submitForm()" [disabled]="!form.valid">
+          {{edit ? "UPDATE RESOURCE" : "CREATE RESOURCE"}}
+        </button>
+
+      </div>
+    </div>
+  </div>
+
+</div>

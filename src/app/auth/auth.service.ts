@@ -45,7 +45,7 @@ export class AuthService {
     try {
       const logoutResult = await this.auth.signOut();
       console.log("Logout result", logoutResult);
-      await this.router.navigate(["/login"]);
+      await this.router.navigate(["/"]);
     } catch (e) {
       this.dialog.open(ErrorComponent, {data: e});
     }
@@ -56,8 +56,14 @@ export class AuthService {
     this.logged = user != null;
 
     if (this.logged) {
-      //await this.completeLogin();
-      const tokenResult = await user.getIdTokenResult(true);
+      let tokenResult = await user.getIdTokenResult(true);
+      console.log(tokenResult);
+      if (!tokenResult.claims['role']) {
+        await this.completeLogin();
+        tokenResult = await user.getIdTokenResult(true);
+      } else {
+        this.completeLogin();
+      }
       this.role = tokenResult.claims['role'];
       this.email = user.email!;
     }
@@ -65,14 +71,22 @@ export class AuthService {
   }
 
   private async completeLogin() {
-    const completeLogin = this.functions.httpsCallable('auth-completeLogin');
-    const result = await completeLogin(null).toPromise();
-    console.log("Tokens", result.tokens)
+    //const loading = this.dialog.open(LoadingComponent);
+    try {
+      const completeLogin = this.functions.httpsCallable('auth-completeLogin');
+      const result = await completeLogin(null).toPromise();
+      console.log("Tokens", result.tokens)
 
-    this.role = result.tokens['role'];
+      this.role = result.tokens['role'];
 
-    // If profile is not created
-    if (!result.tokens['profile_created']) await this.router.navigate(["/profile/initialize"]);
+      // If profile is not created
+      if (!result.tokens['profile_created']) await this.router.navigate(["/profile/initialize"]);
+    }
+    catch (e) {
+      this.dialog.open(ErrorComponent, {data: e});
+    } finally {
+      //loading.close();
+    }
   }
 
   public getEmail(): string {
@@ -80,12 +94,14 @@ export class AuthService {
   }
 
   public isEBOrAbove(): boolean {
+    if (!this.role) return false;
     if (this.role.includes("admin")) return true;
     if (this.role.includes("eb")) return true;
     return false;
   }
 
   public isAdmin(): boolean {
+    if (!this.role) return false;
     return this.role.includes("admin");
   }
 

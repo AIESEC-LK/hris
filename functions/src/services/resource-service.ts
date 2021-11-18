@@ -5,7 +5,7 @@ const AuthService = require("../services/auth-service");
 
 
 async function canView(context: CallableContext, id: string): Promise<boolean> {
-  // Temporarily everyone can see opportunities
+  // Temporarily everyone can see resources.
   return true;
 
   const currentUserRoles: string[] = await AuthService.getCurrentUserRoles(context);

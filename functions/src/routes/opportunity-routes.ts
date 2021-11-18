@@ -70,6 +70,8 @@ const getOpportunities = functions.https.onCall(async (data:any, context:Callabl
     .orderBy("deadline", "asc")
     .orderBy("created_at", 'desc');
   else opportunities = await db.collection('opportunities')
+    .where("deadline", ">=", logger.getCurrentDate())
+    .orderBy("deadline", "asc")
     .where("entity", "in", [await AuthService.getEntity(context), "Sri Lanka"])
     .orderBy("created_at", 'desc');
 

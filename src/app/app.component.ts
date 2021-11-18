@@ -14,7 +14,7 @@ export class AppComponent {
   }
 
   isActive(route: string) {
-    const currentRoute = this.router.snapshot.firstChild?.url[0].path;
+    const currentRoute = this.router.snapshot.firstChild?.url[0]?.path;
     return route === currentRoute;
   }
 }

@@ -41,7 +41,6 @@ const getProfileInformation = functions.https.onCall(async (data:any, context:Ca
       await admin.storage().bucket("aiesec-hris.appspot.com").file(member.data().cv).getSignedUrl(
         { action: 'read', expires: "01-01-2500" }
       ) : null,
-
   }
 
   return {

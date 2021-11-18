@@ -47,6 +47,11 @@ import { EditorModule } from "@tinymce/tinymce-angular";
 import { ViewOpportunityComponent } from './opportunity/view-opportunity/view-opportunity.component';
 import { ListOpportunitiesComponent } from './opportunity/list-opportunities/list-opportunities.component';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import { TitleComponent } from './title/title.component';
+import { CreateResourceComponent } from './resources/create-resource/create-resource.component';
+import { ViewResourceComponent } from './resources/view-resource/view-resource.component';
+import {ListResourcesComponent} from "./resources/list-resources/list-resources.component";
+import {MatSnackBar, MatSnackBarModule} from "@angular/material/snack-bar";
 
 @NgModule({
   declarations: [
@@ -66,6 +71,10 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     OpportunityCreateComponent,
     ViewOpportunityComponent,
     ListOpportunitiesComponent,
+    TitleComponent,
+    CreateResourceComponent,
+    ViewResourceComponent,
+    ListResourcesComponent
   ],
   imports: [
     BrowserModule,
@@ -93,7 +102,8 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     MatDatepickerModule,
     MatNativeDateModule,
     EditorModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatSnackBarModule
   ],
   providers: [
     { provide: AUTH_SETTINGS, useValue: { appVerificationDisabledForTesting: true } },

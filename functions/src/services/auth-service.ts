@@ -11,6 +11,7 @@ const NotAuthorizedException = new HttpsError('unauthenticated', "Not authorized
   {message: "You are not authorized to access this page."})
 
 async function canView(context: CallableContext, email: string): Promise<boolean> {
+  await checkLoggedIn(context);
   return true;
 
   /*
@@ -65,7 +66,7 @@ async function canSuperEdit(context: CallableContext, email: string): Promise<bo
 
 async function getCurrentUserRoles(context: CallableContext): Promise<string[]> {
   const tokenResult = await auth.getUser(context.auth?.uid!);
-  if (!(tokenResult.customClaims) || !tokenResult.customClaims["role"]) throw NotLoggedInException;
+  if (!(tokenResult.customClaims) || !tokenResult.customClaims["role"]) throw NotAuthorizedException;
 
   const roles = tokenResult.customClaims["role"];
   if (roles.constructor === Array) return roles;
@@ -75,7 +76,8 @@ async function getCurrentUserRoles(context: CallableContext): Promise<string[]> 
 async function checkLoggedIn(context: CallableContext): Promise<void> {
   const email = context.auth?.token.email;
   const uid = context.auth?.uid;
-  if (email == null || uid == null) throw NotLoggedInException;
+  if (uid == null) throw NotLoggedInException;
+  if (email == null) throw NotAuthorizedException;
 }
 
 function getCurrentUserEmail(context: CallableContext): String {

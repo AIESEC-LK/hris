@@ -12,25 +12,35 @@
     </div>
   </div>-->
 
-  <div fxLayout="row" fxLayoutAlign="stretch stretch">
+  <div fxLayout="row" fxLayoutAlign="stretch stretch" style="z-index:999;">
     <div id="menu" fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="20px">
       <div fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="20px">
+
         <img alt="AIESEC man" src="assets/images/monophy.gif"/>
+
         <mat-icon *ngIf="authService.logged" [routerLink]="['/profile']"
                   [class.active] = "isActive('profile')"
                   matTooltip="Your profile" matTooltipPosition="after">
           face</mat-icon>
+
         <mat-icon *ngIf="authService.logged" [routerLink]="['/members']"
                   [class.active] = "isActive('members')"
                   matTooltip="Members" matTooltipPosition="after">
           people</mat-icon>
+
         <mat-icon *ngIf="authService.logged" [routerLink]="['/opportunities']"
                   [class.active] = "isActive('opportunities')"
                   matTooltip="Opportunities" matTooltipPosition="after">
           stars</mat-icon>
+
+        <mat-icon *ngIf="authService.logged" [routerLink]="['/resources']"
+                  [class.active] = "isActive('resources')"
+                  matTooltip="Resources" matTooltipPosition="after">
+          folder</mat-icon>
+
       </div>
 
-      <div fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="20px">
+      <div fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="20px" style="padding-bottom:20px;">
         <mat-icon *ngIf="authService.logged" (click)="authService.logout()"
                   [class.active] = "isActive('logout')"
                   matTooltip="Log out" matTooltipPosition="after">

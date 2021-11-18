@@ -3,8 +3,24 @@
 }
 
 #menu img {
-  width:100px;
+  width:50px;
 }
+
+.img-container {
+  overflow: hidden;
+  height: 100px;
+  max-height: 300px;
+  position: relative;
+}
+
+.img {
+  display: block;
+  width: 100%;
+  height: auto;
+  position: absolute;
+  bottom: 0;
+}
+
 
 #header .title {
   color:#3a539b;
@@ -41,7 +57,7 @@
   position:fixed;
   top:0px;
   left:0px;
-  background-color: #3a539b;
+  background-color:#3B4F96;
   padding:5px;
   width:60px;
   font-size:30px;

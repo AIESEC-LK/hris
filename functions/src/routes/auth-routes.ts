@@ -15,10 +15,17 @@ const completeLogin = functions.https.onCall(async (data:any, context:any) => {
   const email = context.auth?.token.email;
   const uid = context.auth?.uid;
 
-  const userTokens = await db.collection('users').doc(email).get();
+  if (!email || !uid) return AuthService.exceptions.NotAuthorizedException;
+  console.log("EMAIL", email);
 
-  if (!userTokens.exists) throw module.exports.NotAuthorizedException;
-  await admin.auth().setCustomUserClaims(uid, {});
+  let userTokens;
+  try {
+    userTokens = await db.collection('users').doc(email).get();
+  } catch (e) {
+    throw AuthService.exceptions.NotAuthorizedException;
+  }
+
+  if (!userTokens.exists) throw AuthService.exceptions.NotAuthorizedException;
   await admin.auth().setCustomUserClaims(uid, userTokens.data());
 
   return {

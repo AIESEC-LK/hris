@@ -178,8 +178,8 @@ export class MemberService {
       if (end_date < today) continue;
       roles.push(position.name);
     }
-
     return [...new Set(roles)];
+
   }
 
   public getCurrentEntities(member: Member): string[] {
@@ -256,6 +256,7 @@ export class MemberService {
   }
 
   public static replaceCommonFunctionNames(function_name: string) {
+    if (!function_name) return function_name;
     let x = function_name;
     const abbrv = {
       "Incoming Global Volunteer": "iGV",
