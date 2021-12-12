@@ -14,7 +14,7 @@ async function canView(context: CallableContext, id: string): Promise<boolean> {
   if (currentUserRoles.includes("admin")) return true;
 
   // Current user must be from the same entity.
-  const targetEntity = (await db.collection('opportunities').doc(id).get()).data().entity;
+  const targetEntity = (await db.collection('resources').doc(id).get()).data().entity;
   const openEntities = ["Sri Lanka", "Asia Pacific", "International"];
   if (openEntities.includes(targetEntity)) return true;
   if (await AuthService.getCurrentUserEntity(context) == targetEntity) return true;
@@ -30,7 +30,7 @@ async function canEdit(context: CallableContext, id: string): Promise<boolean> {
 
   // Current user must be EB or above and from the same entity.
   if (!currentUserRoles.includes("eb")) return false;
-  const targetEntity = (await db.collection('opportunities').doc(id).get()).data().entity;
+  const targetEntity = (await db.collection('resources').doc(id).get()).data().entity;
   if (await AuthService.getCurrentUserEntity(context) == targetEntity) return true;
 
   return false;

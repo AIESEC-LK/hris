@@ -7,7 +7,8 @@ export interface Resource {
   title: string,
   link: string,
   functions?: string[],
-  keywords?: string[]
+  keywords?: string[],
+  entity: string
 }
 
 @Injectable({

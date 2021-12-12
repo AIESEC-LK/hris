@@ -133,9 +133,20 @@ async function getOpportunityFromData(opportunity: Opportunity): Promise<Opportu
   };
 }
 
+const deleteOpportunity = functions.https.onCall(async (data:Opportunity, context:CallableContext) => {
+  logger.logFunctionInvocation(context, data);
+  if(!await OpportunityService.canEdit(context, data.id)) throw AuthService.exceptions.NotAuthorizedException
+
+  if (!await checkOpportunityExists(data.id)) throw OpportunityDoesNotExistException;
+
+  await db.collection('opportunities').doc(data.id).delete();
+  return;
+});
+
 module.exports = {
   createOpportunity: createOpportunity,
   getOpportunity: getOpportunity,
   editOpportunity: editOpportunity,
-  getOpportunities: getOpportunities
+  getOpportunities: getOpportunities,
+  deleteOpportunity: deleteOpportunity
 }

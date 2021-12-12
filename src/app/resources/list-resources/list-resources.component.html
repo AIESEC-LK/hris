@@ -78,7 +78,10 @@
         <th mat-header-cell *matHeaderCellDef mat-sort-header> </th>
         <td mat-cell *matCellDef="let resource">
           <a href="/resources/edit/{{resource.id}}">
-            <button mat-flat-button color="accent">EDIT</button>
+            <button mat-flat-button color="accent"
+              *ngIf="authService.isAdmin() || (authService.isEBOrAbove() && resource.entity == authService.getEntity())">
+              EDIT
+            </button>
           </a>
         </td>
       </ng-container>
@@ -86,7 +89,10 @@
       <ng-container matColumnDef="delete">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> </th>
         <td mat-cell *matCellDef="let resource">
-          <button mat-flat-button color="warn" (click)="delete(resource)">DELETE</button>
+          <button mat-flat-button color="warn" (click)="delete(resource)"
+          *ngIf="authService.isAdmin() || (authService.isEBOrAbove() && resource.entity == authService.getEntity())">
+            DELETE
+          </button>
         </td>
       </ng-container>
 

@@ -4,6 +4,9 @@ import {AuthService} from "../../auth/auth.service";
 import {MatDialog} from "@angular/material/dialog";
 import {ErrorComponent} from "../../dialogs/error/error.component";
 import {Opportunity, OpportunityService} from "../opportunity.service";
+import {Resource} from "../../resources/resources.service";
+import {LoadingComponent} from "../../dialogs/loading/loading.component";
+import {MatTableDataSource} from "@angular/material/table";
 
 @Component({
   selector: 'app-view-opportunity',
@@ -16,7 +19,7 @@ export class ViewOpportunityComponent implements OnInit {
   loading = true;
 
   constructor(private route: ActivatedRoute, public authService:AuthService,
-              public opportunityService: OpportunityService, private dialog: MatDialog) {
+              public opportunityService: OpportunityService, private dialog: MatDialog, private router:Router) {
   }
 
   async ngOnInit(): Promise<void> {
@@ -31,6 +34,19 @@ export class ViewOpportunityComponent implements OnInit {
     }
 
     this.loading = false;
+  }
+
+  async delete(opportunity: Opportunity) {
+    let loadingDialog = this.dialog.open(LoadingComponent);
+    try {
+      await this.opportunityService.deleteOpportunity(opportunity);
+      await this.router.navigate(["/opportunities"]);
+    } catch (e) {
+      this.dialog.open(ErrorComponent, {data: e});
+    } finally {
+      loadingDialog.close();
+    }
+    return;
   }
 
 }
