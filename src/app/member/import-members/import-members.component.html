@@ -49,19 +49,23 @@
     </div>
   </div>
 
-  <div class="mat-card" fxLayout="column" fxLayoutGap="20px" style="padding:20px;" *ngIf="messages && messages.length > 0"
+  <div class="mat-card" fxLayout="column" fxLayoutGap="20px" style="padding:20px;" *ngIf="logs && logs.length > 0"
        style="width:500px;">
 
     <div class="mat-card-subtitle">Import Log</div>
 
-    <mat-progress-bar class="green-progress" mode="determinate" value="{{messages.length*100/numEntries!}}"></mat-progress-bar>
+    <mat-progress-bar class="green-progress" mode="determinate" value="{{logs.length*100/numEntries!}}"></mat-progress-bar>
 
-    <div *ngFor="let message of messages.slice().reverse(); let i = index">
-      <div style="font-weight:bold;">Importing Member #{{messages.length - i}}</div>
-      <div class="import_item" *ngFor="let m of message">
-        {{m}}
+    <div *ngFor="let log of logs.slice().reverse(); let i = index">
+      <div style="font-weight:bold;">
+        <span *ngIf="log.status! == 'success'"class="status" style="color:#16a085">[SUCCESS]</span>
+        <span *ngIf="log.status! == 'error'"class="status" style="color:#c44d56">[ERROR]</span>
+        Importing {{log.email!}}</div>
+      <div *ngIf="log.status! == 'error'" >
+        <div class="import_item" *ngFor="let message of log.messages!">
+          {{message}}
+        </div>
       </div>
-
   </div>
 
 </div>
