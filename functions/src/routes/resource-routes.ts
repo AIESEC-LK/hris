@@ -1,5 +1,3 @@
-import {Opportunity} from "./opportunity-routes";
-
 export {}
 
 import {CallableContext} from "firebase-functions/lib/common/providers/https";
@@ -70,7 +68,7 @@ const getResources = functions.https.onCall(async (data:any, context:CallableCon
     .where("entity", "in", [await AuthService.getEntity(context), "Sri Lanka"])
     .orderBy("created_at", 'desc');
 
-  let result: Opportunity[] = [];
+  let result: Resource[] = [];
   const querySnapshot = await resources.get()
   querySnapshot.forEach((doc: any) => {
     result.push(doc.data());
@@ -79,7 +77,7 @@ const getResources = functions.https.onCall(async (data:any, context:CallableCon
   return result;
 });
 
-const editResource = functions.https.onCall(async (data:Opportunity, context:CallableContext) => {
+const editResource = functions.https.onCall(async (data:Resource, context:CallableContext) => {
   logger.logFunctionInvocation(context, data);
   if(!await ResourceService.canEdit(context, data.id)) throw AuthService.exceptions.NotAuthorizedException
 
@@ -95,7 +93,7 @@ const editResource = functions.https.onCall(async (data:Opportunity, context:Cal
   return data.id;
 });
 
-const deleteResource = functions.https.onCall(async (data:Opportunity, context:CallableContext) => {
+const deleteResource = functions.https.onCall(async (data:Resource, context:CallableContext) => {
   logger.logFunctionInvocation(context, data);
   if(!await ResourceService.canEdit(context, data.id)) throw AuthService.exceptions.NotAuthorizedException
 

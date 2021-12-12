@@ -78,4 +78,10 @@ export class CreateResourceComponent implements OnInit {
     return;
   }
 
+  getShortUrl():string {
+    const value = this.form.value.title;
+    return value == undefined ? '' : value.replace(/[^a-z0-9_]+/gi, '-').replace(/^-|-$/g, '').toLowerCase();
+  }
+
+
 }

@@ -29,11 +29,17 @@
           </button>
         </a>
 
-        <a routerLink="/opportunities/edit/{{opportunity.id}}" *ngIf="authService.isEBOrAbove()">
+        <a routerLink="/opportunities/edit/{{opportunity.id}}"
+           *ngIf="authService.isAdmin() || (authService.isEBOrAbove() && opportunity.entity == authService.getEntity())">
           <button mat-flat-button color="primary">
             EDIT
           </button>
         </a>
+
+        <button mat-flat-button color="warn" (click)="delete(opportunity)"
+          *ngIf="authService.isAdmin() || (authService.isEBOrAbove() && opportunity.entity == authService.getEntity())">
+          DELETE
+        </button>
 
       </div>
 

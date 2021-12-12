@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {AngularFireFunctions} from "@angular/fire/compat/functions";
+import {Resource} from "../resources/resources.service";
 
 export interface Opportunity {
   id: string,
@@ -44,6 +45,11 @@ export class OpportunityService {
       }
     }
     return opportunities;
+  }
+
+  public async deleteOpportunity(data: Opportunity) {
+    const deleteOpportunity = this.functions.httpsCallable('opportunity-deleteOpportunity');
+    return await deleteOpportunity(data).toPromise();
   }
 
 }

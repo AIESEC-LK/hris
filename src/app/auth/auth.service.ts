@@ -19,6 +19,7 @@ export class AuthService {
   public logged: boolean = false;
   public role: string[] = [];
   public email: string = "";
+  public entity: string = "";
 
   constructor(private auth: AngularFireAuth, private functions: AngularFireFunctions, private dialog: MatDialog,
               private router: Router) {
@@ -66,6 +67,7 @@ export class AuthService {
       }
       this.role = tokenResult.claims['role'];
       this.email = user.email!;
+      this.entity = tokenResult.claims['entity'];
     }
     return this.logged;
   }
@@ -78,6 +80,7 @@ export class AuthService {
       console.log("Tokens", result.tokens)
 
       this.role = result.tokens['role'];
+      this.entity = result.tokens['entity'];
 
       // If profile is not created
       if (!result.tokens['profile_created']) await this.router.navigate(["/profile/initialize"]);
@@ -91,6 +94,10 @@ export class AuthService {
 
   public getEmail(): string {
     return this.email;
+  }
+
+  public getEntity(): string {
+    return this.entity;
   }
 
   public isEBOrAbove(): boolean {
