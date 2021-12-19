@@ -30,7 +30,7 @@
       </mat-form-field>
     </div>
 
-    <div fxLayout="row" fxLayoutGap="20px">
+    <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="space-between center">
 
       <mat-form-field>
         <input matInput type="text" (keyup)="doFilter()" placeholder="Quick Filter" [(ngModel)]="filter.quick_filter">
@@ -81,12 +81,14 @@
         </mat-select>
       </mat-form-field>
 
+      <div flex></div>
+
+      <button mat-button (click)="exporter.exportTable('csv', {fileName: 'asl360-members'})">Export</button>
+
     </div>
   </div>
 
-  <table mat-table matSort [dataSource]="dataSource"
-         matTableExporter #exporter="matTableExporter"
-         class="mat-elevation-z1" *ngIf="members.length != 0">
+  <table mat-table matSort matTableExporter [dataSource]="dataSource" #exporter="matTableExporter"> class="mat-elevation-z1" *ngIf="members.length != 0">
 
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
@@ -110,6 +112,11 @@
       <td mat-cell *matCellDef="let member"> {{member.current_status}} </td>
     </ng-container>
 
+    <ng-container matColumnDef="gender" [fxHide.lt-sm]="true">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Gender </th>
+      <td mat-cell *matCellDef="let member"> {{member.gender}} </td>
+    </ng-container>
+
     <ng-container matColumnDef="roles" [fxHide.lt-sm]="true">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Role(s) </th>
       <td mat-cell *matCellDef="let member"> {{memberService.getCurrentRoles(member).join(", ")}} </td>
@@ -128,6 +135,34 @@
     <ng-container matColumnDef="faculty" [fxHide.lt-sm]="true">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Faculty <th>
       <td mat-cell *matCellDef="let member"> {{member.faculty}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="address" [fxHide.lt-sm]="true">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Address </th>
+      <td mat-cell *matCellDef="let member">
+        {{member.address}}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="phone" [fxHide.lt-sm]="true">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Phone </th>
+      <td mat-cell *matCellDef="let member">
+        {{member.phone}}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="phone2" [fxHide.lt-sm]="true">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Phone2 </th>
+      <td mat-cell *matCellDef="let member">
+        {{member.phone2}}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="dob" [fxHide.lt-sm]="true">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> DOB </th>
+      <td mat-cell *matCellDef="let member">
+        {{member.dob}}
+      </td>
     </ng-container>
 
     <ng-container matColumnDef="expa_id" [fxHide.lt-sm]="true">

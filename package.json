@@ -25,7 +25,7 @@
     "@tinymce/tinymce-angular": "^4.2.4",
     "config": "^3.3.6",
     "firebase": "^9.0.0",
-    "mat-table-exporter": "^10.2.3",
+    "mat-table-exporter": "^10.2.4",
     "rxfire": "^6.0.0",
     "rxjs": "~6.6.0",
     "sanitize": "^2.1.0",

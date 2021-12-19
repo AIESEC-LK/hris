@@ -4,6 +4,12 @@ import {MatDialog} from "@angular/material/dialog";
 import {MemberService} from "../member.service";
 import {AngularFireFunctions} from "@angular/fire/compat/functions";
 
+export interface Log {
+  status: string,
+  email: string,
+  messages?: string[]
+}
+
 @Component({
   selector: 'app-import-members',
   templateUrl: './import-members.component.html',
@@ -21,7 +27,7 @@ export class ImportMembersComponent implements OnInit {
   importing: boolean = false;
   numEntries?: number;
   current_import?: number;
-  messages?: string[][];
+  logs?: Log[];
 
   constructor(private dialog: MatDialog, private memberService:MemberService, private functions: AngularFireFunctions) { }
 
@@ -30,7 +36,7 @@ export class ImportMembersComponent implements OnInit {
 
   submitForm() {
 
-    this.messages = [];
+    this.logs = [];
     this.importing = true;
 
     const myFile = this.file;
@@ -57,6 +63,8 @@ export class ImportMembersComponent implements OnInit {
           if (row[3]) data['phone'] = row[3];
           if (row[4]) data['dob'] = row[4];
           if (row[5]) data['faculty'] = row[5];
+          if (row[6]) data['gender'] = row[6];
+          if (row[7]) data['current_status'] = row[7];
 
           try {
             const inviteMember = original.functions.httpsCallable('member-inviteMember');
@@ -68,9 +76,16 @@ export class ImportMembersComponent implements OnInit {
         }
 
         if (error_messages.length == 0) {
-          original.messages!.push(["Success"]);
+          original.logs!.push({
+            status: "success",
+            email: row[0]
+          });
         }
-        else original.messages?.push(error_messages)
+        else original.logs!.push({
+          status: "error",
+          email: row[0],
+          messages: error_messages
+        });
       }
 
       original.importing = false;
@@ -80,7 +95,7 @@ export class ImportMembersComponent implements OnInit {
   }
 
   onFileSelected(event: any, name:string){
-    this.messages = [];
+    this.logs = [];
     const file:File = event.target.files[0];
     // @ts-ignore
     this.file = file;

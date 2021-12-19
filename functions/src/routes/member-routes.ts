@@ -136,8 +136,10 @@ const getMembers = functions.https.onCall(async (data:any, context:CallableConte
 
   let result: any[] = [];
   const querySnapshot = await members.get();
+  const canAccessSensitive = await AuthService.isEBOrAbove(context);
 
   querySnapshot.forEach((doc: any) => {
+
     const data = {
       name: doc.data().name,
       email: doc.data().email ? doc.data().email : doc.id,
@@ -149,8 +151,19 @@ const getMembers = functions.https.onCall(async (data:any, context:CallableConte
       tags: doc.data().tags,
       faculty: doc.data().faculty,
     }
-    result.push(data);
+
+    let sensitive_data = {};
+    if (canAccessSensitive) sensitive_data = {
+      phone: doc.data().phone,
+      phone2: doc.data().phone2,
+      address: doc.data().address,
+      dob: doc.data().dob,
+      gender: doc.data().gender
+    }
+
+    result.push({...data, ...sensitive_data});
   })
+
   return result;
 });
 

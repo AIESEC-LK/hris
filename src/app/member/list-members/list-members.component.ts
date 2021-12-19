@@ -5,6 +5,7 @@ import {MatTableDataSource} from "@angular/material/table";
 import {MatSort} from "@angular/material/sort";
 import {ErrorComponent} from "../../dialogs/error/error.component";
 import {MatDialog} from "@angular/material/dialog";
+import { MatTableExporterDirective } from 'mat-table-exporter';
 
 @Component({
   selector: 'app-list-members',
@@ -20,7 +21,8 @@ export class ListMembersComponent implements OnInit {
   dataSource = new MatTableDataSource(this.members);
   renderedData: any;
 
-  columns = ['name', 'email', 'current_status', 'functions', 'roles', 'entity', 'expa_id', 'tags', 'faculty', 'profile'];
+  columns = ['name', 'email', 'current_status', 'functions', 'roles', 'entity', 'gender', 'address', 'phone', 'phone2',
+    'dob', 'expa_id', 'tags', 'faculty', 'profile'];
   selectedColumns = this.columns;
 
   functions: string[] = []
@@ -38,6 +40,7 @@ export class ListMembersComponent implements OnInit {
     tags: this.tags
   };
 
+  @ViewChild(MatTableExporterDirective) matTableExporter?: MatTableExporterDirective;
 
   constructor(public memberService: MemberService, public authService: AuthService, private dialog:MatDialog) { }
 
@@ -72,7 +75,6 @@ export class ListMembersComponent implements OnInit {
 
     if (window.innerWidth < 960) this.selectedColumns = ['name', 'profile'];
   }
-
 
   public doFilter() {
     this.dataSource.data = this.members;
@@ -114,7 +116,6 @@ export class ListMembersComponent implements OnInit {
       });
     }
 
-
     //Filter by tag
     const filter_tags = this.filter.tags;
     if (filter_tags.length > 0) {
@@ -129,8 +130,8 @@ export class ListMembersComponent implements OnInit {
   private getAllFunctions(): string[] {
     let functions: string[] = [];
     for (const member of this.members) {
-      for (const position of this.memberService.getPositions(member)) {
-        if (position.function) functions.push(MemberService.replaceCommonFunctionNames(position.function));
+      for (const function_name of this.memberService.getCurrentFunctions(member)) {
+        functions.push(MemberService.replaceCommonFunctionNames(function_name));
       }
     }
 
@@ -140,8 +141,8 @@ export class ListMembersComponent implements OnInit {
   private getAllRoles(): string[] {
     let roles: string[] = [];
     for (const member of this.members) {
-      for (const position of this.memberService.getPositions(member)) {
-        roles.push(position.name);
+      for (const position of this.memberService.getCurrentRoles(member)) {
+        roles.push(position);
       }
     }
 
@@ -151,11 +152,10 @@ export class ListMembersComponent implements OnInit {
   private getAllEntities(): string[] {
     let entities: string[] = [];
     for (const member of this.members) {
-      for (const position of this.memberService.getPositions(member)) {
-        entities.push(position.entity);
+      for (const entity of this.memberService.getCurrentEntities(member)) {
+        entities.push(entity);
       }
     }
-
     return [...new Set(entities)];
   }
 
@@ -164,10 +164,12 @@ export class ListMembersComponent implements OnInit {
     for (const member of this.members) {
         faculties.push(member.faculty);
     }
-
     return [...new Set(faculties)];
   }
 
+  export() {
+    this.matTableExporter?.exportTable('csv', {fileName:'members'});
+  }
 
   private getAllTags(): string[] {
     let tags: string[] = [];

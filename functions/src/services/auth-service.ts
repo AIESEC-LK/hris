@@ -101,6 +101,11 @@ async function isAdmin(context: CallableContext) {
   return (await getCurrentUserRoles(context)).includes("admin")
 }
 
+async function isEBOrAbove(context: CallableContext) {
+  return (await getCurrentUserRoles(context)).includes("eb") || isAdmin(context);
+}
+
+
 async function getEntity(context: CallableContext) {
   return (await db.collection('users').doc(context.auth?.token.email!).get()).data().entity;
 }
@@ -118,6 +123,7 @@ module.exports = {
   checkPrivileged: checkPrivileged,
   checkLoggedIn: checkLoggedIn,
   isAdmin: isAdmin,
+  isEBOrAbove: isEBOrAbove,
   getEntity: getEntity,
   getEmail: getEmail,
   exceptions : {

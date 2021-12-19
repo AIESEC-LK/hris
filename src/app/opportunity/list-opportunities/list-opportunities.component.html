@@ -20,7 +20,7 @@
        *ngIf="opportunities" fxLayoutAlign="center center">
 
     <div *ngFor="let opportunity of opportunities" class="opportunity_x"
-        [routerLink]="['/opportunities/'+opportunity.id]">
+        [routerLink]="['/opp/'+opportunity.id]">
       <div class="mat-card opportunity" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px"
            style="background-image:url('{{opportunity.photo}}')">
         <div class="mat-card-title" style="padding-bottom:40px; color:white;">{{opportunity.title}}</div>
