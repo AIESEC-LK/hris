@@ -179,7 +179,6 @@ export class MemberService {
       roles.push(position.name);
     }
     return [...new Set(roles)];
-
   }
 
   public getCurrentEntities(member: Member): string[] {

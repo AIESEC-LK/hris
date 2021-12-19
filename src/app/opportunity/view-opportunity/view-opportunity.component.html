@@ -29,7 +29,7 @@
           </button>
         </a>
 
-        <a routerLink="/opportunities/edit/{{opportunity.id}}"
+        <a routerLink="/opp/edit/{{opportunity.id}}"
            *ngIf="authService.isAdmin() || (authService.isEBOrAbove() && opportunity.entity == authService.getEntity())">
           <button mat-flat-button color="primary">
             EDIT
