@@ -13,6 +13,8 @@ import {TitleComponent} from "./title/title.component";
 import {CreateResourceComponent} from "./resources/create-resource/create-resource.component";
 import {ViewResourceComponent} from "./resources/view-resource/view-resource.component";
 import {ListResourcesComponent} from "./resources/list-resources/list-resources.component";
+import {CreateSubmissionComponent} from "./submissions/create-submission/create-submission.component";
+import {ViewSubmissionComponent} from "./submissions/view-submission/view-submission.component";
 
 const routes: Routes = [
   { path: '', component: TitleComponent },
@@ -33,8 +35,15 @@ const routes: Routes = [
   { path: 'resources/create', component: CreateResourceComponent   },
   { path: 'resources/:id', component: ViewResourceComponent   },
   { path: 'r/:id', component: ViewResourceComponent   },
-  { path: 'resources/edit/:id', component: CreateResourceComponent   }
+  { path: 'resources/edit/:id', component: CreateResourceComponent   },
+  { path: 'submissions/create', component: CreateSubmissionComponent   },
+  { path: 'submission/create', component: CreateSubmissionComponent   },
+  { path: 's/:id', component: ViewSubmissionComponent   },
+  { path: 'submission/:id', component: ViewSubmissionComponent   },
+  { path: 'submission/edit/:id', component: CreateSubmissionComponent   },
+  { path: 'submissions/edit/:id', component: CreateSubmissionComponent   }
 ];
+
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

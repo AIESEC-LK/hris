@@ -52,6 +52,9 @@ import { ViewResourceComponent } from './resources/view-resource/view-resource.c
 import {ListResourcesComponent} from "./resources/list-resources/list-resources.component";
 import {MatSnackBar, MatSnackBarModule} from "@angular/material/snack-bar";
 import { MatTableExporterModule } from 'mat-table-exporter';
+import { CreateSubmissionComponent } from './submissions/create-submission/create-submission.component';
+import { ViewSubmissionComponent } from './submissions/view-submission/view-submission.component';
+import { SafePipe } from './safe.pipe';
 
 
 @NgModule({
@@ -75,7 +78,10 @@ import { MatTableExporterModule } from 'mat-table-exporter';
     TitleComponent,
     CreateResourceComponent,
     ViewResourceComponent,
-    ListResourcesComponent
+    ListResourcesComponent,
+    CreateSubmissionComponent,
+    ViewSubmissionComponent,
+    SafePipe
   ],
   imports: [
     BrowserModule,
