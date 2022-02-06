@@ -21,7 +21,7 @@ export class ViewSubmissionComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    if (!await this.authService.isLoggedIn()) await this.authService.login();
+    //if (!await this.authService.isLoggedIn()) await this.authService.login();
 
     try {
       const id = <string>this.route.snapshot.paramMap.get("id");

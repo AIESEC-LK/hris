@@ -20,8 +20,7 @@
 
       <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="center center">
 
-        <a href="{{submission.submissionLink}}" target="_blank"
-           *ngIf="authService.isAdmin() || (authService.isEBOrAbove() && submission.entity == authService.getEntity())">
+        <a href="{{submission.submissionLink}}" target="_blank">
           <button mat-flat-button color="primary">
             OPEN FORM
           </button>
