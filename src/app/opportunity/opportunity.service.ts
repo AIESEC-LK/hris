@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import {AngularFireFunctions} from "@angular/fire/compat/functions";
-import {Resource} from "../resources/resources.service";
 
 export interface Opportunity {
   id: string,

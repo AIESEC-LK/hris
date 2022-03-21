@@ -10,6 +10,10 @@ exports.member = require("./routes/member-routes");
 exports.auth = require("./routes/auth-routes");
 exports.opportunity = require("./routes/opportunity-routes");
 exports.resource = require("./routes/resource-routes");
+exports.submission = require("./routes/submission-routes");
 exports.config = require("./routes/config-routes");
 
 exports.data = require("./data/data");
+
+exports.redirects = require("./routes/redirect-routes");
+

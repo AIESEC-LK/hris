@@ -65,6 +65,7 @@ async function canSuperEdit(context: CallableContext, email: string): Promise<bo
 }
 
 async function getCurrentUserRoles(context: CallableContext): Promise<string[]> {
+  if (!context.auth) return [];
   const tokenResult = await auth.getUser(context.auth?.uid!);
   if (!(tokenResult.customClaims) || !tokenResult.customClaims["role"]) throw NotAuthorizedException;
 

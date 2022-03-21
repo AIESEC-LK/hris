@@ -1,0 +1,11 @@
+.preview {
+  color:#777777;
+  font-size:11px;
+}
+
+.preview mat-icon {
+  font-size:11px;
+  padding-right:5px;
+  width:11px;
+  height:11px;
+}

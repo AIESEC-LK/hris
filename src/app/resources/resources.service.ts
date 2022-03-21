@@ -32,9 +32,9 @@ export class ResourcesService {
     const getResources = this.functions.httpsCallable('resource-getResources');
     const resources: Resource[] =  await getResources({}).toPromise();
     if (resources.length == 0) throw {
-      message: "No opportunities available",
+      message: "No resources available",
       details: {
-        message: "There are no opportunities available at the moment."
+        message: "There are no resources available at the moment."
       }
     }
     return resources;

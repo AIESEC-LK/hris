@@ -31,6 +31,13 @@
         "source": "**",
         "destination": "/index.html"
       }
+    ],
+    "redirects": [
+      {
+        "source": "/r/:resource*",
+        "destination": "https://us-central1-aiesec-hris.cloudfunctions.net/redirects-redirect?resource=:resource",
+        "type": 301
+      }
     ]
   },
   "functions": {

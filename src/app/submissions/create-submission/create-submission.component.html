@@ -1,0 +1,67 @@
+<div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="start start"
+     *ngIf="!edit || form.get('title')?.value || form.get('description')?.value">
+
+  <div class="mat-card" fxLayout="column" fxLayoutGap="20px" style="padding:20px;">
+
+    <div class="mat-card-title" *ngIf="!edit">Create a New Submission</div>
+    <div class="mat-card-title" *ngIf="edit">Update Submission</div>
+    <div class="mat-card-subtitle">Please provide the following details</div>
+
+    <div fxFlex="40" id="form" fxLayout="column">
+
+      <div fxLayout="column" fxLayoutGap="0px" [formGroup]="form">
+
+        <mat-form-field fxFlex="50">
+          <mat-label>Title</mat-label>
+          <input matInput formControlName="title" required>
+        </mat-form-field>
+        <span class="preview" *ngIf="!edit">
+          <mat-icon matTooltip="Adjust the title until you get the required URL. You can change the title later :)">help</mat-icon>
+          Generated URL: asl360.aiesec.lk/s/{{getShortUrl()}}
+        </span>
+
+        <mat-label style="padding-bottom:10px; padding-top:20px;">Description</mat-label>
+        <editor formControlName="description"
+                apiKey="cs1wg2d1rk4oe6uyo3nbf9cog6ill4iao3ii3nm6xx2mrfh8"
+                [init]="{
+            icons: 'material',
+            plugins: 'wordcount lists link',
+            menubar: false,
+            min_height: 300,
+            toolbar: 'undo redo styleselect bold italic alignleft aligncenter alignright bullist numlist outdent indent code link'
+          }"
+        ></editor>
+
+        <mat-form-field fxFlex="50" style="padding-top:20px;">
+          <mat-label>Submission Link (Google Form)</mat-label>
+          <input matInput formControlName="submissionLink" required>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="50">
+          <mat-label>
+            Responses Link (Google Sheet)
+          </mat-label>
+          <input matInput formControlName="responsesLink" required>
+        </mat-form-field>
+        <span style="font-size:10px; font-style: italic; padding-top:-10px;">(view access must be provided to aiesec-hris@appspot.gserviceaccount.com)</span>
+
+        <mat-form-field fxFlex="50" style="padding-top:10px;">
+          <mat-label>Intended Submitters</mat-label>
+          <textarea matInput formControlName="submitters" cdkTextareaAutosize cdkAutosizeMinRows="6"></textarea>
+        </mat-form-field>
+        <span style="font-size:10px; font-style: italic; padding-top:-10px;">(Email addresses - one per line)</span>
+
+        <mat-form-field fxFlex="50" style="padding-top:10px;">
+          <mat-label>Deadline</mat-label>
+          <input matInput type="date" formControlName="deadline">
+        </mat-form-field>
+
+        <button class="submit_button" mat-raised-button color="primary"  (click)="submitForm()" [disabled]="!form.valid">
+          {{edit ? "UPDATE SUBMISSION" : "CREATE SUBMISSION"}}
+        </button>
+
+      </div>
+    </div>
+  </div>
+
+</div>
