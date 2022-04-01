@@ -47,6 +47,13 @@
       </mat-form-field>-->
 
       <mat-form-field style="width:100px;" fxHide.lt-md>
+        <mat-label>Entity</mat-label>
+        <mat-select multiple [(ngModel)]="filter.entities" (selectionChange)="doFilter()">
+          <mat-option *ngFor="let entity of entities" [value]="entity">{{entity}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field style="width:100px;" fxHide.lt-md>
         <mat-label>Function</mat-label>
         <mat-select multiple [(ngModel)]="filter.functions" (selectionChange)="doFilter()">
           <mat-option *ngFor="let function of functions" [value]="function">{{function}}</mat-option>
@@ -57,13 +64,6 @@
         <mat-label>Role</mat-label>
         <mat-select multiple [(ngModel)]="filter.roles" (selectionChange)="doFilter()">
           <mat-option *ngFor="let role of roles" [value]="role">{{role}}</mat-option>
-        </mat-select>
-      </mat-form-field>
-
-      <mat-form-field style="width:100px;" fxHide.lt-md>
-        <mat-label>Entity</mat-label>
-        <mat-select multiple [(ngModel)]="filter.entities" (selectionChange)="doFilter()">
-          <mat-option *ngFor="let entity of entities" [value]="entity">{{entity}}</mat-option>
         </mat-select>
       </mat-form-field>
 

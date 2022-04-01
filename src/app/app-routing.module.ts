@@ -17,7 +17,7 @@ import {CreateSubmissionComponent} from "./submissions/create-submission/create-
 import {ViewSubmissionComponent} from "./submissions/view-submission/view-submission.component";
 
 const routes: Routes = [
-  { path: '', component: TitleComponent },
+  { path: '', component: ProfileComponent },
   { path: 'login', component: LoginComponent },
   { path: 'profile', component: ProfileComponent },
   { path: 'profile/initialize', component: InitializeComponent },

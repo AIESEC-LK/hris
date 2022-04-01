@@ -78,7 +78,7 @@
 
     <div id="content" fxLayout="column" fxLayoutAlign="start center" fxFlex style="padding-top:0px;">
 
-      <div fxLayout="row" fxLayoutAlign="start center" fxHide fxShow.lt-md style="background-color:#3B4F96; width:100%; padding:15px; line-height:30px; margin-bottom:20px; transition:all 0.3s; z-index: index 1000;">
+      <div fxLayout="row" fxLayoutAlign="start center" fxHide fxShow.lt-md style="background-color:#3B4F96; width:100%; padding:15px; line-height:30px; margin-bottom:20px; transition:all 0.3s; z-index: index 9000;">
         
         <mat-icon (click)="menuStatus = !menuStatus" style="color:#8ca5ec; font-size:30px; position:absolute; top:15px; left:15px;"> 
           menu
@@ -89,7 +89,7 @@
         </div>
       </div>
       
-      <div id="menu" fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="20px" fxHide fxShow.lt-md  style="z-index:999; transition: all 0.3s;" *ngIf="menuStatus">
+      <div id="menu" fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="20px" fxHide fxShow.lt-md  style="z-index:1001; transition: all 0.3s;" *ngIf="menuStatus">
         <div fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="20px" style="padding-top:10px;">
   
           <mat-icon (click)="menuStatus = !menuStatus" *ngIf="menuStatus">menu</mat-icon>
