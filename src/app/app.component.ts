@@ -9,6 +9,7 @@ import {ActivatedRoute} from "@angular/router";
 })
 export class AppComponent {
   title = 'AIESEC HRIS';
+  menuStatus:boolean = false;
 
   constructor(public authService: AuthService, private router:ActivatedRoute) {
   }

@@ -13,7 +13,7 @@
   </div>-->
 
   <div fxLayout="row" fxLayoutAlign="stretch stretch" style="z-index:999;">
-    <div id="menu" fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="20px">
+    <div id="menu" fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="20px" fxHide fxShow.gt-sm  style="z-index:999;">
       <div fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="20px">
 
         <img alt="AIESEC man" src="assets/images/monophy.gif"/>
@@ -74,9 +74,94 @@
       </div>
 
     </div>
+  
 
-    <div id="content" fxLayout="column" fxLayoutAlign="start center" fxFlex>
+    <div id="content" fxLayout="column" fxLayoutAlign="start center" fxFlex style="padding-top:0px;">
+
+      <div fxLayout="row" fxLayoutAlign="start center" fxHide fxShow.lt-md style="background-color:#3B4F96; width:100%; padding:15px; line-height:30px; margin-bottom:20px; transition:all 0.3s; z-index: index 1000;">
+        
+        <mat-icon (click)="menuStatus = !menuStatus" style="color:#8ca5ec; font-size:30px; position:absolute; top:15px; left:15px;"> 
+          menu
+        </mat-icon>
+
+        <div fxLayout="row" fxLayoutAlign="center center" fxFlex="100">
+          <span style="color:white; font-weight:bold; font-size:20px;">ASL 360</span>
+        </div>
+      </div>
+      
+      <div id="menu" fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="20px" fxHide fxShow.lt-md  style="z-index:999; transition: all 0.3s;" *ngIf="menuStatus">
+        <div fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="20px" style="padding-top:10px;">
+  
+          <mat-icon (click)="menuStatus = !menuStatus" *ngIf="menuStatus">menu</mat-icon>
+  
+          <mat-icon *ngIf="authService.logged && menuStatus" [routerLink]="['/profile']"
+                    [class.active] = "isActive('profile')"
+                    matTooltip="Your profile" matTooltipPosition="after"
+                    style="transition:all 0.3s;"
+                    (click)="menuStatus = false">
+            face</mat-icon>
+  
+          <mat-icon *ngIf="authService.logged && menuStatus" [routerLink]="['/members']"
+                    [class.active] = "isActive('members')"
+                    matTooltip="Members" matTooltipPosition="after"
+                    (click)="menuStatus = false">
+            people</mat-icon>
+  
+          <mat-icon *ngIf="authService.logged && menuStatus" [routerLink]="['/opportunities']"
+                    [class.active] = "isActive('opportunities')"
+                    matTooltip="Opportunities" matTooltipPosition="after"
+                    (click)="menuStatus = false">
+            stars</mat-icon>
+  
+          <mat-icon *ngIf="authService.logged && menuStatus" [routerLink]="['/resources']"
+                    [class.active] = "isActive('resources')"
+                    matTooltip="Resources" matTooltipPosition="after"
+                    (click)="menuStatus = false">
+            folder</mat-icon>
+  
+          <div *ngIf="authService.logged && menuStatus" style="padding-top:10px;"></div>
+  
+          <div style="border-top-style:solid; border-width:1px; border-color:#8CA5EC; margin:50px;" *ngIf="menuStatus">
+            <span style="opacity:0;">dfdf</span>
+          </div>
+  
+          <a href="https://hub.aiesec.lk" target="_blank" *ngIf="menuStatus">
+            <mat-icon matTooltip="Infinity Hub" matTooltipPosition="after">
+              all_inclusive</mat-icon>
+          </a>
+  
+          <a href="https://one.aiesec.lk" target="_blank" *ngIf="menuStatus">
+            <mat-icon matTooltip="AIESEC One" matTooltipPosition="after">
+              brightness_auto</mat-icon>
+          </a>
+  
+          <a href="https://analytics.aiesec.lk" target="_blank" *ngIf="menuStatus">
+            <mat-icon matTooltip="Analytics" matTooltipPosition="after">
+              auto_graph</mat-icon>
+          </a>
+  
+          <a href="https://crm.aiesec.lk" target="_blank" *ngIf="menuStatus">
+            <mat-icon matTooltip="CRM" matTooltipPosition="after">
+              pie_chart</mat-icon>
+          </a>
+  
+        </div>
+  
+        <div fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="20px" style="padding-bottom:20px;">
+          <mat-icon *ngIf="authService.logged" (click)="authService.logout()"
+                    [class.active] = "isActive('logout')"
+                    matTooltip="Log out" matTooltipPosition="after">
+            logout</mat-icon>
+        </div>
+  
+      </div>
+
       <router-outlet></router-outlet>
+
+      <div [ngStyle.gt-sm]="{'padding-left':'80px', 'padding-right':'20px', 'margin-top':'20px'}">
+        <router-outlet></router-outlet>
+      </div>
+
     </div>
 
   </div>
