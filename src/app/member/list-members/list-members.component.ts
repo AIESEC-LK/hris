@@ -132,7 +132,7 @@ export class ListMembersComponent implements OnInit {
     for (const member of this.members) {
       for (const function_name of this.memberService.getCurrentFunctions(member)) {
         const fixedName = MemberService.replaceCommonFunctionNames(function_name);
-        if (fixedName.trim() == "") continue; 
+        if (!fixedName || fixedName.trim() == "") continue; 
         functions.push(fixedName);
       }
     }

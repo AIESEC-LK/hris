@@ -13,7 +13,10 @@ const logger = require("../middleware/logger");
 const MemberDoesNotExistException = new functions.https.HttpsError('not-found', "Member not found",
   {message: "This member has not been added to the system."})
 
-const getProfileInformation = functions.https.onCall(async (data:any, context:CallableContext) => {
+const getProfileInformation = functions.runWith({
+  timeoutSeconds: 30,
+  memory: "8GB",
+}).https.onCall(async (data:any, context:CallableContext) => {
   logger.logFunctionInvocation(context, data);
   if(!await AuthService.canView(context, data.email)) throw AuthService.exceptions.NotAuthorizedException
 
@@ -64,7 +67,10 @@ const getProfileInformation = functions.https.onCall(async (data:any, context:Ca
   };
 });
 
-const addAdditionalInformation = functions.https.onCall(async (data:any, context:CallableContext) => {
+const addAdditionalInformation = functions.runWith({
+  timeoutSeconds: 30,
+  memory: "8GB",
+}).https.onCall(async (data:any, context:CallableContext) => {
   logger.logFunctionInvocation(context, data);
 
   const email = context.auth?.token.email;
@@ -103,7 +109,10 @@ const inviteMember = functions.https.onCall(async (data:any, context:CallableCon
 
 });
 
-const changeCurrentStatus = functions.https.onCall(async (data:any, context:CallableContext) => {
+const changeCurrentStatus = functions.runWith({
+  timeoutSeconds: 30,
+  memory: "8GB",
+}).https.onCall(async (data:any, context:CallableContext) => {
   logger.logFunctionInvocation(context, data);
 
   if(!await AuthService.canSuperEdit(context, data.email)) throw AuthService.exceptions.NotAuthorizedException
@@ -111,7 +120,10 @@ const changeCurrentStatus = functions.https.onCall(async (data:any, context:Call
   await db.collection('members').doc(email).set(data, {merge: true});
 });
 
-const editProfileField = functions.https.onCall(async (data:any, context:CallableContext) => {
+const editProfileField = functions.runWith({
+  timeoutSeconds: 30,
+  memory: "8GB",
+}).https.onCall(async (data:any, context:CallableContext) => {
   logger.logFunctionInvocation(context, data);
 
   if(!await AuthService.canEdit(context, data.email)) throw AuthService.exceptions.NotAuthorizedException
@@ -124,7 +136,10 @@ const editProfileField = functions.https.onCall(async (data:any, context:Callabl
   await db.collection('members').doc(data.email).set(edits, {merge: true});
 });
 
-const getMembers = functions.https.onCall(async (data:any, context:CallableContext) => {
+const getMembers = functions.runWith({
+  timeoutSeconds: 30,
+  memory: "8GB",
+}).https.onCall(async (data:any, context:CallableContext) => {
   logger.logFunctionInvocation(context, data);
   //if(!await AuthService.checkPrivileged(context)) throw AuthService.exceptions.NotAuthorizedException
 

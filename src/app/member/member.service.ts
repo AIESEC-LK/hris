@@ -176,6 +176,7 @@ export class MemberService {
     for (let position of this.getPositions(member)) {
       const end_date: Date = new Date(Date.parse(position.end_date));
       if (end_date < today) continue;
+      if (!position.name || position.name == null) continue;
       roles.push(position.name.trim());
     }
     return [...new Set(roles)];
@@ -188,9 +189,11 @@ export class MemberService {
     for (let position of this.getPositions(member)) {
       const end_date: Date = new Date(Date.parse(position.end_date));
       if (end_date < today) continue;
+      if (!position.entity || position.entity == null) continue;
       entities.push(position.entity.trim());
     }
 
+    if (!member.entity || member.entity == null) return [];
     if (entities.length == 0) entities.push(member.entity.trim());
 
     return [...new Set(entities)];
@@ -228,13 +231,14 @@ export class MemberService {
     let positions: Position[] = [];
     for (const position of member.positions) {
       position.type = "official";
-      position.name = position.name.trim();
+      if (!position.name && position.name != null) position.name = position.name.trim();
+
       positions.push(position);
     }
     if (member.unofficial_positions != null) {
       for (const position of member.unofficial_positions) {
         position.type = "unofficial";
-        position.name = position.name.trim();
+        if (!position.name && position.name != null) position.name = position.name.trim();
         positions.push(position);
       }
     }

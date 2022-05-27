@@ -23,7 +23,10 @@ const ResourceDoesNotExistException = new functions.https.HttpsError('not-found'
   {message: "This resource does not exist."})
 
 
-const createResource = functions.https.onCall(async (data:Resource, context:CallableContext) => {
+const createResource = functions.runWith({
+  timeoutSeconds: 30,
+  memory: "8GB",
+}).https.onCall(async (data:Resource, context:CallableContext) => {
   logger.logFunctionInvocation(context, data);
   if(!await AuthService.checkPrivileged(context)) throw AuthService.exceptions.NotAuthorizedException
 
@@ -44,7 +47,10 @@ const createResource = functions.https.onCall(async (data:Resource, context:Call
   return unique_id;
 });
 
-const getResource = functions.https.onCall(async (data:any, context:CallableContext) => {
+const getResource = functions.runWith({
+  timeoutSeconds: 30,
+  memory: "8GB",
+}).https.onCall(async (data:any, context:CallableContext) => {
   logger.logFunctionInvocation(context, data);
   if(!await ResourceService.canView(context, data.id)) throw AuthService.exceptions.NotAuthorizedException
 
@@ -57,7 +63,10 @@ const getResource = functions.https.onCall(async (data:any, context:CallableCont
   return resource
 });
 
-const getResources = functions.https.onCall(async (data:any, context:CallableContext) => {
+const getResources = functions.runWith({
+  timeoutSeconds: 30,
+  memory: "8GB",
+}).https.onCall(async (data:any, context:CallableContext) => {
   logger.logFunctionInvocation(context, data);
   await AuthService.checkLoggedIn(context);
 
@@ -77,7 +86,10 @@ const getResources = functions.https.onCall(async (data:any, context:CallableCon
   return result;
 });
 
-const editResource = functions.https.onCall(async (data:Resource, context:CallableContext) => {
+const editResource = functions.runWith({
+  timeoutSeconds: 30,
+  memory: "8GB",
+}).https.onCall(async (data:Resource, context:CallableContext) => {
   logger.logFunctionInvocation(context, data);
   if(!await ResourceService.canEdit(context, data.id)) throw AuthService.exceptions.NotAuthorizedException
 
@@ -93,7 +105,10 @@ const editResource = functions.https.onCall(async (data:Resource, context:Callab
   return data.id;
 });
 
-const deleteResource = functions.https.onCall(async (data:Resource, context:CallableContext) => {
+const deleteResource = functions.runWith({
+  timeoutSeconds: 30,
+  memory: "8GB",
+}).https.onCall(async (data:Resource, context:CallableContext) => {
   logger.logFunctionInvocation(context, data);
   if(!await ResourceService.canEdit(context, data.id)) throw AuthService.exceptions.NotAuthorizedException
 

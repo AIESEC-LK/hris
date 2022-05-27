@@ -25,7 +25,10 @@ const OpportunityDoesNotExistException = new functions.https.HttpsError('not-fou
   {message: "This opportunity does not exist."})
 
 
-const createOpportunity = functions.https.onCall(async (data:Opportunity, context:CallableContext) => {
+const createOpportunity = functions.runWith({
+  timeoutSeconds: 30,
+  memory: "8GB",
+}).https.onCall(async (data:Opportunity, context:CallableContext) => {
   logger.logFunctionInvocation(context, data);
   if(!await AuthService.checkPrivileged(context)) throw AuthService.exceptions.NotAuthorizedException
 
@@ -46,7 +49,10 @@ const createOpportunity = functions.https.onCall(async (data:Opportunity, contex
   return unique_id;
 });
 
-const getOpportunity = functions.https.onCall(async (data:any, context:CallableContext) => {
+const getOpportunity = functions.runWith({
+  timeoutSeconds: 30,
+  memory: "8GB",
+}).https.onCall(async (data:any, context:CallableContext) => {
   logger.logFunctionInvocation(context, data);
   if(!await OpportunityService.canView(context, data.id)) throw AuthService.exceptions.NotAuthorizedException
 
@@ -60,7 +66,10 @@ const getOpportunity = functions.https.onCall(async (data:any, context:CallableC
   return getOpportunityFromData(opportunity);
 });
 
-const getOpportunities = functions.https.onCall(async (data:any, context:CallableContext) => {
+const getOpportunities = functions.runWith({
+  timeoutSeconds: 30,
+  memory: "8GB",
+}).https.onCall(async (data:any, context:CallableContext) => {
   logger.logFunctionInvocation(context, data);
   await AuthService.checkLoggedIn(context);
 
@@ -89,7 +98,10 @@ const getOpportunities = functions.https.onCall(async (data:any, context:Callabl
 });
 
 
-const editOpportunity = functions.https.onCall(async (data:Opportunity, context:CallableContext) => {
+const editOpportunity = functions.runWith({
+  timeoutSeconds: 30,
+  memory: "8GB",
+}).https.onCall(async (data:Opportunity, context:CallableContext) => {
   logger.logFunctionInvocation(context, data);
   if(!await OpportunityService.canEdit(context, data.id)) throw AuthService.exceptions.NotAuthorizedException
 
@@ -133,7 +145,10 @@ async function getOpportunityFromData(opportunity: Opportunity): Promise<Opportu
   };
 }
 
-const deleteOpportunity = functions.https.onCall(async (data:Opportunity, context:CallableContext) => {
+const deleteOpportunity = functions.runWith({
+  timeoutSeconds: 30,
+  memory: "8GB",
+}).https.onCall(async (data:Opportunity, context:CallableContext) => {
   logger.logFunctionInvocation(context, data);
   if(!await OpportunityService.canEdit(context, data.id)) throw AuthService.exceptions.NotAuthorizedException
 
