@@ -7,7 +7,11 @@ const db = admin.firestore();
 
 const logger = require("../middleware/logger");
 
-const getFunctions = functions.https.onCall(async (data: any, context:CallableContext) => {
+const getFunctions = functions.runWith({
+    timeoutSeconds: 30,
+    memory: "8GB",
+})
+.https.onCall(async (data: any, context:CallableContext) => {
   logger.logFunctionInvocation(context, data);
 
   return (await db.collection('config').doc('functions').get()).data().items

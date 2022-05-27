@@ -1,0 +1,45 @@
+<div class="containerx" fxLayout="column">
+  <div class="dialogx" fxLayout="column">
+    <h1 mat-dialog-title class="titlex">Add new position for {{name}}</h1>
+    <div mat-dialog-content class="contentx" fxLayout="column" fxLayoutGap="20px"
+         [formGroup]="form">
+
+      <div fxLayout="row" fxLayoutGap="20px">
+        <mat-form-field>
+          <mat-label>Position Name</mat-label>
+          <input matInput formControlName="name" required placeholder="OCVP Marketing">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Function/Team/Project</mat-label>
+          <input matInput formControlName="function" required placeholder="Global Village 2021">
+        </mat-form-field>
+      </div>
+
+      <mat-form-field fxFlex="100">
+        <mat-label>Entity</mat-label>
+        <span matPrefix>AIESEC in&nbsp;&nbsp;</span>
+        <input matInput formControlName="entity" required placeholder="Disneyland">
+      </mat-form-field>
+
+      <div fxLayout="row" fxLayoutGap="20px">
+        <mat-form-field fxFlex="100">
+          <mat-label>Start Date</mat-label>
+          <input matInput formControlName="start_date" type="date" placeholder="End date">
+        </mat-form-field>
+
+
+        <mat-form-field fxFlex="100">
+          <mat-label>End Date</mat-label>
+          <input matInput formControlName="end_date" type="date" placeholder="End date">
+        </mat-form-field>
+
+      </div>
+
+      <button class="submit_button" mat-raised-button color="primary" [disabled]="!form.valid"
+              (click)="submit()">
+        ADD POSITION
+      </button>
+    </div>
+  </div>
+</div>

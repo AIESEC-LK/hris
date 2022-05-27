@@ -7,7 +7,12 @@ const db = admin.firestore();
 const AuthService = require("../services/auth-service");
 const logger = require("../middleware/logger");
 
-const completeLogin = functions.https.onCall(async (data:any, context:any) => {
+const completeLogin = functions
+.runWith({
+    timeoutSeconds: 30,
+    memory: "8GB",
+})
+.https.onCall(async (data:any, context:any) => {
   logger.logFunctionInvocation(context, data);
 
   await AuthService.checkLoggedIn(context);

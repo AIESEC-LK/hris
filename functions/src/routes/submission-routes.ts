@@ -34,7 +34,10 @@ const SubmissionDoesNotExistException = new functions.https.HttpsError('not-foun
   {message: "This submission does not exist."})
 
 
-const createSubmission = functions.https.onCall(async (data:Submission, context:CallableContext) => {
+const createSubmission = functions.runWith({
+  timeoutSeconds: 30,
+  memory: "8GB",
+}).https.onCall(async (data:Submission, context:CallableContext) => {
   logger.logFunctionInvocation(context, data);
   if(!await AuthService.checkPrivileged(context)) throw AuthService.exceptions.NotAuthorizedException
 
@@ -57,7 +60,10 @@ const createSubmission = functions.https.onCall(async (data:Submission, context:
   return unique_id;
 });
 
-const getSubmission = functions.https.onCall(async (data:any, context:CallableContext) => {
+const getSubmission = functions.runWith({
+  timeoutSeconds: 30,
+  memory: "8GB",
+}).https.onCall(async (data:any, context:CallableContext) => {
   logger.logFunctionInvocation(context, data);
   if(!await SubmissionService.canView(context, data.id)) throw AuthService.exceptions.NotAuthorizedException
 
@@ -76,7 +82,10 @@ const getSubmission = functions.https.onCall(async (data:any, context:CallableCo
   return submission
 });
 
-const editSubmission = functions.https.onCall(async (data:Submission, context:CallableContext) => {
+const editSubmission = functions.runWith({
+  timeoutSeconds: 30,
+  memory: "8GB",
+}).https.onCall(async (data:Submission, context:CallableContext) => {
   logger.logFunctionInvocation(context, data);
   if(!await SubmissionService.canEdit(context, data.id!)) throw AuthService.exceptions.NotAuthorizedException
 
@@ -92,7 +101,10 @@ const editSubmission = functions.https.onCall(async (data:Submission, context:Ca
   return data.id;
 });
 
-const deleteSubmission = functions.https.onCall(async (data:Submission, context:CallableContext) => {
+const deleteSubmission = functions.runWith({
+  timeoutSeconds: 30,
+  memory: "8GB",
+}).https.onCall(async (data:Submission, context:CallableContext) => {
   logger.logFunctionInvocation(context, data);
   if(!await SubmissionService.canEdit(context, data.id)) throw AuthService.exceptions.NotAuthorizedException
 
@@ -102,7 +114,10 @@ const deleteSubmission = functions.https.onCall(async (data:Submission, context:
   return;
 });
 
-const sendReminder = functions.https.onCall(async (data:Submission, context:CallableContext) => {
+const sendReminder = functions.runWith({
+  timeoutSeconds: 30,
+  memory: "8GB",
+}).https.onCall(async (data:Submission, context:CallableContext) => {
   logger.logFunctionInvocation(context, data);
   if(!await SubmissionService.canEdit(context, data.id!)) throw AuthService.exceptions.NotAuthorizedException
 

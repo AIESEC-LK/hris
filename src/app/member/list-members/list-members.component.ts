@@ -131,7 +131,9 @@ export class ListMembersComponent implements OnInit {
     let functions: string[] = [];
     for (const member of this.members) {
       for (const function_name of this.memberService.getCurrentFunctions(member)) {
-        functions.push(MemberService.replaceCommonFunctionNames(function_name));
+        const fixedName = MemberService.replaceCommonFunctionNames(function_name);
+        if (!fixedName || fixedName.trim() == "") continue; 
+        functions.push(fixedName);
       }
     }
 
@@ -150,13 +152,27 @@ export class ListMembersComponent implements OnInit {
   }
 
   private getAllEntities(): string[] {
-    let entities: string[] = [];
+    let entities: string[] = [
+      "COLOMBO CENTRAL",
+      "COLOMBO NORTH",
+      "COLOMBO SOUTH",
+      "Kandy",
+      "USJ",
+      "NSBM",
+      "Ruhuna",
+      "SLIIT",
+      "MC Sri Lanka"
+    ];
+    return entities;
+
+    /*
     for (const member of this.members) {
       for (const entity of this.memberService.getCurrentEntities(member)) {
         entities.push(entity);
       }
     }
     return [...new Set(entities)];
+    */
   }
 
   private getAllFaculties(): string[] {

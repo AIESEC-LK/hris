@@ -176,7 +176,8 @@ export class MemberService {
     for (let position of this.getPositions(member)) {
       const end_date: Date = new Date(Date.parse(position.end_date));
       if (end_date < today) continue;
-      roles.push(position.name);
+      if (!position.name || position.name == null) continue;
+      roles.push(position.name.trim());
     }
     return [...new Set(roles)];
   }
@@ -188,10 +189,12 @@ export class MemberService {
     for (let position of this.getPositions(member)) {
       const end_date: Date = new Date(Date.parse(position.end_date));
       if (end_date < today) continue;
-      entities.push(position.entity);
+      if (!position.entity || position.entity == null) continue;
+      entities.push(position.entity.trim());
     }
 
-    if (entities.length == 0) entities.push(member.entity);
+    if (!member.entity || member.entity == null) return [];
+    if (entities.length == 0) entities.push(member.entity.trim());
 
     return [...new Set(entities)];
   }
@@ -228,11 +231,14 @@ export class MemberService {
     let positions: Position[] = [];
     for (const position of member.positions) {
       position.type = "official";
+      if (!position.name && position.name != null) position.name = position.name.trim();
+
       positions.push(position);
     }
     if (member.unofficial_positions != null) {
       for (const position of member.unofficial_positions) {
         position.type = "unofficial";
+        if (!position.name && position.name != null) position.name = position.name.trim();
         positions.push(position);
       }
     }
@@ -256,16 +262,24 @@ export class MemberService {
 
   public static replaceCommonFunctionNames(function_name: string) {
     if (!function_name) return function_name;
-    let x = function_name;
+    let x = function_name.trim();
     const abbrv = {
       "Incoming Global Volunteer": "iGV",
+      "Incoming Global Talent/Teacher": "iGTa/e",
+      "Outgoing Global Talent/Teacher": "oGTa/e",
+      "Incoming Global Talent and Teacher": "iGTa/e",
+      "Outgoing Global Talent and Teacher": "oGTa/e",
+      "Incoming Global Talent & Teacher": "iGTa/e",
+      "Outgoing Global Talent & Teacher": "oGTa/e",
+      "Incoming Global Talent&Teacher": "iGTa/e",
+      "Outgoing Global Talent&Teacher": "oGTa/e",
+      "oGTa/Te": "oGTa/e",
+      "iGTa/Te": "iGTa/e",
       "Incoming Global Talent": "iGTa",
       "Incoming Global Teacher": "iGTe",
-      "Incoming Global Talent/Teacher": "iGTa/e",
       "Outgoing Global Volunteer": "oGV",
       "Outgoing Global Talent": "oGTa",
       "Outgoing Global Teacher": "oGTe",
-      "Outgoing Global Talent/Teacher": "oGTa/e",
       "Business Development": "BD",
       "Partnership Development": "PD",
       "People Management": "PM",
@@ -275,20 +289,34 @@ export class MemberService {
       "Finance, Legal": "FL",
       "Expansions Development": "ED",
       "Digital Experience": "DXP",
-      "Engage with AIESEC": "EWA",
+      "DigitalExperience": "DXP",
+      "Engage with AIESEC": "EwA",
+      "EWA": "EwA",
       "Business to Customer": "B2C",
       "Business to Business": "B2B",
       "Marketing": "Mkt",
-      " and ": "&",
-      "and": "&",
-      "Organizing Committee": "OC"
+      " and ":  " & ",
+      "Organizing Committee": "OC",
+      "Customer Experience": "CXP",
+      "Expansion Management": "EM",
+      "Expansions Management": "EM",
+      "Entity Development": "ED",
+      "Organizational Development": "OD",
+      "Outgoing Exchanges": "oGX",
+      "Outgoing Exchange": "oGX",
+      "Incoming Exchanges": "iCX",
+      "Incoming Exchange": "iCX",
+      "Public Relations": "PR",
+      "School Expansion Board": "SEB",
+      "International Relations": "IR",
+      "Matching": "M"
     }
 
     for (const long_form in abbrv) {
-      const regEx = new RegExp(long_form, "ig");
+      let regEx = new RegExp(long_form, "ig");
       // @ts-ignore
       const replaceMask: string = abbrv[long_form];
-      x = x.replace(regEx, replaceMask)
+      x = x.replace(regEx, replaceMask);
     }
     return x;
   }
