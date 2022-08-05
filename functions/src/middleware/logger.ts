@@ -12,6 +12,16 @@ const logFunctionInvocation = function(context:CallableContext, data:any) {
   })
 }
 
+const logWarning = function(context:CallableContext, data:any) {
+  functions.logger.log({
+    type: "WARNING",
+    function_name: process.env.FUNCTION_TARGET,
+    timestamp: getSLTimestamp(),
+    caller: context.auth?.token.email,
+    data: data
+  })
+}
+
 function getSLTimestamp(): string {
   const d = new Date();
   const utc = d.getTime() + (d.getTimezoneOffset() * 60000);
@@ -41,6 +51,7 @@ function getCurrentDate(): string {
 
 module.exports = {
   logFunctionInvocation: logFunctionInvocation,
+  logWarning: logWarning,
   getSLTimestamp: getSLTimestamp,
   getCurrentDate: getCurrentDate
 }

@@ -25,13 +25,20 @@ const getProfileInformation = functions.runWith({
   const member = await db.collection('members').doc(email).get();
   if (!member.exists) throw MemberDoesNotExistException;
 
-  let expa_data
-  if (data.refresh) expa_data = await getMemberExpaInfo(email, member.data().expa_id);
-  else expa_data = {
+  let expa_data = {
     positions: member.data().positions,
     name: member.data().name,
     gender: member.data().gender,
     entity: member.data().entity
+  }
+
+  try {
+    if (data.refresh) expa_data = await getMemberExpaInfo(email, member.data().expa_id);
+  } catch (e) {
+    logger.logWarning(context, {
+      message: "Member does not exist on EXPA",
+      ...data
+    })
   }
 
   let sensitive_data = {};
@@ -83,9 +90,13 @@ const inviteMember = functions.https.onCall(async (data:any, context:CallableCon
 
   if(!await AuthService.checkPrivileged(context)) throw AuthService.exceptions.NotAuthorizedException
 
-  const entity = (await getMemberExpaInfo(data.email, data.expa_id)).entity;
   const userEntity = await AuthService.getCurrentUserEntity(context);
-  console.log(entity, userEntity);
+  let entity = userEntity;
+
+  if (data.expa_id) {
+    entity = (await getMemberExpaInfo(data.email, data.expa_id)).entity;
+  }
+
   if (!(await AuthService.getCurrentUserRoles(context)).includes("admin") && entity != userEntity)
     throw AuthService.exceptions.NotAuthorizedException
 

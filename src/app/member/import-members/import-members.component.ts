@@ -124,6 +124,7 @@ export class ImportMembersComponent implements OnInit {
   }
 
   private static validateExpaId(id: string) {
+    if (!id) return true;
     const id_num = parseInt(id);
     return (id_num >= 1000000 && id_num <= 9999999)
   }

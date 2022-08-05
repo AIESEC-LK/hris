@@ -229,11 +229,12 @@ export class MemberService {
 
   public getPositions(member: Member): Position[] {
     let positions: Position[] = [];
-    for (const position of member.positions) {
-      position.type = "official";
-      if (!position.name && position.name != null) position.name = position.name.trim();
-
-      positions.push(position);
+    if (member.positions != null) {
+      for (const position of member.positions) {
+        position.type = "official";
+        if (!position.name && position.name != null) position.name = position.name.trim();
+        positions.push(position);
+      }
     }
     if (member.unofficial_positions != null) {
       for (const position of member.unofficial_positions) {
