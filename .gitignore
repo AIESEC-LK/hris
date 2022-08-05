@@ -52,3 +52,5 @@ firebase-debug.log
 .gitignore
 .firebase/hosting.ZGlzdFxocmlz.cache
 functions/src/config.ts
+firebase=debug.log
+firestore-debug.log
