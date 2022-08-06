@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {AuthService} from "../../auth/auth.service";
 import {Opportunity, OpportunityService} from "../opportunity.service";
@@ -11,6 +11,9 @@ import {ErrorComponent} from "../../dialogs/error/error.component";
   styleUrls: ['./list-opportunities.component.css']
 })
 export class ListOpportunitiesComponent implements OnInit {
+
+  @Input() showAdminPanel = true;
+  @Input() showAlerts = true;
 
   opportunities? : Opportunity[];
   loading = true;
@@ -25,7 +28,7 @@ export class ListOpportunitiesComponent implements OnInit {
     try {
       this.opportunities = await this.opportunityService.getOpportunities();
     } catch (e) {
-      this.dialog.open(ErrorComponent, {data: e});
+      if (this.showAlerts) this.dialog.open(ErrorComponent, {data: e});
     }
 
     this.loading = false;

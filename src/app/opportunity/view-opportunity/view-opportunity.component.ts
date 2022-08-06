@@ -1,12 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute, Router, NavigationEnd} from "@angular/router";
 import {AuthService} from "../../auth/auth.service";
 import {MatDialog} from "@angular/material/dialog";
 import {ErrorComponent} from "../../dialogs/error/error.component";
 import {Opportunity, OpportunityService} from "../opportunity.service";
-import {Resource} from "../../resources/resources.service";
 import {LoadingComponent} from "../../dialogs/loading/loading.component";
-import {MatTableDataSource} from "@angular/material/table";
 
 @Component({
   selector: 'app-view-opportunity',
@@ -18,6 +16,8 @@ export class ViewOpportunityComponent implements OnInit {
   opportunity?: Opportunity;
   loading = true;
 
+  private sub: any;
+
   constructor(private route: ActivatedRoute, public authService:AuthService,
               public opportunityService: OpportunityService, private dialog: MatDialog, private router:Router) {
   }
@@ -26,9 +26,19 @@ export class ViewOpportunityComponent implements OnInit {
     // Temporarily disable login check to allow non-added users
     // if (!await this.authService.isLoggedIn()) await this.authService.login();
 
+    this.router.events.subscribe((evt) => {
+      if (!(evt instanceof NavigationEnd)) {
+          return;
+      }
+      window.scrollTo(0, 0)
+    });
+
     try {
-      const id = <string>this.route.snapshot.paramMap.get("id");
-      this.opportunity = await this.opportunityService.getOpportunity(id);
+      this.sub = this.route.params.subscribe(async params => {
+         let id = params['id'];
+         this.opportunity = undefined;
+         this.opportunity = await this.opportunityService.getOpportunity(id);
+       });
     } catch (e) {
       this.dialog.open(ErrorComponent, {data: e});
     }
@@ -47,6 +57,10 @@ export class ViewOpportunityComponent implements OnInit {
       loadingDialog.close();
     }
     return;
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 
 }

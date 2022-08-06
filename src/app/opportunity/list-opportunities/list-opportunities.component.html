@@ -4,7 +4,7 @@
        fxLayout="row" fxLayout.lt-md="column"
        fxLayoutAlign="space-between center"
        fxLayoutAlign.lt-md="center center"
-       *ngIf="authService.isEBOrAbove()">
+       *ngIf="authService.isEBOrAbove() && showAdminPanel">
     <div class="mat-card-title">Opportunities Admin Panel</div>
 
     <button mat-flat-button color="primary" [routerLink]="['/opportunities/create']">
@@ -22,7 +22,7 @@
     <div *ngFor="let opportunity of opportunities" class="opportunity_x"
         [routerLink]="['/opp/'+opportunity.id]">
       <div class="mat-card opportunity" fxLayout="column" fxLayoutAlign="space-between space-between" fxLayoutGap="10px"
-           style="background-image:url('{{opportunity.photo}}')">
+          style="background-image:url('{{opportunity.photo}}')">
         <div class="mat-card-title" style="color:white;">{{opportunity.title}}</div>
         <div>
           <div>AIESEC in {{opportunity.entity}}</div>

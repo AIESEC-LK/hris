@@ -10,7 +10,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {LoadingComponent} from "../../dialogs/loading/loading.component";
 
 @Component({
-  selector: 'app-list-opportunities',
+  selector: 'app-list-resources',
   templateUrl: './list-resources.component.html',
   styleUrls: ['./list-resources.component.css']
 })
