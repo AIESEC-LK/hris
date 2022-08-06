@@ -12,6 +12,7 @@ const logger = require("../middleware/logger");
 export interface Resource {
   id: string,
   title: string,
+  url: string,
   link: string,
   functions: string[],
   keywords: string[]
@@ -30,7 +31,7 @@ const createResource = functions.runWith({
   logger.logFunctionInvocation(context, data);
   if(!await AuthService.checkPrivileged(context)) throw AuthService.exceptions.NotAuthorizedException
 
-  const unique_id = makeUrlFriendly(data.title);
+  const unique_id = makeUrlFriendly(data.url);
   if (await checkResourceExists(unique_id)) throw ResourceAlreadyExistsException;
 
   await db.collection('resources').doc(unique_id).set(

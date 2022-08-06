@@ -2,7 +2,7 @@
 
 <div fxLayout="column" fxLayoutGap="50px" fxLayoutAlign="center center">
 
-  <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="stretch stretch">
+  <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutAlign="stretch stretch">
 
     <div fxLayout="column" fxLayoutGap="20px" fxLayoutAlign="stretch stretch" style="padding:0; border:none;" *ngIf="opportunity">
       <img class="opportunity_photo" src="{{opportunity.photo}}"/>
@@ -53,8 +53,11 @@
 
   <hr>
 
-  <div fxLayout="column" fxLayoutGap="20px" *ngIf="opportunity">
-    <h1 style="text-align:center">Other opportunities available for you...</h1>
+  <div class="mat-card" fxLayout="column" fxLayoutGap="20px" *ngIf="opportunity">
+
+    <div class="mat-card-title" style="text-align:center">
+      Other opportunities available for you...
+    </div>
 
     <app-list-opportunities [showAdminPanel]="false" [showAlerts]="false"></app-list-opportunities>
   </div>

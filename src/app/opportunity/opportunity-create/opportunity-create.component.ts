@@ -19,6 +19,7 @@ export class OpportunityCreateComponent implements OnInit {
 
   form = new FormGroup({
     title: new FormControl(null, [Validators.required]),
+    url: new FormControl(null, [Validators.required]),
     photo: new FormControl(null),
     photo_x: new FormControl(null, [Validators.required]),
     description: new FormControl(null, [Validators.required]),
@@ -55,6 +56,7 @@ export class OpportunityCreateComponent implements OnInit {
         const opportunity:Opportunity = await this.opportunityService.getOpportunity(id);
         this.form.setValue({
           title: opportunity.title,
+          url: opportunity.id,
           description: opportunity.description,
           deadline: opportunity.deadline,
           link: opportunity.link,
@@ -127,7 +129,7 @@ export class OpportunityCreateComponent implements OnInit {
   }
 
   getShortUrl():string {
-    const value = this.form.value.title;
+    const value = this.form.value.url;
     return value == undefined ? '' : value.replace(/[^a-z0-9_]+/gi, '-').replace(/^-|-$/g, '').toLowerCase();
   }
 

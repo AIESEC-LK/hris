@@ -12,6 +12,7 @@ const logger = require("../middleware/logger");
 export interface Opportunity {
   id: string,
   title: string,
+  url: string,
   photo: string,
   description: string,
   link: string,
@@ -32,7 +33,7 @@ const createOpportunity = functions.runWith({
   logger.logFunctionInvocation(context, data);
   if(!await AuthService.checkPrivileged(context)) throw AuthService.exceptions.NotAuthorizedException
 
-  const unique_id = makeUrlFriendly(data.title);
+  const unique_id = makeUrlFriendly(data.url);
   if (await checkOpportunityExists(unique_id)) throw OpportunityAlreadyExistsException;
 
   await db.collection('opportunities').doc(unique_id).set(
@@ -133,6 +134,7 @@ async function getOpportunityFromData(opportunity: Opportunity): Promise<Opportu
   return {
     id: opportunity.id,
     title: opportunity.title,
+    url: opportunity.url,
     photo: opportunity.photo ?
       await admin.storage().bucket("aiesec-hris.appspot.com").file(opportunity.photo).getSignedUrl(
         {action: 'read', expires: "01-01-2500"}

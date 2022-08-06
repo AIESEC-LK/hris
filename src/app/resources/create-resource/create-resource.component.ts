@@ -20,6 +20,7 @@ export class CreateResourceComponent implements OnInit {
   private url_regex = '(https?://)[^]*'
   form = new FormGroup({
     title: new FormControl(null, [Validators.required]),
+    url: new FormControl(null, [Validators.required]),
     functions: new FormControl(null),
     link: new FormControl(null, [Validators.pattern(this.url_regex), Validators.required]),
     keywords: new FormControl(null)
@@ -48,6 +49,7 @@ export class CreateResourceComponent implements OnInit {
         const resource:Resource = await this.resourceService.getResource(this.edit_id);
         this.form.setValue({
           title: resource.title,
+          url: resource.id,
           link: resource.link,
           functions: resource.functions,
           keywords: resource.keywords,
@@ -79,7 +81,7 @@ export class CreateResourceComponent implements OnInit {
   }
 
   getShortUrl():string {
-    const value = this.form.value.title;
+    const value = this.form.value.url;
     return value == undefined ? '' : value.replace(/[^a-z0-9_]+/gi, '-').replace(/^-|-$/g, '').toLowerCase();
   }
 
