@@ -115,7 +115,9 @@ const inviteMember = functions.https.onCall(async (data:any, context:CallableCon
   await db.collection('members').doc(data.email).set({
     email: data.email,
     expa_id: data.expa_id,
-    current_status: "ACTIVE"
+    current_status: "ACTIVE",
+    entity: entity,
+    name: data.name
   }, {merge: true});
 
 });
