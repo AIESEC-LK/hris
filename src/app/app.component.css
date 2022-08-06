@@ -81,3 +81,27 @@
 .active {
   color:white !important;
 }
+
+#bug_report {
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  background-color:#3a539b;
+  border-radius:100px;
+  width:50px;
+  height:50px;
+  font-size:20px;
+  z-index: 9999;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  transition:all 0.3s;
+}
+
+#bug_report mat-icon {
+  color:white;
+  transform: scale(1);
+}
+
+#bug_report:hover {
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  background-color:#3a476d;
+}

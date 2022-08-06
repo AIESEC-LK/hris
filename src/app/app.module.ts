@@ -56,6 +56,7 @@ import { CreateSubmissionComponent } from './submissions/create-submission/creat
 import { ViewSubmissionComponent } from './submissions/view-submission/view-submission.component';
 import { SafePipe } from './safe.pipe';
 
+import { AngularFireAnalyticsModule } from '@angular/fire/compat/analytics';
 
 @NgModule({
   declarations: [
@@ -90,6 +91,7 @@ import { SafePipe } from './safe.pipe';
     FlexLayoutModule,
     BrowserAnimationsModule,
     AngularFireModule.initializeApp(environment.firebase, "angular-auth-firebase"),
+    AngularFireAnalyticsModule,
     AngularFireAuthModule,
     AngularFireFunctionsModule,
     MatProgressSpinnerModule,
