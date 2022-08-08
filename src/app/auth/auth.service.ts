@@ -53,13 +53,14 @@ export class AuthService {
   }
 
   public async isLoggedIn(): Promise<boolean> {
+    console.log("login check");
     const user = <firebase.User> await this.auth.authState.pipe(first()).toPromise();
     this.logged = user != null;
 
     if (this.logged) {
       let tokenResult = await user.getIdTokenResult(true);
       console.log(tokenResult);
-      if (!tokenResult.claims['role']) {
+      if (!tokenResult.claims['role'] || !tokenResult.claims['entity']) {
         await this.completeLogin();
         tokenResult = await user.getIdTokenResult(true);
       } else {
@@ -77,7 +78,7 @@ export class AuthService {
     try {
       const completeLogin = this.functions.httpsCallable('auth-completeLogin');
       const result = await completeLogin(null).toPromise();
-      console.log("Tokens", result.tokens)
+      console.log("Tokens", result.tokens);
 
       this.role = result.tokens['role'];
       this.entity = result.tokens['entity'];
@@ -86,6 +87,7 @@ export class AuthService {
       if (!result.tokens['profile_created']) await this.router.navigate(["/profile/initialize"]);
     }
     catch (e) {
+      this.auth.signOut();
       this.dialog.open(ErrorComponent, {data: e});
     } finally {
       //loading.close();

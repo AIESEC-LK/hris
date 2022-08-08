@@ -20,17 +20,24 @@ const completeLogin = functions
   const email = context.auth?.token.email;
   const uid = context.auth?.uid;
 
-  if (!email || !uid) return AuthService.exceptions.NotAuthorizedException;
+  if (!email || !uid) {
+    await admin.auth().deleteUser(context.auth?.uid);
+    return AuthService.exceptions.NotAuthorizedException; 
+  }
   console.log("EMAIL", email);
 
   let userTokens;
   try {
     userTokens = await db.collection('users').doc(email).get();
   } catch (e) {
+    await admin.auth().deleteUser(context.auth?.uid);
     throw AuthService.exceptions.NotAuthorizedException;
   }
 
-  if (!userTokens.exists) throw AuthService.exceptions.NotAuthorizedException;
+  if (!userTokens.exists) {
+    await admin.auth().deleteUser(context.auth?.uid);
+    throw AuthService.exceptions.NotAuthorizedException;
+  }
   await admin.auth().setCustomUserClaims(uid, userTokens.data());
 
   return {

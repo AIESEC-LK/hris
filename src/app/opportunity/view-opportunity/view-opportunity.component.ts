@@ -15,6 +15,7 @@ export class ViewOpportunityComponent implements OnInit {
 
   opportunity?: Opportunity;
   loading = true;
+  isLoggedIn:boolean = false;
 
   private sub: any;
 
@@ -25,6 +26,8 @@ export class ViewOpportunityComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     // Temporarily disable login check to allow non-added users
     // if (!await this.authService.isLoggedIn()) await this.authService.login();
+
+    this.isLoggedIn = await this.authService.isLoggedIn();
 
     this.router.events.subscribe((evt) => {
       if (!(evt instanceof NavigationEnd)) {
