@@ -55,7 +55,7 @@ const getOpportunity = functions.runWith({
   memory: "8GB",
 }).https.onCall(async (data:any, context:CallableContext) => {
   logger.logFunctionInvocation(context, data);
-  if(!await OpportunityService.canView(context, data.id)) throw AuthService.exceptions.NotAuthorizedException
+  //if(!await OpportunityService.canView(context, data.id)) throw AuthService.exceptions.NotAuthorizedException
 
   const id = data.id;
 

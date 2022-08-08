@@ -63,7 +63,7 @@ export class AuthService {
         await this.completeLogin();
         tokenResult = await user.getIdTokenResult(true);
       } else {
-        this.completeLogin();
+        //this.completeLogin();
       }
       this.role = tokenResult.claims['role'];
       this.email = user.email!;

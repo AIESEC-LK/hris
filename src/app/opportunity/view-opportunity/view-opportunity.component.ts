@@ -33,7 +33,7 @@ export class ViewOpportunityComponent implements OnInit {
       window.scrollTo(0, 0)
     });
 
-    try {
+    try { 
       this.sub = this.route.params.subscribe(async params => {
          let id = params['id'];
          this.opportunity = undefined;

@@ -14,6 +14,7 @@ export class ListOpportunitiesComponent implements OnInit {
 
   @Input() showAdminPanel = true;
   @Input() showAlerts = true;
+  @Input() forceLogin = true;
 
   opportunities? : Opportunity[];
   loading = true;
@@ -23,7 +24,7 @@ export class ListOpportunitiesComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    if (!await this.authService.isLoggedIn()) await this.authService.login();
+    if (!await this.authService.isLoggedIn() && this.forceLogin) await this.authService.login();
 
     try {
       this.opportunities = await this.opportunityService.getOpportunities();
