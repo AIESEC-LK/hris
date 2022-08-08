@@ -9,6 +9,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {LoadingComponent} from "../../dialogs/loading/loading.component";
 import {AngularFireFunctions} from "@angular/fire/compat/functions";
 import {Resource, ResourcesService} from "../resources.service";
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-create-resource',
@@ -33,8 +34,10 @@ export class CreateResourceComponent implements OnInit {
 
   constructor(private memberService:MemberService, private authService: AuthService, private router:Router,
               private dialog: MatDialog, private functions: AngularFireFunctions, private route: ActivatedRoute,
-              private resourceService: ResourcesService) {
+              private resourceService: ResourcesService, private titleService:Title) {
+    this.titleService.setTitle(`Create Resource | ASL 360°`);
     if (this.route.snapshot.paramMap.get("id")) {
+      this.titleService.setTitle(`Edit Resource | ASL 360°`);
       this.edit = true;
     }
 

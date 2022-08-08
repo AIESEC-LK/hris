@@ -3,6 +3,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {MatDialog} from "@angular/material/dialog";
 import {MemberService} from "../member.service";
 import {AngularFireFunctions} from "@angular/fire/compat/functions";
+import {Title} from "@angular/platform-browser";
 
 export interface Log {
   status: string,
@@ -29,7 +30,10 @@ export class ImportMembersComponent implements OnInit {
   current_import?: number;
   logs?: Log[];
 
-  constructor(private dialog: MatDialog, private memberService:MemberService, private functions: AngularFireFunctions) { }
+  constructor(private dialog: MatDialog, private memberService:MemberService, private functions: AngularFireFunctions,
+    private titleService:Title) {
+      this.titleService.setTitle(`Import Members | ASL 360°`);
+    }
 
   ngOnInit(): void {
   }

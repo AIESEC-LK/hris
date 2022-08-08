@@ -25,7 +25,7 @@
         </div>
 
         <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="center center">
-          <a href="{{opportunity.link}}" target="_blank">
+          <a href="{{opportunity.link}}" target="_blank" (click)="logApplyClick()">
             <button mat-flat-button color="primary">
               APPLY
             </button>

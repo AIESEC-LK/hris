@@ -6,6 +6,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {ErrorComponent} from "../../dialogs/error/error.component";
 import {LoadingComponent} from "../../dialogs/loading/loading.component";
 import {Submission, SubmissionService} from "../submission-service.service";
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-create-submission',
@@ -30,10 +31,13 @@ form = new FormGroup({
   edit_id?: string;
 
   constructor(private authService: AuthService, private router: Router,
-              private dialog: MatDialog, private route: ActivatedRoute, public submissionService: SubmissionService) {
+              private dialog: MatDialog, private route: ActivatedRoute, public submissionService: SubmissionService,
+              private titleService:Title) {
+    this.titleService.setTitle(`Create Submission | ASL 360°`);
     if (this.route.snapshot.paramMap.get("id")) {
       this.edit = true;
       this.edit_id = this.route.snapshot.paramMap.get("id")!;
+      this.titleService.setTitle(`Edit Submission | ASL 360°`);
     }
 
   }

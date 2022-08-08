@@ -4,6 +4,7 @@ import {AuthService} from "../../auth/auth.service";
 import {Opportunity, OpportunityService} from "../opportunity.service";
 import {MatDialog} from "@angular/material/dialog";
 import {ErrorComponent} from "../../dialogs/error/error.component";
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-list-opportunities',
@@ -20,7 +21,8 @@ export class ListOpportunitiesComponent implements OnInit {
   loading = true;
 
   constructor(private route: ActivatedRoute, public authService:AuthService,
-              public opportunityService: OpportunityService, private dialog: MatDialog) {
+              public opportunityService: OpportunityService, private dialog: MatDialog, private titleService:Title) {
+    if (!this.showAlerts) this.titleService.setTitle(`Opportunities | ASL 360°`);
   }
 
   async ngOnInit(): Promise<void> {

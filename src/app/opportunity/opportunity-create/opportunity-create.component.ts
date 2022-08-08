@@ -7,6 +7,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {LoadingComponent} from "../../dialogs/loading/loading.component";
 import {ErrorComponent} from "../../dialogs/error/error.component";
 import {Opportunity, OpportunityService} from "../opportunity.service";
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-opportunity-create',
@@ -39,9 +40,12 @@ export class OpportunityCreateComponent implements OnInit {
   edit: boolean = false;
 
   constructor(private memberService:MemberService, private authService: AuthService, private router:Router,
-              private dialog: MatDialog, public opportunityService:OpportunityService, private route: ActivatedRoute) {
-
+              private dialog: MatDialog, public opportunityService:OpportunityService, private route: ActivatedRoute,
+              private titleService:Title) {
+                
+    this.titleService.setTitle(`Create Opportunity | ASL 360°`);  
     if (this.route.snapshot.paramMap.get("id")) {
+      this.titleService.setTitle(`Edit Opportunity | ASL 360°`);
       this.edit = true;
     }
 
