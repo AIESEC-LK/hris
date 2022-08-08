@@ -22,10 +22,10 @@ export class ListOpportunitiesComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, public authService:AuthService,
               public opportunityService: OpportunityService, private dialog: MatDialog, private titleService:Title) {
-    if (!this.showAlerts) this.titleService.setTitle(`Opportunities | ASL 360°`);
   }
 
   async ngOnInit(): Promise<void> {
+    if (this.showAlerts) this.titleService.setTitle(`Opportunities | ASL 360°`);
     if (!await this.authService.isLoggedIn() && this.forceLogin) await this.authService.login();
 
     try {
