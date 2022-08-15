@@ -12,6 +12,7 @@ const logger = require("../middleware/logger");
 export interface Opportunity {
   id: string,
   title: string,
+  url: string,
   photo: string,
   description: string,
   link: string,
@@ -32,7 +33,7 @@ const createOpportunity = functions.runWith({
   logger.logFunctionInvocation(context, data);
   if(!await AuthService.checkPrivileged(context)) throw AuthService.exceptions.NotAuthorizedException
 
-  const unique_id = makeUrlFriendly(data.title);
+  const unique_id = makeUrlFriendly(data.url);
   if (await checkOpportunityExists(unique_id)) throw OpportunityAlreadyExistsException;
 
   await db.collection('opportunities').doc(unique_id).set(
@@ -71,18 +72,27 @@ const getOpportunities = functions.runWith({
   memory: "8GB",
 }).https.onCall(async (data:any, context:CallableContext) => {
   logger.logFunctionInvocation(context, data);
-  await AuthService.checkLoggedIn(context);
 
   let opportunities;
-  if (await AuthService.isAdmin(context)) opportunities = await db.collection('opportunities')
-    .where("deadline", ">=", logger.getCurrentDate())
-    .orderBy("deadline", "asc")
-    .orderBy("created_at", 'desc');
-  else opportunities = await db.collection('opportunities')
-    .where("deadline", ">=", logger.getCurrentDate())
-    .orderBy("deadline", "asc")
-    .where("entity", "in", [await AuthService.getEntity(context), "Sri Lanka"])
-    .orderBy("created_at", 'desc');
+
+  try {
+    await AuthService.checkLoggedIn(context);
+    if (await  AuthService.isAdmin(context)) opportunities = await db.collection('opportunities')
+      .where("deadline", ">=", logger.getCurrentDate())
+      .orderBy("deadline", "asc")
+      .orderBy("created_at", 'desc');
+    else opportunities = await db.collection('opportunities')
+      .where("deadline", ">=", logger.getCurrentDate())
+      .orderBy("deadline", "asc")
+      .where("entity", "in", [await AuthService.getEntity(context), "Sri Lanka"])
+      .orderBy("created_at", 'desc');
+  } catch(e) {
+    opportunities = await db.collection('opportunities')
+      .where("deadline", ">=", logger.getCurrentDate())
+      .orderBy("deadline", "asc")
+      .where("entity", "in", ["Sri Lanka"])
+      .orderBy("created_at", 'desc');
+  }
 
   let result: Opportunity[] = [];
   const querySnapshot = await opportunities.get()
@@ -133,6 +143,7 @@ async function getOpportunityFromData(opportunity: Opportunity): Promise<Opportu
   return {
     id: opportunity.id,
     title: opportunity.title,
+    url: opportunity.url,
     photo: opportunity.photo ?
       await admin.storage().bucket("aiesec-hris.appspot.com").file(opportunity.photo).getSignedUrl(
         {action: 'read', expires: "01-01-2500"}

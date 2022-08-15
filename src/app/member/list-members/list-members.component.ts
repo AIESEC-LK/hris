@@ -6,6 +6,7 @@ import {MatSort} from "@angular/material/sort";
 import {ErrorComponent} from "../../dialogs/error/error.component";
 import {MatDialog} from "@angular/material/dialog";
 import { MatTableExporterDirective } from 'mat-table-exporter';
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-list-members',
@@ -42,7 +43,10 @@ export class ListMembersComponent implements OnInit {
 
   @ViewChild(MatTableExporterDirective) matTableExporter?: MatTableExporterDirective;
 
-  constructor(public memberService: MemberService, public authService: AuthService, private dialog:MatDialog) { }
+  constructor(public memberService: MemberService, public authService: AuthService, private dialog:MatDialog,
+    private titleService:Title) {
+      this.titleService.setTitle("Members | ASL 360°");
+    }
 
   async ngOnInit() {
     if (!await this.authService.isLoggedIn()) await this.authService.login();

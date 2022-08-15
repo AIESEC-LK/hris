@@ -9,6 +9,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {LoadingComponent} from "../../dialogs/loading/loading.component";
 import {AngularFireFunctions} from "@angular/fire/compat/functions";
 import {Resource, ResourcesService} from "../resources.service";
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-create-resource',
@@ -20,6 +21,7 @@ export class CreateResourceComponent implements OnInit {
   private url_regex = '(https?://)[^]*'
   form = new FormGroup({
     title: new FormControl(null, [Validators.required]),
+    url: new FormControl(null, [Validators.required]),
     functions: new FormControl(null),
     link: new FormControl(null, [Validators.pattern(this.url_regex), Validators.required]),
     keywords: new FormControl(null)
@@ -32,8 +34,10 @@ export class CreateResourceComponent implements OnInit {
 
   constructor(private memberService:MemberService, private authService: AuthService, private router:Router,
               private dialog: MatDialog, private functions: AngularFireFunctions, private route: ActivatedRoute,
-              private resourceService: ResourcesService) {
+              private resourceService: ResourcesService, private titleService:Title) {
+    this.titleService.setTitle(`Create Resource | ASL 360°`);
     if (this.route.snapshot.paramMap.get("id")) {
+      this.titleService.setTitle(`Edit Resource | ASL 360°`);
       this.edit = true;
     }
 
@@ -48,6 +52,7 @@ export class CreateResourceComponent implements OnInit {
         const resource:Resource = await this.resourceService.getResource(this.edit_id);
         this.form.setValue({
           title: resource.title,
+          url: resource.id,
           link: resource.link,
           functions: resource.functions,
           keywords: resource.keywords,
@@ -79,7 +84,7 @@ export class CreateResourceComponent implements OnInit {
   }
 
   getShortUrl():string {
-    const value = this.form.value.title;
+    const value = this.form.value.url;
     return value == undefined ? '' : value.replace(/[^a-z0-9_]+/gi, '-').replace(/^-|-$/g, '').toLowerCase();
   }
 

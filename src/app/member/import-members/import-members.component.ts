@@ -3,6 +3,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {MatDialog} from "@angular/material/dialog";
 import {MemberService} from "../member.service";
 import {AngularFireFunctions} from "@angular/fire/compat/functions";
+import {Title} from "@angular/platform-browser";
 
 export interface Log {
   status: string,
@@ -29,7 +30,10 @@ export class ImportMembersComponent implements OnInit {
   current_import?: number;
   logs?: Log[];
 
-  constructor(private dialog: MatDialog, private memberService:MemberService, private functions: AngularFireFunctions) { }
+  constructor(private dialog: MatDialog, private memberService:MemberService, private functions: AngularFireFunctions,
+    private titleService:Title) {
+      this.titleService.setTitle(`Import Members | ASL 360°`);
+    }
 
   ngOnInit(): void {
   }
@@ -47,24 +51,21 @@ export class ImportMembersComponent implements OnInit {
       // @ts-ignore
       let csvdata: string = e.target.result!;
 
-      let newLinebrk = csvdata.split("\n");
+      let newLinebrk = csvdata.split("\r\n");
       original.numEntries = newLinebrk.length - 1;
 
-      for(let i = 1; i < newLinebrk.length; i++) {
+      for (let i = 1; i < newLinebrk.length; i++) {
         const row = newLinebrk[i].split(",");
         const error_messages = ImportMembersComponent.validate(row);
 
-        if (error_messages.length == 0){
+        if (error_messages.length == 0) {
           let data:any = {
             email: row[0],
-            expa_id: row[1]
+            name: "x",
+            expa_id: ""
           };
-          if (row[2]) data['joined_date'] = row[2];
-          if (row[3]) data['phone'] = row[3];
-          if (row[4]) data['dob'] = row[4];
-          if (row[5]) data['faculty'] = row[5];
-          if (row[6]) data['gender'] = row[6];
-          if (row[7]) data['current_status'] = row[7];
+          if (row[1]) data['name'] = row[1];
+          if (row[2]) data['expa_id'] = row[2];
 
           try {
             const inviteMember = original.functions.httpsCallable('member-inviteMember');
@@ -112,8 +113,8 @@ export class ImportMembersComponent implements OnInit {
       messages.push("Invalid email address: " + row[0]);
     }
 
-    if (!ImportMembersComponent.validateExpaId(row[1])) {
-      messages.push("Invalid EXPA ID: " + row[1]);
+    if (!ImportMembersComponent.validateExpaId(row[2])) {
+      messages.push("Invalid EXPA ID: " + row[2]);
     }
     return messages;
   }
@@ -128,8 +129,5 @@ export class ImportMembersComponent implements OnInit {
     const id_num = parseInt(id);
     return (id_num >= 1000000 && id_num <= 9999999)
   }
-
-
-
 
 }

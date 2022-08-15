@@ -8,9 +8,10 @@ import {MatTableDataSource} from "@angular/material/table";
 import {Member} from "../../member/member.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {LoadingComponent} from "../../dialogs/loading/loading.component";
+import {Title} from "@angular/platform-browser";
 
 @Component({
-  selector: 'app-list-opportunities',
+  selector: 'app-list-resources',
   templateUrl: './list-resources.component.html',
   styleUrls: ['./list-resources.component.css']
 })
@@ -32,7 +33,8 @@ export class ListResourcesComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, public authService:AuthService,
               public resourceService: ResourcesService, private dialog: MatDialog,
-              private _snackBar: MatSnackBar) {
+              private _snackBar: MatSnackBar, private titleService:Title) {
+    this.titleService.setTitle(`Resources | ASL 360°`);
   }
 
   async ngOnInit(): Promise<void> {

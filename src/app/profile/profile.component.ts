@@ -10,6 +10,7 @@ import {environment} from "../../environments/environment";
 import {StringInputDialogComponent} from "../dialogs/string-input-dialog/string-input-dialog.component";
 import {TwoStringInputDialogComponent} from "../dialogs/two-string-input-dialog/two-string-input-dialog.component";
 import {AddPositionDialogComponent} from "../dialogs/add-position-dialog/add-position-dialog.component";
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-profile',
@@ -23,7 +24,8 @@ export class ProfileComponent implements OnInit {
   public CurrentStatus = CurrentStatus;
 
   constructor(private route: ActivatedRoute, public authService:AuthService, private functions: AngularFireFunctions,
-              public memberService: MemberService, private dialog: MatDialog, private router: Router) {
+              public memberService: MemberService, private dialog: MatDialog, private router: Router, private titleService:Title) {
+
   }
 
   async ngOnInit() {
@@ -38,7 +40,7 @@ export class ProfileComponent implements OnInit {
 
     try {
       this.member = await this.memberService.getMemberInformation(this.email!, false);
-      console.log(this.member);
+      this.titleService.setTitle(`${this.member.name} | ASL 360°`);
 
       // fetch a second time with refresh
       this.member = await this.memberService.getMemberInformation(this.email!, true);

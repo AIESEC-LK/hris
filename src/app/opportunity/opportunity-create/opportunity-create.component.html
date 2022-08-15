@@ -12,13 +12,18 @@
     <div fxFlex="40" id="form" fxLayout="column">
 
       <div fxLayout="column" fxLayoutGap="0px" [formGroup]="form">
-
+        
         <mat-form-field fxFlex="50">
           <mat-label>Title</mat-label>
           <input matInput formControlName="title" required>
         </mat-form-field>
+
+        <mat-form-field fxFlex="50" *ngIf="!edit">
+          <mat-label>URL</mat-label>
+          <input matInput formControlName="url" required>
+        </mat-form-field>
         <span class="preview" *ngIf="!edit">
-          <mat-icon matTooltip="Adjust the title until you get the required URL. You can change the title later :)">help</mat-icon>
+          <mat-icon matTooltip="Adjust the above until you get the required URL. You cannot change this later.">help</mat-icon>
           Generated URL: asl360.aiesec.lk/opp/{{getShortUrl()}}
         </span>
 
