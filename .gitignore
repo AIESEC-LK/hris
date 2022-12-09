@@ -45,6 +45,7 @@ testem.log
 Thumbs.db
 
 /import/*
+/export/*
 src/environments/environment.prod.ts
 src/environments/environment.ts
 firebase-debug.log
@@ -57,3 +58,6 @@ firestore-debug.log
 firestore-debug.log
 .gitignore
 .firebase/hosting.ZGlzdFxocmlz.cache
+functions/aiesec-hris-839f83a5ead9.json
+functions/src/bg-service-account.json
+*.log

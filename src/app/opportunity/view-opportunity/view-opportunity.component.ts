@@ -45,13 +45,13 @@ export class ViewOpportunityComponent implements OnInit {
         this.opportunity = undefined;
         this.opportunity = await this.opportunityService.getOpportunity(id);
         this.titleService.setTitle(`${this.opportunity!.title} | ASL 360°`);
+        this.analytics.logEvent('opportunity.view', {"id": this.opportunity!.id});
        });
     } catch (e) {
       this.dialog.open(ErrorComponent, {data: e});
     }
 
     this.loading = false;
-    this.analytics.logEvent('opportunity.view', {"id": this.opportunity?.id});
   }
 
   async delete(opportunity: Opportunity) {

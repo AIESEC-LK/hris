@@ -4,9 +4,14 @@
        fxLayout.lt-md="column" fxLayoutGap="20px"
        fxLayoutAlign="space-between center" *ngIf="authService.isEBOrAbove()">
     <div class="mat-card-title">Members Admin Panel</div>
-    <button mat-flat-button color="primary" [routerLink]="['/members/import']">
-      IMPORT MEMBERS
-    </button>
+    <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutAlign="end center">
+      <button mat-flat-button color="primary" [routerLink]="['/members/import']">
+        IMPORT MEMBERS
+      </button>
+      <button mat-flat-button color="primary" [routerLink]="['/members/manage']">
+        MANAGE MEMBERS
+      </button>
+    </div>
   </div>
 
   <div fxLayoutAlign="center center">
@@ -15,9 +20,9 @@
 
   <div *ngIf="members.length != 0">
 
-    <div fxLayout="column" *ngIf="members.length != 0" class="control">
+    <div fxLayout="column" *ngIf="members.length != 0" class="control control_panel">
 
-      <div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="20px;">
+      <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px;">
         <span>{{dataSource.filteredData.length}} results</span>
 
         <div fxflex="100" fxFlex flex></div>
@@ -34,58 +39,51 @@
 
       <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="space-between center">
 
-        <mat-form-field>
-          <input matInput type="text" (keyup)="doFilter()" placeholder="Quick Filter" [(ngModel)]="filter.quick_filter">
-        </mat-form-field>
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+          <mat-form-field>
+            <input matInput type="text" (keyup)="doFilter()" placeholder="Quick Filter" [(ngModel)]="filter.quick_filter">
+          </mat-form-field>
 
-        <!--<mat-form-field>
-          <mat-label>Signed Up</mat-label>
-          <mat-date-range-input [rangePicker]="picker">
-            <input matStartDate [(ngModel)]="filter.signed_up.start" placeholder="Start date">
-            <input matEndDate [(ngModel)]="filter.signed_up.end" placeholder="End date" (dateChange)="doFilter()">
-          </mat-date-range-input>
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-date-range-picker #picker></mat-date-range-picker>
-        </mat-form-field>-->
+          <mat-form-field style="width:100px;" fxHide.lt-md>
+            <mat-label>Entity</mat-label>
+            <mat-select multiple [(ngModel)]="filter.entities" (selectionChange)="doFilter()">
+              <mat-option *ngFor="let entity of entities" [value]="entity">{{entity}}</mat-option>
+            </mat-select>
+          </mat-form-field>
 
-        <mat-form-field style="width:100px;" fxHide.lt-md>
-          <mat-label>Entity</mat-label>
-          <mat-select multiple [(ngModel)]="filter.entities" (selectionChange)="doFilter()">
-            <mat-option *ngFor="let entity of entities" [value]="entity">{{entity}}</mat-option>
-          </mat-select>
-        </mat-form-field>
+          <mat-form-field style="width:100px;" fxHide.lt-md>
+            <mat-label>Function</mat-label>
+            <mat-select multiple [(ngModel)]="filter.functions" (selectionChange)="doFilter()">
+              <mat-option *ngFor="let function of functions" [value]="function">{{function}}</mat-option>
+            </mat-select>
+          </mat-form-field>
 
-        <mat-form-field style="width:100px;" fxHide.lt-md>
-          <mat-label>Function</mat-label>
-          <mat-select multiple [(ngModel)]="filter.functions" (selectionChange)="doFilter()">
-            <mat-option *ngFor="let function of functions" [value]="function">{{function}}</mat-option>
-          </mat-select>
-        </mat-form-field>
+          <mat-form-field style="width:100px;" fxHide.lt-md>
+            <mat-label>Role</mat-label>
+            <mat-select multiple [(ngModel)]="filter.roles" (selectionChange)="doFilter()">
+              <mat-option *ngFor="let role of roles" [value]="role">{{role}}</mat-option>
+            </mat-select>
+          </mat-form-field>
 
-        <mat-form-field style="width:100px;" fxHide.lt-md>
-          <mat-label>Role</mat-label>
-          <mat-select multiple [(ngModel)]="filter.roles" (selectionChange)="doFilter()">
-            <mat-option *ngFor="let role of roles" [value]="role">{{role}}</mat-option>
-          </mat-select>
-        </mat-form-field>
+          <mat-form-field style="width:100px;" fxHide.lt-md>
+            <mat-label>Faculty</mat-label>
+            <mat-select multiple [(ngModel)]="filter.faculties" (selectionChange)="doFilter()">
+              <mat-option *ngFor="let faculty of faculties" [value]="faculty">{{faculty}}</mat-option>
+            </mat-select>
+          </mat-form-field>
 
-        <mat-form-field style="width:100px;" fxHide.lt-md>
-          <mat-label>Faculty</mat-label>
-          <mat-select multiple [(ngModel)]="filter.faculties" (selectionChange)="doFilter()">
-            <mat-option *ngFor="let faculty of faculties" [value]="faculty">{{faculty}}</mat-option>
-          </mat-select>
-        </mat-form-field>
+          <mat-form-field style="width:100px;" fxHide.lt-md>
+            <mat-label>Tags</mat-label>
+            <mat-select multiple [(ngModel)]="filter.tags" (selectionChange)="doFilter()">
+              <mat-option *ngFor="let tag of tags" [value]="tag">{{tag}}</mat-option>
+            </mat-select>
+          </mat-form-field>
 
-        <mat-form-field style="width:100px;" fxHide.lt-md>
-          <mat-label>Tags</mat-label>
-          <mat-select multiple [(ngModel)]="filter.tags" (selectionChange)="doFilter()">
-            <mat-option *ngFor="let tag of tags" [value]="tag">{{tag}}</mat-option>
-          </mat-select>
-        </mat-form-field>
+        </div>
 
         <div flex></div>
 
-        <button mat-button (click)="exporter?.exportTable('csv', {fileName: 'asl360-members'})">Export</button>
+        <button mat-button (click)="exporter?.exportTable('csv', {fileName: '360-members'})">Export</button>
 
       </div>
     </div>

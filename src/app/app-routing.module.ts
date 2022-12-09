@@ -9,12 +9,12 @@ import {ImportMembersComponent} from "./member/import-members/import-members.com
 import {OpportunityCreateComponent} from "./opportunity/opportunity-create/opportunity-create.component";
 import {ViewOpportunityComponent} from "./opportunity/view-opportunity/view-opportunity.component";
 import {ListOpportunitiesComponent} from "./opportunity/list-opportunities/list-opportunities.component";
-import {TitleComponent} from "./title/title.component";
 import {CreateResourceComponent} from "./resources/create-resource/create-resource.component";
 import {ViewResourceComponent} from "./resources/view-resource/view-resource.component";
 import {ListResourcesComponent} from "./resources/list-resources/list-resources.component";
 import {CreateSubmissionComponent} from "./submissions/create-submission/create-submission.component";
 import {ViewSubmissionComponent} from "./submissions/view-submission/view-submission.component";
+import {ManageMembersComponent} from "./member/manage-members/manage-members.component";
 
 const routes: Routes = [
   { path: '', component: ProfileComponent },
@@ -25,6 +25,7 @@ const routes: Routes = [
   { path: 'invite', component: InviteMemberComponent   },
   { path: 'members', component: ListMembersComponent   },
   { path: 'members/import', component: ImportMembersComponent   },
+  { path: 'members/manage', component: ManageMembersComponent   },
   { path: 'opportunities/create', component: OpportunityCreateComponent   },
   { path: 'opportunities/:id', component: ViewOpportunityComponent   },
   { path: 'opp/:id', component: ViewOpportunityComponent   },

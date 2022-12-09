@@ -32,3 +32,13 @@ body { margin: 0; font-family: Lato, "Helvetica Neue", sans-serif; }
 div {
   transition: all 0.5s cubic-bezier(.25,.8,.25,1);
 }
+
+.control_panel {
+  background-color:rgba(255, 255, 255, 0.6);
+  margin-bottom:10px;
+  padding: 10px 10px 0px;
+  border-radius:5px;
+  border-color:#3a476d;
+  border-width:1px;
+  border-style:dashed;
+}
