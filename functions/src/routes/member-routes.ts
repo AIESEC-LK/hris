@@ -195,6 +195,94 @@ const getMembers = functions.runWith({
   return result;
 });
 
+const getMembersManage = functions.runWith({
+  timeoutSeconds: 30,
+  memory: "8GB",
+}).https.onCall(async (data:any, context:CallableContext) => {
+  logger.logFunctionInvocation(context, data);
+  if(!await AuthService.checkPrivileged(context)) throw AuthService.exceptions.NotAuthorizedException
+
+  let members;
+  if (await AuthService.isAdmin(context)) members = await db.collection('members').orderBy("name", 'asc');
+  else members = await db.collection('members')
+    .where("entity", "==", await AuthService.getEntity(context))
+    .orderBy("name", 'asc');
+
+  const querySnapshot = await members.get();
+
+  let users;
+  if (await AuthService.isAdmin(context)) users = await db.collection('users');
+  else users = await db.collection('users').where("entity", "==", await AuthService.getEntity(context));
+
+  let userIsAdminMap = new Map();
+  const usersSnapshot = await users.get();
+  usersSnapshot.forEach((doc: any) => {
+    let roles:string[] =  doc.data().role;
+    let isAdmin:boolean = false;
+    if (roles.includes("eb") || roles.includes("admin")) isAdmin = true;
+    userIsAdminMap.set(doc.id, isAdmin);
+  })
+
+  let result: any[] = [];
+
+  querySnapshot.forEach((doc: any) => {
+
+    const data = {
+      name: doc.data().name,
+      email: doc.data().email ? doc.data().email : doc.id,
+      expa_id: doc.data().expa_id,
+      positions: doc.data().positions,
+      unofficial_positions: doc.data().unofficial_positions,
+      entity: doc.data().entity,
+      isAdmin: userIsAdminMap.has(doc.data().email) ? userIsAdminMap.get(doc.data().email) : false
+    }
+
+    result.push(data);
+  })
+
+  return result;
+});
+
+const makeEB = functions.runWith({
+  timeoutSeconds: 30,
+  memory: "8GB",
+}).https.onCall(async (data:any, context:CallableContext) => {
+  logger.logFunctionInvocation(context, data);
+  if(!await AuthService.checkPrivileged(context)) throw AuthService.exceptions.NotAuthorizedException
+
+  const doc = db.collection('users').doc(data.email);
+  const user = (await doc.get()).data();
+
+  if (!await AuthService.isAdmin(context) && user.entity != await AuthService.getEntity(context))
+    throw AuthService.exceptions.NotAuthorizedException;
+
+  let roles: string[] = user.role;
+  if (!roles.includes("eb")) roles.push("eb")
+
+  await doc.set({role: roles}, {merge: true});
+  return;
+});
+
+const revokeEB = functions.runWith({
+  timeoutSeconds: 30,
+  memory: "8GB",
+}).https.onCall(async (data:any, context:CallableContext) => {
+  logger.logFunctionInvocation(context, data);
+  if(!await AuthService.checkPrivileged(context)) throw AuthService.exceptions.NotAuthorizedException
+
+  const doc = db.collection('users').doc(data.email);
+  const user = (await doc.get()).data();
+
+  if (!await AuthService.isAdmin(context) && user.entity != await AuthService.getEntity(context))
+    throw AuthService.exceptions.NotAuthorizedException;
+
+  let roles: string[] = user.role;
+  if (roles.includes("eb")) roles.splice(roles.indexOf("eb"), 1);
+
+  await doc.set({role: roles}, {merge: true});
+  return;
+});
+
 async function getMemberExpaInfo(email: any, expa_id: any) {
   const query = gql`
     query PeopleHomeQuery($id: ID!) {
@@ -321,5 +409,8 @@ module.exports = {
   inviteMember: inviteMember,
   changeCurrentStatus: changeCurrentStatus,
   editProfileField: editProfileField,
-  getMembers: getMembers
+  getMembers: getMembers,
+  getMembersManage: getMembersManage,
+  makeEB: makeEB,
+  revokeEB: revokeEB
 }

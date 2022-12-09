@@ -7,6 +7,19 @@ import {Router} from "@angular/router";
 import {AuthService} from "../auth/auth.service";
 import {AngularFireStorage} from "@angular/fire/compat/storage";
 
+const entities: string[] = [
+  "COLOMBO CENTRAL",
+  "COLOMBO NORTH",
+  "COLOMBO SOUTH",
+  "KANDY",
+  "USJ",
+  "NSBM",
+  "Ruhuna",
+  "SLIIT",
+  "NIBM",
+  "MC Sri Lanka"
+];
+
 export interface Member {
   name: string,
   email: string,
@@ -28,6 +41,16 @@ export interface Member {
   faculty: string,
   field_of_study: string
   attachments: Attachment[],
+}
+
+export interface MemberManage {
+  name: string,
+  email: string,
+  expa_id: number,
+  entity: string,
+  positions: Position[],
+  unofficial_positions: Position[],
+  isAdmin: boolean
 }
 
 export interface Position {
@@ -140,6 +163,12 @@ export class MemberService {
     return <Member[]> await getMembers({}).toPromise();
   }
 
+  public async getMembersManage(): Promise<MemberManage[]> {
+    const getMembers = this.functions.httpsCallable('member-getMembersManage');
+    return <MemberManage[]> await getMembers({}).toPromise();
+  }
+
+
   private static changeField(member: Member, path: string, value: string) {
     var schema = member;  // a moving reference to internal objects within obj
     var pList = path.split('.');
@@ -182,18 +211,18 @@ export class MemberService {
     return [...new Set(roles)];
   }
 
-  public getCurrentEntities(member: Member): string[] {
+  public getCurrentEntities(member: Member|MemberManage): string[] {
     let entities: string[] = [];
 
     const today: Date = new Date();
     for (let position of this.getPositions(member)) {
       const end_date: Date = new Date(Date.parse(position.end_date));
       if (end_date < today) continue;
-      if (!position.entity || position.entity == null) continue;
+      if (!position.entity) continue;
       entities.push(position.entity.trim());
     }
 
-    if (!member.entity || member.entity == null) return [];
+    if (!member.entity) return [];
     if (entities.length == 0) entities.push(member.entity.trim());
 
     return [...new Set(entities)];
@@ -227,7 +256,7 @@ export class MemberService {
     await this.edit(member, "unofficial_positions", member.unofficial_positions);
   }
 
-  public getPositions(member: Member): Position[] {
+  public getPositions(member: Member|MemberManage): Position[] {
     let positions: Position[] = [];
     if (member.positions != null) {
       for (const position of member.positions) {
@@ -322,6 +351,19 @@ export class MemberService {
     return x;
   }
 
+  public getAllEntities(): string[] {
+    return entities;
+  }
+
+  public async makeEB(member: MemberManage) {
+    const makeEB = this.functions.httpsCallable('member-makeEB');
+    return await makeEB({email: member.email}).toPromise();
+  }
+
+  public async revokeEB(member: MemberManage) {
+    const revokeEB = this.functions.httpsCallable('member-revokeEB');
+    return await revokeEB({email: member.email}).toPromise();
+  }
 
 
 }

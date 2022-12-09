@@ -57,6 +57,7 @@ import { ViewSubmissionComponent } from './submissions/view-submission/view-subm
 import { SafePipe } from './safe.pipe';
 
 import { AngularFireAnalyticsModule } from '@angular/fire/compat/analytics';
+import {ManageMembersComponent} from "./member/manage-members/manage-members.component";
 
 @NgModule({
   declarations: [
@@ -82,7 +83,8 @@ import { AngularFireAnalyticsModule } from '@angular/fire/compat/analytics';
     ListResourcesComponent,
     CreateSubmissionComponent,
     ViewSubmissionComponent,
-    SafePipe
+    SafePipe,
+    ManageMembersComponent
   ],
   imports: [
     BrowserModule,
