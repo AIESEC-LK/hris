@@ -2,64 +2,82 @@
 
 <div fxLayout="column" fxLayoutGap="50px" fxLayoutAlign="center center">
 
-  <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutAlign="stretch stretch">
+	<div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutAlign="stretch stretch">
 
-    <div fxLayout="column" fxLayoutGap="20px" fxLayoutAlign="stretch stretch" style="padding:0; border:none;" *ngIf="opportunity">
-      <img class="opportunity_photo" src="{{opportunity.photo}}"/>
-    </div>
+		<div fxLayout="column" fxLayoutGap="20px" fxLayoutAlign="stretch stretch" style="padding:0; border:none;"
+			*ngIf="opportunity">
+			<img class="opportunity_photo" src="{{opportunity.photo}}" />
+		</div>
 
-    <div class="mat-card" fxLayout="column" fxLayoutGap="10px" style="padding:20px; max-width:600px;" *ngIf="opportunity">
+		<div class="mat-card" fxLayout="column" fxLayoutGap="10px" style="padding:20px; max-width:600px;"
+			*ngIf="opportunity">
 
-      <div class="mat-card-title" style="font-size:40px; padding-top:10px; padding-bottom:20px; line-height:50px;">{{opportunity.title}}</div>
+			<div class="mat-card-title"
+				style="font-size:40px; padding-top:10px; padding-bottom:20px; line-height:50px;">{{opportunity.title}}
+			</div>
 
-      <div [innerHTML]="opportunity.description" style="word-wrap: break-spaces">
-      </div>
+			<div [innerHTML]="opportunity.description" style="word-wrap: break-spaces">
+			</div>
 
-      <div fxFlex="100"></div>
+			<div fxFlex="100"></div>
 
-      <div fxLayout="row" fxLayoutAlign="space-between center" fxLayout.lt-md="column"
-          fxLayoutAlign.lt-md="stretch stretch" fxLayoutGap="20px">
-        <div fxlayout="row" fxLayoutGap="20px">
-          <div class="item_name">Application deadline</div>
-          <div>{{opportunity.deadline}}</div>
-        </div>
+			<div fxLayout="row" fxLayoutAlign="space-between center" fxLayout.lt-md="column"
+				fxLayoutAlign.lt-md="stretch stretch" fxLayoutGap="20px">
+				<div fxlayout="row" fxLayoutGap="20px">
+					<div class="item_name">Application deadline</div>
+					<div>{{opportunity.deadline}}</div>
+				</div>
 
-        <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="center center">
-          <a href="{{opportunity.link}}" target="_blank" (click)="logApplyClick()">
-            <button mat-flat-button color="primary">
-              APPLY
-            </button>
-          </a>
+				<mat-spinner diameter="30" *ngIf="!analyticsSummary"></mat-spinner>
 
-          <a routerLink="/opp/edit/{{opportunity.id}}"
-            *ngIf="authService.isAdmin() || (authService.isEBOrAbove() && opportunity.entity == authService.getEntity())">
-            <button mat-flat-button color="primary">
-              EDIT
-            </button>
-          </a>
+				<div fxlayout="row" fxLayoutGap="20px" *ngIf="analyticsSummary">
+					<div class="item_name">Views</div>
+					<div>{{getViews()}}</div>
+				</div>
 
-          <button mat-flat-button color="warn" (click)="delete(opportunity)"
-            *ngIf="authService.isAdmin() || (authService.isEBOrAbove() && opportunity.entity == authService.getEntity())">
-            DELETE
-          </button>
-
-        </div>
-
-      </div>
+				<div fxlayout="row" fxLayoutGap="20px" *ngIf="analyticsSummary">
+					<div class="item_name">Clicks</div>
+					<div>{{getClicks()}}</div>
+				</div>
 
 
-    </div>
-  </div>
+				<div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="center center">
+					<a href="{{opportunity.link}}" target="_blank" (click)="logApplyClick()">
+						<button mat-flat-button color="primary">
+							APPLY
+						</button>
+					</a>
 
-  <hr>
+					<a routerLink="/opp/edit/{{opportunity.id}}"
+						*ngIf="authService.isAdmin() || (authService.isEBOrAbove() && opportunity.entity == authService.getEntity())">
+						<button mat-flat-button color="primary">
+							EDIT
+						</button>
+					</a>
 
-  <div class="mat-card" fxLayout="column" fxLayoutGap="20px" *ngIf="opportunity && isLoggedIn">
+					<button mat-flat-button color="warn" (click)="delete(opportunity)"
+						*ngIf="authService.isAdmin() || (authService.isEBOrAbove() && opportunity.entity == authService.getEntity())">
+						DELETE
+					</button>
 
-    <div class="mat-card-title" style="text-align:center">
-      Other opportunities available for you...
-    </div>
+				</div>
 
-    <app-list-opportunities [showAdminPanel]="false" [showAlerts]="false" [forceLogin]="false"></app-list-opportunities>
-  </div>
+			</div>
+
+
+		</div>
+	</div>
+
+	<hr>
+
+	<div class="mat-card" fxLayout="column" fxLayoutGap="20px" *ngIf="opportunity && isLoggedIn">
+
+		<div class="mat-card-title" style="text-align:center">
+			Other opportunities available for you...
+		</div>
+
+		<app-list-opportunities [showAdminPanel]="false" [showAlerts]="false" [forceLogin]="false">
+		</app-list-opportunities>
+	</div>
 
 </div>
