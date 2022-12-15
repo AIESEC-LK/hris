@@ -18,7 +18,7 @@
 
   <div fxLayout="column" *ngIf="resources && resources.length != 0" class="control">
 
-    <div fxLayout="row" fxLayoutGap="20px">
+    <div fxLayout="row" fxLayoutGap="20px" class="control_panel">
 
       <mat-form-field>
         <input matInput type="text" (keyup)="doFilter()" placeholder="Quick Filter" [(ngModel)]="filter.quick_filter">

@@ -14,6 +14,7 @@ exports.submission = require("./routes/submission-routes");
 exports.config = require("./routes/config-routes");
 
 exports.data = require("./data/data");
+exports.analytics = require("./routes/analytics-routes");
 
 exports.redirects = require("./routes/redirect-routes");
 
