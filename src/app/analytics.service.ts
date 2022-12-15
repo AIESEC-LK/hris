@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAnalytics } from '@angular/fire/compat/analytics';
-import {AngularFireFunctions} from "@angular/fire/compat/functions";
+import { AngularFireFunctions } from "@angular/fire/compat/functions";
 
 interface EventSummaryRequest {
 	id: string;

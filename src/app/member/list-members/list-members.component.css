@@ -41,19 +41,18 @@ a:hover {
 }
 
 .mat-column-name {
-  min-width: 150px;
-  max-width: 150px;
+  min-width: 200px;
+  max-width: 200px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .mat-column-current_status {
-  min-width: 50px;
-  max-width: 50px;
+  min-width: 150px;
+  max-width: 150px;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .mat-column-functions {
@@ -103,3 +102,13 @@ a:hover {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.btn-PROBATION { background-color:#f39c12; }
+.btn-TERMINATED { background-color:#c0392b; }
+.btn-ALUMNI { background-color:#674172; }
+
+::ng-deep td .mat-select-min-line {
+	display:none !important;
+	color:red !important;
+}
+

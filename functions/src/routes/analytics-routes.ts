@@ -1,7 +1,11 @@
+export {}
+
+import {CallableContext} from "firebase-functions/lib/common/providers/https";
 const functions = require('firebase-functions');
 const AuthService = require("../services/auth-service");
 const logger = require("../middleware/logger");
 const {BigQuery} = require('@google-cloud/bigquery');
+
 
 export interface EventSummaryRequest {
 	id: string
@@ -12,7 +16,7 @@ const getEventSummary = functions
 		timeoutSeconds: 30,
 		memory: "8GB",
 	})
-	.https.onCall(async (data: EventSummaryRequest, context: any) => {
+	.https.onCall(async (data: EventSummaryRequest, context: CallableContext) => {
 		logger.logFunctionInvocation(context, data);
 
 		if (!await AuthService.checkPrivileged(context)) throw AuthService.exceptions.NotAuthorizedException;
