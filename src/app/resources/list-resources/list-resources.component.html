@@ -30,6 +30,8 @@
 
 		</div>
 
+		<mat-paginator #paginator [pageSizeOptions]="[10, 20, 30, 40, 50, 100, 200, 500, 1000]" showFirstLastButtons *ngIf="resources && resources.length != 0"></mat-paginator>
+
 		<table mat-table matSort [dataSource]="dataSource" class="mat-elevation-z1" *ngIf="resources && resources.length != 0">
 
 			<ng-container matColumnDef="title">

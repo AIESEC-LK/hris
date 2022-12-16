@@ -183,7 +183,7 @@ export class MemberService {
 
 	public async getMembers(): Promise<Member[]> {
 		const getMembers = this.functions.httpsCallable('member-getMembers');
-		return <Member[]>await getMembers({}).toPromise();
+		return await getMembers({}).toPromise();
 	}
 
 	public async getMembersManage(): Promise<MemberManage[]> {

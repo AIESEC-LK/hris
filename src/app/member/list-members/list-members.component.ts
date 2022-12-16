@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { CurrentStatus, Member, MemberService } from "../member.service";
 import { AuthService } from "../../auth/auth.service";
 import { MatTableDataSource } from "@angular/material/table";
@@ -7,6 +7,7 @@ import { ErrorComponent } from "../../dialogs/error/error.component";
 import { MatDialog } from "@angular/material/dialog";
 import { MatTableExporterDirective } from 'mat-table-exporter';
 import { Title } from "@angular/platform-browser";
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
 	selector: 'app-list-members',
@@ -18,7 +19,8 @@ export class ListMembersComponent implements OnInit {
 	public members: Member[] = [];
 
 	// @ts-ignore
-	@ViewChild(MatSort) sort: MatSort;
+	@ViewChild(MatSort, { static: false }) sort!: MatSort;
+	@ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
 	dataSource = new MatTableDataSource(this.members);
 	renderedData: any;
 
@@ -48,7 +50,7 @@ export class ListMembersComponent implements OnInit {
 	@ViewChild(MatTableExporterDirective) matTableExporter?: MatTableExporterDirective;
 
 	constructor(public memberService: MemberService, public authService: AuthService, private dialog: MatDialog,
-		private titleService: Title) {
+		private titleService: Title, private changeDetectorRef: ChangeDetectorRef) {
 		this.titleService.setTitle("Members | ASL 360°");
 	}
 
@@ -57,11 +59,14 @@ export class ListMembersComponent implements OnInit {
 
 		try {
 			this.members = await this.memberService.getMembers();
-			console.log("Members:", this.members);
 
-			this.dataSource = new MatTableDataSource<Member>(this.members);
+			this.dataSource = new MatTableDataSource(this.members);
+			//console.log("Paginator", this.paginator);
+			this.changeDetectorRef.detectChanges();
+			//console.log("Paginator2", this.paginator);
+			this.dataSource.paginator = this.paginator;
 			this.dataSource.sort = this.sort;
-			this.dataSource.connect().subscribe(d => this.renderedData = d);
+			//this.dataSource.connect().subscribe(d => this.renderedData = d);
 			this.getDisplayedColumns();
 
 			this.functions = this.getAllFunctions().sort();
@@ -69,7 +74,7 @@ export class ListMembersComponent implements OnInit {
 			this.entities = this.getAllEntities().sort();
 			this.faculties = this.getAllFaculties().sort();
 			this.tags = this.getAllTags().sort();
-			this.doFilter();	
+			this.doFilter();
 		} catch (e) {
 			this.dialog.open(ErrorComponent, { data: e });
 		}
@@ -212,7 +217,5 @@ export class ListMembersComponent implements OnInit {
 	truncate(str: string, n: number) {
 		return (str.length > n) ? str.substr(0, n - 1) + '...' : str;
 	};
-
-
 
 }

@@ -1,11 +1,21 @@
 .preview {
-  color:#777777;
-  font-size:11px;
+	color: #777777;
+	font-size: 11px;
 }
 
 .preview mat-icon {
-  font-size:11px;
-  padding-right:5px;
-  width:11px;
-  height:11px;
+	font-size: 11px;
+	padding-right: 5px;
+	width: 11px;
+	height: 11px;
+}
+
+.errorList {
+	padding: 5px;
+	border-style: dashed;
+	border-color: red;
+	border-width: 1px;
+	background-color: #f1f1f1;
+	margin-bottom: 200px;
+	border-radius: 5px;
 }
