@@ -39,6 +39,7 @@
     "@angular-devkit/build-angular": "~12.2.4",
     "@angular/cli": "~12.2.4",
     "@angular/compiler-cli": "~12.2.0",
+    "@angular/language-service": "^11.2.10",
     "@types/jasmine": "~3.8.0",
     "@types/node": "^12.11.1",
     "firebase-tools": "^9.0.0",

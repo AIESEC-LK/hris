@@ -61,6 +61,7 @@ import { ManageMembersComponent } from "./member/manage-members/manage-members.c
 import { GroupMembersComponent } from './member/group-members/group-members.component';
 import { CreateGroupComponent } from './member/group-members/create-group/create-group.component';
 import { ViewGroupDialogComponent } from './dialogs/view-group-dialog/view-group-dialog.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
 	declarations: [
@@ -120,7 +121,8 @@ import { ViewGroupDialogComponent } from './dialogs/view-group-dialog/view-group
 		EditorModule,
 		MatTooltipModule,
 		MatSnackBarModule,
-		MatTableExporterModule
+		MatTableExporterModule,
+		MatPaginatorModule
 	],
 	providers: [
 		{ provide: AUTH_SETTINGS, useValue: { appVerificationDisabledForTesting: true } },

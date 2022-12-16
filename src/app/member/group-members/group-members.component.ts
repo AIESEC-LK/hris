@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, Inject, OnInit, Optional } from '@angular/core';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { AuthService } from 'src/app/auth/auth.service';
 import { ErrorComponent } from 'src/app/dialogs/error/error.component';
@@ -22,8 +22,17 @@ export class GroupMembersComponent implements OnInit {
 		members: "",
 	};
 	protectedGroups: string[] = ["ActiveMembers"];
+	isDialog: boolean = false;
 
-	constructor(public authService: AuthService, private memberService: MemberService, private dialog: MatDialog) { }
+	constructor(public authService: AuthService, private memberService: MemberService, private dialog: MatDialog,
+		@Optional() @Inject(MAT_DIALOG_DATA) private data: any, @Optional() private dialogRef: MatDialogRef<GroupMembersComponent>) {
+		if (data) {
+			this.isDialog = data.dialog;
+			if (this.isDialog) {
+				this.selectedColumns = ["name", "count", "view", "use"];
+			}
+		}
+	}
 
 	async ngOnInit(): Promise<void> {
 		if (!await this.authService.isLoggedIn()) await this.authService.login();
@@ -69,6 +78,10 @@ export class GroupMembersComponent implements OnInit {
 			loadingDialog.close();
 		}
 		return;
+	}
+
+	public useGroup(group: MemberGroup) {
+		this.dialogRef.close(group.members);
 	}
 
 }

@@ -45,7 +45,7 @@ const getProfileInformation = functions.runWith({
 	}
 
 	let sensitive_data = {};
-	if (await AuthService.canEditGroup(context, data.email)) sensitive_data = {
+	if (await AuthService.canEdit(context, data.email)) sensitive_data = {
 		phone: member.data().phone,
 		phone2: member.data().phone2,
 		address: member.data().address,
