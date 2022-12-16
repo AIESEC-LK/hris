@@ -1,0 +1,14 @@
+<div class="containerx" fxLayout="column">
+	<div class="dialogx" fxLayout="column">
+		<h1 mat-dialog-title class="titlex">Members in {{name}}</h1>
+		<div mat-dialog-content class="contentx" fxLayout="column" fxLayoutGap="20px">
+
+			<div fxLayout="column" fxLayoutGap="10px">
+				<div *ngFor="let member of members">
+					{{member}}
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>

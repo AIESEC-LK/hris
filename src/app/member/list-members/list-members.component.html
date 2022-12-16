@@ -10,6 +10,9 @@
 			<button mat-flat-button color="primary" [routerLink]="['/members/manage']">
 				ACCESS CONTROL
 			</button>
+			<button mat-flat-button color="primary" [routerLink]="['/members/groups']">
+				GROUPS
+			</button>
 		</div>
 	</div>
 
@@ -47,7 +50,9 @@
 					<mat-form-field style="width:100px;" fxHide.lt-md>
 						<mat-label>Status</mat-label>
 						<mat-select multiple [(ngModel)]="filter.statuses" (selectionChange)="doFilter()">
-							<mat-option *ngFor="let status of [CurrentStatus.ACTIVE, CurrentStatus.ALUMNI, CurrentStatus.PROBATION, CurrentStatus.TERMINATED]" [value]="status">{{status}}</mat-option>
+							<mat-option
+								*ngFor="let status of [CurrentStatus.ACTIVE, CurrentStatus.ALUMNI, CurrentStatus.PROBATION, CurrentStatus.TERMINATED]"
+								[value]="status">{{status}}</mat-option>
 						</mat-select>
 					</mat-form-field>
 
@@ -119,19 +124,22 @@
 
 				<th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
 				<td mat-cell *matCellDef="let member">
-					<button class="membership_status" mat-flat-button color="primary" (click)=currentStatusSelect.open()
-						[class]="'btn-'+member.current_status">
-						{{member.current_status}}	
-					</button>
+					<span *ngIf="!authService.isEBOrAbove()">{{member.current_status}}</span>
+					<div *ngIf="authService.isEBOrAbove()">
+						<button class="membership_status" mat-flat-button color="primary"
+							(click)=currentStatusSelect.open() [class]="'btn-'+member.current_status">
+							{{member.current_status}}
+						</button>
 
-					<mat-select #currentStatusSelect class="selectHide"
-						(selectionChange)="memberService.changeCurrentStatus(member, $event.value);">
+						<mat-select #currentStatusSelect class="selectHide"
+							(selectionChange)="memberService.changeCurrentStatus(member, $event.value);">
 
-						<mat-option *ngFor="let status of CurrentStatus | keyvalue" [value]="status.value"
-							style="font-size:12px;">
-							{{status.value}}
-						</mat-option>
-					</mat-select>
+							<mat-option *ngFor="let status of CurrentStatus | keyvalue" [value]="status.value"
+								style="font-size:12px;">
+								{{status.value}}
+							</mat-option>
+						</mat-select>
+					</div>
 				</td>
 
 			</ng-container>

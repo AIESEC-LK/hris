@@ -28,7 +28,7 @@
 					<div>{{opportunity.deadline}}</div>
 				</div>
 
-				<mat-spinner diameter="30" *ngIf="!analyticsSummary"></mat-spinner>
+				<mat-spinner diameter="30" *ngIf="authService.isEBOrAbove() && !analyticsSummary"></mat-spinner>
 
 				<div fxlayout="row" fxLayoutGap="20px" *ngIf="analyticsSummary">
 					<div class="item_name">Views</div>
