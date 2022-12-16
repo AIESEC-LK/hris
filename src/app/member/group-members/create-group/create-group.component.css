@@ -1,0 +1,9 @@
+.errorList {
+	padding: 5px;
+	border-style: dashed;
+	border-color: red;
+	border-width: 1px;
+	background-color: #f1f1f1;
+	margin-bottom: 200px;
+	border-radius: 5px;
+}

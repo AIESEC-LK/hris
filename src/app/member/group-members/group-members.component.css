@@ -1,0 +1,55 @@
+::ng-deep mat-header-cell,
+mat-cell {
+	justify-content: center !important;
+}
+
+.mat-row {
+	height: auto;
+}
+
+.mat-cell {
+	padding: 15px 15px;
+}
+
+::ng-deep th.mat-header-cell,
+td.mat-footer-cell {
+	padding: 15px !important;
+	color: white;
+}
+
+::ng-deep tr.mat-header-row {
+	background-color: #3a539b;
+	color: white;
+}
+
+a {
+	color: black;
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+::ng-deep .mat-icon {
+	margin-top: 5px;
+}
+
+::ng-deep .mat-icon:hover {
+	color: #3a539b;
+}
+
+::ng-deep tr.mat-row:hover {
+	background-color: #EEEEEE;
+}
+
+.copy {
+	margin-left: 5px;
+	font-size: 15px;
+	vertical-align: middle;
+	cursor: pointer;
+}
+
+.copy:hover {
+	color: #3a539b;
+}
