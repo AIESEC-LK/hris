@@ -26,6 +26,7 @@ export class OpportunityCreateComponent implements OnInit {
 		description: new FormControl(null, [Validators.required]),
 		link: new FormControl(null, [Validators.pattern(this.url_regex)]),
 		deadline: new FormControl(null, [Validators.required]),
+		schedule: new FormControl(null, []),
 		id: new FormControl(null)
 	});
 
@@ -63,6 +64,7 @@ export class OpportunityCreateComponent implements OnInit {
 					url: opportunity.id,
 					description: opportunity.description,
 					deadline: opportunity.deadline,
+					schedule: opportunity.schedule,
 					link: opportunity.link,
 					photo: opportunity.photo,
 					photo_x: "",
@@ -74,6 +76,7 @@ export class OpportunityCreateComponent implements OnInit {
 				this.dialog.open(ErrorComponent, { data: e });
 			}
 		}
+		console.log("Scedule", this.form.get("schedule")?.value);
 	}
 
 	getImageUrl(): string {
@@ -135,6 +138,10 @@ export class OpportunityCreateComponent implements OnInit {
 	getShortUrl(): string {
 		const value = this.form.value.url;
 		return value == undefined ? '' : value.replace(/[^a-z0-9_]+/gi, '-').replace(/^-|-$/g, '').toLowerCase();
+	}
+
+	temp() {
+		console.log(this.form.get('schedule')?.value);
 	}
 
 

@@ -1,6 +1,7 @@
 export { }
 
 import { CallableContext } from "firebase-functions/lib/common/providers/https";
+import { schedule } from "firebase-functions/v1/pubsub";
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 const db = admin.firestore();
@@ -17,6 +18,7 @@ export interface Opportunity {
 	description: string,
 	link: string,
 	deadline: string,
+	schedule?: string,
 	entity: string
 }
 
@@ -97,7 +99,9 @@ const getOpportunities = functions.runWith({
 	let result: Opportunity[] = [];
 	const querySnapshot = await opportunities.get()
 	querySnapshot.forEach((doc: any) => {
-		result.push(doc.data());
+		const schedule = doc.data().schedule;
+		console.log(doc.data().title, schedule);
+		if (!schedule || schedule <= logger.getSLTimestamp().replace(" ", "T")) result.push(doc.data());
 	});
 
 	for (let i = 0; i < result.length; i++) {
@@ -151,6 +155,7 @@ async function getOpportunityFromData(opportunity: Opportunity): Promise<Opportu
 			"https://i.pinimg.com/originals/fd/14/a4/fd14a484f8e558209f0c2a94bc36b855.png",
 		description: opportunity.description,
 		deadline: opportunity.deadline,
+		schedule: opportunity.schedule,
 		link: opportunity.link,
 		entity: opportunity.entity
 	};

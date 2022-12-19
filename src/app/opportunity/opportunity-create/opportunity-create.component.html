@@ -1,82 +1,89 @@
 <mat-spinner *ngIf="edit && !form.get('title')?.value && form.get('description')?.value"></mat-spinner>
 
-<div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="start start"
-     *ngIf="!edit || form.get('title')?.value || form.get('description')?.value">
+<div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="start start" *ngIf="!edit || form.get('title')?.value || form.get('description')?.value">
 
-  <div class="mat-card" fxLayout="column" fxLayoutGap="20px" style="padding:20px;">
+	<div class="mat-card" fxLayout="column" fxLayoutGap="20px" style="padding:20px;">
 
-    <div class="mat-card-title" *ngIf="!edit">Create a New Opportunity</div>
-    <div class="mat-card-title" *ngIf="edit">Update Opportunity</div>
-    <div class="mat-card-subtitle">Please provide the following details</div>
+		<div class="mat-card-title" *ngIf="!edit">Create a New Opportunity</div>
+		<div class="mat-card-title" *ngIf="edit">Update Opportunity</div>
+		<div class="mat-card-subtitle">Please provide the following details</div>
 
-    <div fxFlex="40" id="form" fxLayout="column">
+		<div fxFlex="40" id="form" fxLayout="column">
 
-      <div fxLayout="column" fxLayoutGap="0px" [formGroup]="form">
+			<div fxLayout="column" fxLayoutGap="0px" [formGroup]="form">
 
-        <mat-form-field fxFlex="50">
-          <mat-label>Title</mat-label>
-          <input matInput formControlName="title" required>
-        </mat-form-field>
+				<mat-form-field fxFlex="50">
+					<mat-label>Title</mat-label>
+					<input matInput formControlName="title" required>
+				</mat-form-field>
 
-        <mat-form-field fxFlex="50" *ngIf="!edit">
-          <mat-label>URL</mat-label>
-          <input matInput formControlName="url" required>
-        </mat-form-field>
-        <span class="preview" *ngIf="!edit">
-          <mat-icon matTooltip="Adjust the above until you get the required URL. You cannot change this later.">help</mat-icon>
-          Generated URL: 360.aiesec.lk/opp/{{getShortUrl()}}
-        </span>
+				<mat-form-field fxFlex="50" *ngIf="!edit">
+					<mat-label>URL</mat-label>
+					<input matInput formControlName="url" required>
+				</mat-form-field>
+				<span class="preview" *ngIf="!edit">
+					<mat-icon matTooltip="Adjust the above until you get the required URL. You cannot change this later.">help</mat-icon>
+					Generated URL: 360.aiesec.lk/opp/{{getShortUrl()}}
+				</span>
 
-        <div fxLayout="row" fxLayoutGap="20px" style="padding-bottom:20px; padding-top:10px;">
+				<div fxLayout="row" fxLayoutGap="20px" style="padding-bottom:20px; padding-top:10px;">
 
-          <input hidden type="file" accept="image/png, image/jpeg" class="file-input" formControlName="photo_x"
-                 (change)="onFileSelected($event, 'photo')" #photoFileUpload>
+					<input hidden type="file" accept="image/png, image/jpeg" class="file-input" formControlName="photo_x" (change)="onFileSelected($event, 'photo')" #photoFileUpload>
 
-          <div class="file-upload" fxLayout="column" fxLayoutGap="10px">
-            <mat-label class="label">Cover Photo</mat-label>
+					<div class="file-upload" fxLayout="column" fxLayoutGap="10px">
+						<mat-label class="label">Cover Photo</mat-label>
 
-            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
-              <button [class.mat-elevation-z0]="true" mat-mini-fab color="primary" class="upload-btn" (click)="photoFileUpload.click()">
-                <mat-icon >attach_file</mat-icon>
-              </button>
-              <div style="font-size:12px; max-width:500px; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;" >
-                {{ formData.photo | slice:0:150 || "" }}
-              </div>
-            </div>
+						<div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+							<button [class.mat-elevation-z0]="true" mat-mini-fab color="primary" class="upload-btn" (click)="photoFileUpload.click()">
+								<mat-icon>attach_file</mat-icon>
+							</button>
+							<div style="font-size:12px; max-width:500px; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">
+								{{ formData.photo | slice:0:150 || "" }}
+							</div>
+						</div>
 
-          </div>
+					</div>
 
-        </div>
+				</div>
 
-          <mat-label style="padding-bottom:10px;">Description</mat-label>
-          <editor formControlName="description"
-            apiKey="cs1wg2d1rk4oe6uyo3nbf9cog6ill4iao3ii3nm6xx2mrfh8"
-            [init]="{
+				<mat-label style="padding-bottom:10px;">Description</mat-label>
+				<editor formControlName="description" apiKey="cs1wg2d1rk4oe6uyo3nbf9cog6ill4iao3ii3nm6xx2mrfh8" [init]="{
             icons: 'material',
             plugins: 'wordcount lists link',
             menubar: false,
             min_height: 300,
             toolbar: 'undo redo styleselect bold italic alignleft aligncenter alignright bullist numlist outdent indent code link'
-          }"
-          ></editor>
+          }"></editor>
 
-        <mat-form-field fxFlex="50" style="padding-top:20px;">
-          <mat-label>Application Link</mat-label>
-          <input matInput formControlName="link">
-        </mat-form-field>
+				<mat-form-field fxFlex="50" style="padding-top:20px;">
+					<mat-label>Application Link</mat-label>
+					<input matInput formControlName="link">
+				</mat-form-field>
 
-        <mat-form-field fxFlex="50">
-          <mat-label>Application Deadline</mat-label>
-          <input matInput type="date" formControlName="deadline">
-        </mat-form-field>
+				<mat-form-field fxFlex="50">
+					<mat-label>Application Deadline</mat-label>
+					<input matInput type="date" formControlName="deadline">
+				</mat-form-field>
 
+				<mat-form-field>
+					<mat-label>Schedule opportunity</mat-label>
+					<input matInput type="datetime-local" formControlName="schedule" (change)="temp()">
+				</mat-form-field>
 
-        <button class="submit_button" mat-raised-button color="primary"  (click)="submitForm()" [disabled]="!form.valid">
-          {{edit ? "UPDATE OPPORTUNITY" : "CREATE OPPORTUNITY"}}
-        </button>
+				<div fxLayout="row" fxLayoutGap="20px">
+					<button class="submit_button" mat-raised-button color="primary" (click)="submitForm()" [disabled]="!form.valid"
+						*ngIf="form.get('schedule')?.value == null || form.get('schedule')?.value == ''">
+						{{edit ? "UPDATE OPPORTUNITY" : "CREATE OPPORTUNITY"}}
+					</button>
 
-      </div>
-    </div>
-  </div>
+					<button class="submit_button" mat-raised-button color="primary" (click)="submitForm()" [disabled]="!form.valid"
+						*ngIf="form.get('schedule')?.value != null && form.get('schedule')?.value != ''">
+						{{edit ? "UPDATE OPPORTUNITY" : "SCHEDULE OPPORTUNITY"}}
+					</button>
+				</div>
+
+			</div>
+		</div>
+	</div>
 
 </div>
