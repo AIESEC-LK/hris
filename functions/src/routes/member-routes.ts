@@ -387,7 +387,7 @@ const deleteGroup = functions.runWith({
 	return;
 });
 
-async function getMemberExpaInfo(email: any, expa_id: any) {
+async function getMemberExpaInfo(email: string, expa_id: string) {
 	const query = gql`
     query PeopleHomeQuery($id: ID!) {
 		getPerson(id: $id) {
@@ -470,15 +470,12 @@ async function getMemberExpaInfo(email: any, expa_id: any) {
 	  positions.push(p);
 	}*/
 
-
 	const expa_data = {
 		name: queryResult.getPerson.full_name,
 		gender: queryResult.getPerson.gender,
 		entity: queryResult.getPerson.home_lc.name,
 		positions: positions
 	};
-
-	console.log(expa_data);
 
 	await db.collection('members').doc(email).set(expa_data, { merge: true });
 	return expa_data;
@@ -521,7 +518,8 @@ module.exports = {
 	getGroup: getGroup,
 	createGroup: createGroup,
 	editGroup: editGroup,
-	deleteGroup: deleteGroup
+	deleteGroup: deleteGroup,
+	getMemberExpaInfo: getMemberExpaInfo
 }
 
 interface MemberGroup {
