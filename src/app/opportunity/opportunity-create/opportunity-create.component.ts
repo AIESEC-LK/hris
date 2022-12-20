@@ -76,7 +76,6 @@ export class OpportunityCreateComponent implements OnInit {
 				this.dialog.open(ErrorComponent, { data: e });
 			}
 		}
-		console.log("Scedule", this.form.get("schedule")?.value);
 	}
 
 	getImageUrl(): string {
@@ -92,17 +91,15 @@ export class OpportunityCreateComponent implements OnInit {
 			// @ts-ignore
 			this.formData[name] = file.name;
 		}
-		console.log("s");
+
 		if (this.form.get("photo_x")?.value != null) {
 			const reader = new FileReader();
 
 			const x = this;
 			reader.onload = function (e) {
 				x.photo = e.target!.result;
-				console.log(e);
 			};
 
-			console.log("s");
 			reader.readAsDataURL(this.formData.photo_file!);
 		}
 	}
@@ -125,7 +122,6 @@ export class OpportunityCreateComponent implements OnInit {
 			if (this.edit) id = await this.opportunityService.editOpportunity(this.form.value);
 			else id = await this.opportunityService.createOpportunity(this.form.value);
 
-			console.log(id);
 			await this.router.navigate(["/opp/" + id]);
 		} catch (e) {
 			this.dialog.open(ErrorComponent, { data: e });
@@ -139,11 +135,5 @@ export class OpportunityCreateComponent implements OnInit {
 		const value = this.form.value.url;
 		return value == undefined ? '' : value.replace(/[^a-z0-9_]+/gi, '-').replace(/^-|-$/g, '').toLowerCase();
 	}
-
-	temp() {
-		console.log(this.form.get('schedule')?.value);
-	}
-
-
 
 }

@@ -1,7 +1,6 @@
 export { }
 
 import { CallableContext } from "firebase-functions/lib/common/providers/https";
-import { schedule } from "firebase-functions/v1/pubsub";
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 const db = admin.firestore();
