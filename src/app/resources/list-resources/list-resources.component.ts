@@ -29,7 +29,7 @@ export class ListResourcesComponent implements OnInit {
 
 	@ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
 
-	selectedColumns = ['title', 'functions', 'link', 'open'];
+	selectedColumns = ['title', 'functions', 'link', 'visits', 'open'];
 
 	filter = {
 		quick_filter: "",
