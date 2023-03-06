@@ -21,6 +21,7 @@ import { CreateGroupComponent } from './member/group-members/create-group/create
 const routes: Routes = [
 	{ path: '', component: ProfileComponent },
 	{ path: 'login', component: LoginComponent },
+	{ path: 'logout', component: LoginComponent },
 	{ path: 'profile', component: ProfileComponent },
 	{ path: 'profile/initialize', component: InitializeComponent },
 	{ path: 'profile/:email', component: ProfileComponent },

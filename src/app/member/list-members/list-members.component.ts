@@ -61,12 +61,9 @@ export class ListMembersComponent implements OnInit {
 			this.members = await this.memberService.getMembers();
 
 			this.dataSource = new MatTableDataSource(this.members);
-			//console.log("Paginator", this.paginator);
 			this.changeDetectorRef.detectChanges();
-			//console.log("Paginator2", this.paginator);
 			this.dataSource.paginator = this.paginator;
 			this.dataSource.sort = this.sort;
-			//this.dataSource.connect().subscribe(d => this.renderedData = d);
 			this.getDisplayedColumns();
 
 			this.functions = this.getAllFunctions().sort();

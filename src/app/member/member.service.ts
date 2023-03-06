@@ -167,7 +167,6 @@ export class MemberService {
 			}).toPromise();
 			// @ts-ignore
 			MemberService.changeField(member, editField, newValue);
-			console.log(member);
 		} catch (e) {
 			this.dialog.open(ErrorComponent, { data: e });
 		}
@@ -177,7 +176,6 @@ export class MemberService {
 		const fileName = Date.now().toString() + "_" + file.name;
 		const ref = this.storage.ref(fileName);
 		const x = await ref.put(file);
-		console.log("X", x);
 		return fileName;
 	}
 

@@ -43,7 +43,7 @@ export class ListResourcesComponent implements OnInit {
 	}
 
 	async ngOnInit(): Promise<void> {
-		if (!await this.authService.isLoggedIn()) await this.authService.login();
+		if (!this.authService.isLoggedIn()) await this.authService.login();
 
 		try {
 			this.resources = await this.resourceService.getResources();
@@ -111,8 +111,6 @@ export class ListResourcesComponent implements OnInit {
 	show() {
 		// Required to access this.contentPlaceholder below,
 		// otherwise contentPlaceholder will be undefined
-
-		console.log(this.paginator);
 	}
 
 }
