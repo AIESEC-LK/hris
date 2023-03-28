@@ -16,7 +16,7 @@ export class AppComponent {
 			this.authService.completeLogin();
 		} else {
 			let url = window.location.href;
-			if (!url.includes("/logout") && !url.includes("/opp/") && !url.includes("/r/")) {
+			if (!url.includes("/logout") && !url.includes("/opp/") && !url.includes("/r/") && !url.includes("/opportunities")) {
 				this.authService.login();
 			}
 		}

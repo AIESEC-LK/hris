@@ -1,0 +1,38 @@
+<mat-spinner *ngIf="edit && !form.get('id')?.value"></mat-spinner>
+
+<div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="start start" *ngIf="!edit || form.get('id')?.value || form.get('name')?.value">
+
+	<div class="mat-card" fxLayout="column" fxLayoutGap="20px" style="padding:20px;">
+
+		<div class="mat-card-title" *ngIf="!edit">Create a New Inventory Item</div>
+		<div class="mat-card-title" *ngIf="edit">Update Inventory Item</div>
+		<div class="mat-card-subtitle">Please provide the following details</div>
+
+		<div fxFlex="40" id="form" fxLayout="column">
+
+			<div fxLayout="column" fxLayoutGap="0px" [formGroup]="form">
+
+				<mat-form-field fxFlex="50" *ngIf="!edit">
+					<mat-label>ID</mat-label>
+					<input matInput formControlName="id" required>
+				</mat-form-field>
+
+				<mat-form-field fxFlex="50">
+					<mat-label>Name</mat-label>
+					<input matInput formControlName="name" required>
+				</mat-form-field>
+
+				<mat-form-field fxFlex="50">
+					<mat-label>Notes</mat-label>
+					<textarea matInput formControlName="notes" cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1" required></textarea>
+				</mat-form-field>
+
+				<button class="submit_button" mat-raised-button color="primary" (click)="submitForm()" [disabled]="!form.valid">
+					{{edit ? "UPDATE INVENTORY ITEM" : "CREATE INVENTORY ITEM"}}
+				</button>
+
+			</div>
+		</div>
+	</div>
+
+</div>

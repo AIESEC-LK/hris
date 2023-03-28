@@ -17,6 +17,9 @@ import { ViewSubmissionComponent } from "./submissions/view-submission/view-subm
 import { ManageMembersComponent } from "./member/manage-members/manage-members.component";
 import { GroupMembersComponent } from './member/group-members/group-members.component';
 import { CreateGroupComponent } from './member/group-members/create-group/create-group.component';
+import { CreateInventoryComponent } from './inventory/create-inventory/create-inventory.component';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ListInventoryComponent } from './inventory/list-inventory/list-inventory.component';
 
 const routes: Routes = [
 	{ path: '', component: ProfileComponent },
@@ -48,7 +51,10 @@ const routes: Routes = [
 	{ path: 's/:id', component: ViewSubmissionComponent },
 	{ path: 'submission/:id', component: ViewSubmissionComponent },
 	{ path: 'submission/edit/:id', component: CreateSubmissionComponent },
-	{ path: 'submissions/edit/:id', component: CreateSubmissionComponent }
+	{ path: 'submissions/edit/:id', component: CreateSubmissionComponent },
+	{ path: 'inventory', component: ListInventoryComponent },
+	{ path: 'inventory/create', component: CreateInventoryComponent },
+	{ path: 'inventory/edit/:id', component: CreateInventoryComponent },
 ];
 
 

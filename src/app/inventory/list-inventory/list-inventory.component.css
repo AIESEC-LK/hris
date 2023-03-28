@@ -1,0 +1,21 @@
+.inline-icon {
+	margin-left: 5px;
+	margin-top: 3px;
+	font-size: 20px;
+	vertical-align: middle;
+	color: grey;
+	cursor: default;
+}
+
+.mat-cell {
+	padding: 15px 15px;
+}
+
+.k_clickable {
+	cursor: pointer;
+	transition: all 0.3s;
+}
+
+.k_clickable:hover {
+	color: rgb(212, 62, 62);
+}

@@ -1,0 +1,3 @@
+npm run build -- --watch
+firebase emulators:start --import ./export --export-on-exit ./export
+ng serve --open

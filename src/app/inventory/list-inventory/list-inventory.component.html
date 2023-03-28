@@ -1,0 +1,200 @@
+<div fxLayout="column" fxLayoutGap="20px">
+
+	<div class="control-bar mat-card" style="padding:20px;" fxLayoutGap="20px" fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="space-between center" fxLayoutAlign.lt-md="center center"
+		*ngIf="authService.isEBOrAbove()">
+		<div class="mat-card-title">Inventory Admin Panel</div>
+
+		<button mat-flat-button color="primary" [routerLink]="['/inventory/create']">
+			CREATE NEW INVENTORY ITEM
+		</button>
+	</div>
+
+	<div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="center start">
+		<div>
+			<div fxLayoutAlign="center center">
+				<mat-spinner *ngIf="!inventoryItems && loading"></mat-spinner>
+			</div>
+
+			<div *ngIf="inventoryItems && inventoryItems.length != 0">
+				<h1>Inventory</h1>
+			</div>
+
+			<div fxLayout="column" *ngIf="inventoryItems && inventoryItems.length != 0" class="control">
+
+				<div fxLayout="row" fxLayoutGap="20px" class="control_panel">
+
+					<mat-form-field>
+						<input matInput type="text" (keyup)="doFilter()" placeholder="Quick Filter" [(ngModel)]="filter.quick_filter">
+					</mat-form-field>
+
+					<mat-form-field>
+						<mat-label>Pick up</mat-label>
+						<input matInput type="datetime-local" [(ngModel)]="filter.pickUp" (selectionChange)="doFilter()">
+					</mat-form-field>
+
+					<mat-form-field>
+						<mat-label>Return</mat-label>
+						<input matInput type="datetime-local" [(ngModel)]="filter.return" (selectionChange)="doFilter()">
+					</mat-form-field>
+
+				</div>
+
+				<mat-paginator #paginator [pageSizeOptions]="[10, 20, 30, 40, 50, 100, 200, 500, 1000]" showFirstLastButtons *ngIf="inventoryItems && inventoryItems.length != 0"></mat-paginator>
+
+				<table mat-table matSort [dataSource]="dataSource" class="mat-elevation-z1" *ngIf="inventoryItems && inventoryItems.length != 0">
+
+					<ng-container matColumnDef="id">
+						<th mat-header-cell *matHeaderCellDef mat-sort-header></th>
+						<td mat-cell *matCellDef="let inventoryItem" style="font-size: 12px; font-family:'consolas'">
+							{{inventoryItem.id}}
+						</td>
+					</ng-container>
+
+					<ng-container matColumnDef="name">
+						<th mat-header-cell *matHeaderCellDef mat-sort-header> Item </th>
+						<td mat-cell *matCellDef="let inventoryItem">
+							{{inventoryItem.name}}
+							<mat-icon class="inline-icon" [matTooltip]="getInfo(inventoryItem)" matTooltipPosition="right" matTooltipPositionAtOrigin="true">info</mat-icon>
+						</td>
+					</ng-container>
+
+					<ng-container matColumnDef="entity">
+						<th mat-header-cell *matHeaderCellDef mat-sort-header> Entity </th>
+						<td mat-cell *matCellDef="let inventoryItem">
+							{{inventoryItem.entity}}
+						</td>
+					</ng-container>
+
+					<ng-container matColumnDef="book">
+						<th mat-header-cell *matHeaderCellDef mat-sort-header> </th>
+						<td mat-cell *matCellDef="let inventoryItem">
+							<button mat-flat-button color="primary" (click)="request(inventoryItem)" [disabled]="!validDateRange(inventoryItem)">REQUEST</button>
+						</td>
+					</ng-container>
+
+					<ng-container matColumnDef="actions">
+						<th mat-header-cell *matHeaderCellDef mat-sort-header> </th>
+						<td mat-cell *matCellDef="let inventoryItem">
+							<a href="/inventory/edit/{{inventoryItem.id}}">
+								<mat-icon *ngIf="authService.isAdmin() || (authService.isEBOrAbove() && inventoryItem.entity == authService.getEntity())" class="inline-icon k_clickable"
+									matTooltip="Edit inventory item" matTooltipPosition="right" matTooltipPositionAtOrigin="true">edit</mat-icon>
+								<mat-icon *ngIf="authService.isAdmin() || (authService.isEBOrAbove() && inventoryItem.entity == authService.getEntity())" class="inline-icon k_clickable"
+									matTooltip="Delete inventory item" matTooltipPosition="right" matTooltipPositionAtOrigin="true" (click)="delete(inventoryItem)">delete</mat-icon>
+
+							</a>
+						</td>
+					</ng-container>
+
+					<tr mat-header-row *matHeaderRowDef="selectedColumns"></tr>
+					<tr mat-row *matRowDef="let myRowData; columns:selectedColumns"></tr>
+
+				</table>
+
+			</div>
+
+		</div>
+
+		<div>
+
+			<div fxLayoutAlign="center center">
+				<mat-spinner *ngIf="!activeRequests && requestsLoading"></mat-spinner>
+			</div>
+
+			<div *ngIf="activeRequests && activeRequests.length != 0">
+				<h1>Requests</h1>
+			</div>
+
+
+			<div fxLayout="column" *ngIf="activeRequests && activeRequests.length != 0" class="control">
+
+				<div fxLayout="row" fxLayoutGap="20px" class="control_panel">
+
+					<mat-form-field>
+						<input matInput type="text" (keyup)="doFilterRequests()" placeholder="Quick Filter" [(ngModel)]="requestsFilter.quick_filter">
+					</mat-form-field>
+
+				</div>
+
+				<mat-paginator #paginator [pageSizeOptions]="[10, 20, 30, 40, 50, 100, 200, 500, 1000]" showFirstLastButtons *ngIf="activeRequests && activeRequests.length != 0"></mat-paginator>
+
+				<table mat-table matSort [dataSource]="requestsDataSource" class="mat-elevation-z1" *ngIf="activeRequests && activeRequests.length != 0">
+
+					<ng-container matColumnDef="item">
+						<th mat-header-cell *matHeaderCellDef mat-sort-header></th>
+						<td mat-cell *matCellDef="let request" style="font-size: 12px; font-family:'consolas'">
+							{{request.inventoryItemId}}
+						</td>
+					</ng-container>
+
+					<ng-container matColumnDef="entity">
+						<th mat-header-cell *matHeaderCellDef mat-sort-header> From </th>
+						<td mat-cell *matCellDef="let request">
+							<div>{{request.entity}}</div>
+							<div style="font-size:12px">{{request.created_by}}</div>
+						</td>
+					</ng-container>
+
+					<ng-container matColumnDef="pickUp">
+						<th mat-header-cell *matHeaderCellDef mat-sort-header> Pick Up </th>
+						<td mat-cell *matCellDef="let request">
+							<div>{{request.pickUp.replace("T", " ")}}</div>
+							<div style="font-size:12px">{{getDayOfWeek(request.pickUp)}}</div>
+						</td>
+					</ng-container>
+
+					<ng-container matColumnDef="return">
+						<th mat-header-cell *matHeaderCellDef mat-sort-header> Return </th>
+						<td mat-cell *matCellDef="let request">
+							<div>{{request.return.replace("T", " ")}}</div>
+							<div style="font-size:12px">{{getDayOfWeek(request.return)}}</div>
+						</td>
+					</ng-container>
+
+					<ng-container matColumnDef="info">
+						<th mat-header-cell *matHeaderCellDef mat-sort-header></th>
+						<td mat-cell *matCellDef="let request">
+							<mat-icon class="inline-icon" [matTooltip]="getDuration(request.pickUp, request.return)" matTooltipPosition="right" matTooltipPositionAtOrigin="true">access_time</mat-icon>
+							<mat-icon class="inline-icon" [matTooltip]="request.reason" matTooltipPosition="right" matTooltipPositionAtOrigin="true">info</mat-icon>
+						</td>
+					</ng-container>
+
+					<ng-container matColumnDef="status">
+						<th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+						<td mat-cell *matCellDef="let request">
+							<span *ngIf="request.status == 'pending'" style="font-size: 15px; font-family:'consolas'; color:rgb(126, 126, 126)">PENDING</span>
+							<span *ngIf="request.status == 'approved'" style="font-size: 15px; font-family:'consolas'; color:rgb(3, 151, 79)">APPROVED</span>
+							<span *ngIf="request.status == 'rejected'" style="font-size: 15px; font-family:'consolas'; color:rgb(180, 32, 32)">REJECTED</span>
+
+						</td>
+					</ng-container>
+
+					<ng-container matColumnDef="options">
+						<th mat-header-cell *matHeaderCellDef mat-sort-header></th>
+						<td mat-cell *matCellDef="let request" fxLayout="row" fxLayoutGap="20px">
+							<button *ngIf="request.status == 'pending' && canEdit(request.inventoryItemId)" mat-flat-button color="primary" (click)="markAsApproved(request)">APPROVE</button>
+							<button *ngIf="request.status == 'approved' && canEdit(request.inventoryItemId)" mat-flat-button color="primary" (click)="markAsApproved(request)">PICKED UP</button>
+							<button *ngIf="request.status != 'rejected' && canEdit(request.inventoryItemId)" mat-flat-button color="warn" (click)="markAsRejected(request)">REJECT</button>
+						</td>
+					</ng-container>
+
+					<ng-container matColumnDef="actions">
+						<th mat-header-cell *matHeaderCellDef mat-sort-header></th>
+						<td mat-cell *matCellDef="let request">
+							<mat-icon *ngIf="request.entity == authService.getEntity()" class="inline-icon k_clickable" matTooltip="Delete request" matTooltipPosition="right"
+								matTooltipPositionAtOrigin="true" (click)="deleteRequest(request)">delete</mat-icon>
+						</td>
+					</ng-container>
+
+					<tr mat-header-row *matHeaderRowDef="requestsSelectedColumns"></tr>
+					<tr mat-row *matRowDef="let myRowData; columns:requestsSelectedColumns"></tr>
+
+				</table>
+
+			</div>
+
+
+		</div>
+
+	</div>
+
+</div>

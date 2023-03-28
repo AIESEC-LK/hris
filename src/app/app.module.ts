@@ -62,6 +62,8 @@ import { GroupMembersComponent } from './member/group-members/group-members.comp
 import { CreateGroupComponent } from './member/group-members/create-group/create-group.component';
 import { ViewGroupDialogComponent } from './dialogs/view-group-dialog/view-group-dialog.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { CreateInventoryComponent } from './inventory/create-inventory/create-inventory.component';
+import { ListInventoryComponent } from './inventory/list-inventory/list-inventory.component';
 
 @NgModule({
 	declarations: [
@@ -91,7 +93,9 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 		ManageMembersComponent,
 		GroupMembersComponent,
 		CreateGroupComponent,
-		ViewGroupDialogComponent
+		ViewGroupDialogComponent,
+		CreateInventoryComponent,
+		ListInventoryComponent
 	],
 	imports: [
 		BrowserModule,
