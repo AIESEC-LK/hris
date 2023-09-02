@@ -33,7 +33,7 @@ export class ListInventoryComponent implements OnInit {
 	@ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
 
 	selectedColumns = ['id', 'name', 'book'];
-	requestsSelectedColumns = ["item", "entity", "pickUp", "return", "info", "status", "options", "actions"];
+	requestsSelectedColumns = ["item", "entity", "pickUp", "return", "info", "status", "approve", "reject", "created_at", "actions"];
 
 	filter = {
 		quick_filter: "",
@@ -165,7 +165,7 @@ export class ListInventoryComponent implements OnInit {
 			if (result == null) return;
 			this.reason = result;
 			await this.inventoryService.createRequest(inventoryItem, this.filter.pickUp, this.filter.return, this.reason);
-			this.activeRequests = await this.inventoryService.getActiveRequests();
+			if (this.authService.isEBOrAbove()) this.activeRequests = await this.inventoryService.getActiveRequests();
 			this.doFilterRequests();
 		});
 	}

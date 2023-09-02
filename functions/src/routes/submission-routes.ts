@@ -144,7 +144,7 @@ const sendReminder = functions.runWith({
 				name: "submission reminder",
 				data: {
 					submission_title: submission.title,
-					submission_link: "https://asl360.aiesec.lk/s/" + submission.id
+					submission_link: submission.submissionLink
 				}
 			}
 		});

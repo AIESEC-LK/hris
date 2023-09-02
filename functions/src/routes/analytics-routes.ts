@@ -1,10 +1,10 @@
-export {}
+export { }
 
-import {CallableContext} from "firebase-functions/lib/common/providers/https";
+import { CallableContext } from "firebase-functions/lib/common/providers/https";
 const functions = require('firebase-functions');
 const AuthService = require("../services/auth-service");
 const logger = require("../middleware/logger");
-const {BigQuery} = require('@google-cloud/bigquery');
+const { BigQuery } = require('@google-cloud/bigquery');
 
 
 export interface EventSummaryRequest {

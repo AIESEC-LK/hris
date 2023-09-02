@@ -20,7 +20,8 @@ export interface InventoryRequest {
 	reason: string,
 	status: string,
 	entity: string,
-	created_by: string
+	created_by: string,
+	created_at: string,
 }
 
 @Injectable({
@@ -75,10 +76,10 @@ export class InventoryService {
 
 	public async getActiveRequests(): Promise<InventoryRequest[]> {
 		const getActiveRequests = this.functions.httpsCallable('inventory-getActiveRequests');
-		const requests: InventoryRequest[] = await getActiveRequests({}).toPromise();
+		let requests: InventoryRequest[] = await getActiveRequests({}).toPromise();
 
-		// sort requests by pickUp
-		requests.sort((a, b) => parseFloat(b.pickUp) - parseFloat(a.pickUp));
+		// sort requests by pickup date
+		requests.sort((a, b) => (a.pickUp > b.pickUp) ? 1 : ((b.pickUp > a.pickUp) ? -1 : 0))
 		return requests;
 	}
 

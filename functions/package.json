@@ -1,31 +1,31 @@
 {
-  "name": "functions",
-  "scripts": {
-    "build": "tsc",
-    "serve": "npm run build -- --watch | firebase emulators:start --only functions",
-    "shell": "npm run build && firebase functions:shell",
-    "start": "npm run shell",
-    "deploy": "firebase deploy --only functions",
-    "logs": "firebase functions:log"
-  },
-  "engines": {
-    "node": "14"
-  },
-  "main": "lib/index.js",
-  "dependencies": {
-    "@google-cloud/bigquery": "^6.0.1",
-    "@types/node": "^14.6.2",
-    "body-parser": "^1.19.0",
-    "express": "^4.17.1",
-    "firebase-admin": "^9.8.0",
-    "firebase-functions": "^3.15.5",
-    "googleapis": "^39.2.0",
-    "graphql": "^15.5.3",
-    "graphql-request": "^3.5.0"
-  },
-  "devDependencies": {
-    "firebase-functions-test": "^0.2.0",
-    "typescript": "^4.4.3"
-  },
-  "private": true
+	"name": "functions",
+	"scripts": {
+		"build": "tsc",
+		"serve": "npm run build -- --watch | firebase emulators:start --only functions",
+		"shell": "npm run build && firebase functions:shell",
+		"start": "npm run shell",
+		"deploy": "firebase deploy --only functions",
+		"logs": "firebase functions:log"
+	},
+	"engines": {
+		"node": "16"
+	},
+	"main": "lib/index.js",
+	"dependencies": {
+		"@google-cloud/bigquery": "^6.0.1",
+		"@types/node": "^14.6.2",
+		"bodynp-parser": "^1.19.0",
+		"express": "^4.17.1",
+		"firebase-admin": "^9.8.0",
+		"firebase-functions": "^3.15.5",
+		"googleapis": "^39.2.0",
+		"graphql": "^15.5.3",
+		"graphql-request": "^3.5.0"
+	},
+	"devDependencies": {
+		"firebase-functions-test": "^0.2.0",
+		"typescript": "^4.4.3"
+	},
+	"private": true
 }

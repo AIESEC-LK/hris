@@ -164,18 +164,30 @@
 							<span *ngIf="request.status == 'pending'" style="font-size: 15px; font-family:'consolas'; color:rgb(126, 126, 126)">PENDING</span>
 							<span *ngIf="request.status == 'approved'" style="font-size: 15px; font-family:'consolas'; color:rgb(3, 151, 79)">APPROVED</span>
 							<span *ngIf="request.status == 'rejected'" style="font-size: 15px; font-family:'consolas'; color:rgb(180, 32, 32)">REJECTED</span>
-
 						</td>
 					</ng-container>
 
-					<ng-container matColumnDef="options">
+					<ng-container matColumnDef="approve">
 						<th mat-header-cell *matHeaderCellDef mat-sort-header></th>
-						<td mat-cell *matCellDef="let request" fxLayout="row" fxLayoutGap="20px">
+						<td mat-cell *matCellDef="let request" fxLayoutGap="20px">
 							<button *ngIf="request.status == 'pending' && canEdit(request.inventoryItemId)" mat-flat-button color="primary" (click)="markAsApproved(request)">APPROVE</button>
-							<button *ngIf="request.status == 'approved' && canEdit(request.inventoryItemId)" mat-flat-button color="primary" (click)="markAsApproved(request)">PICKED UP</button>
+						</td>
+					</ng-container>
+
+					<ng-container matColumnDef="reject">
+						<th mat-header-cell *matHeaderCellDef mat-sort-header></th>
+						<td mat-cell *matCellDef="let request" fxLayoutGap="20px">
 							<button *ngIf="request.status != 'rejected' && canEdit(request.inventoryItemId)" mat-flat-button color="warn" (click)="markAsRejected(request)">REJECT</button>
 						</td>
 					</ng-container>
+
+					<ng-container matColumnDef="created_at">
+						<th mat-header-cell *matHeaderCellDef mat-sort-header> Requested on </th>
+						<td mat-cell *matCellDef="let request">
+							<div>{{request.created_at.substring(0, 16)}}</div>
+						</td>
+					</ng-container>
+
 
 					<ng-container matColumnDef="actions">
 						<th mat-header-cell *matHeaderCellDef mat-sort-header></th>

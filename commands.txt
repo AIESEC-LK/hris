@@ -1,3 +1,4 @@
+set NODE_OPTIONS=--openssl-legacy-provider
 npm run build -- --watch
 firebase emulators:start --import ./export --export-on-exit ./export
-ng serve --open
+ng serve --open --openssl-legacy-provider

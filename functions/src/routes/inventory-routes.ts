@@ -110,12 +110,7 @@ const getInventoryItem = functions.runWith({
 	if (!await canView(context, data.id)) throw AuthService.exceptions.NotAuthorizedException
 
 	const id = data.id;
-
-	const opportunityRef = await db.collection('inventory').doc(id).get();
-	if (!opportunityRef.exists) throw InventoryItemDoesNotExistException;
-
-	const inventoryItem: InventoryItem = opportunityRef.data();
-	return inventoryItem
+	return getInventoryItemInner(id);
 });
 
 const editInventoryItem = functions.runWith({
@@ -157,7 +152,6 @@ const createRequest = functions.runWith({
 	logger.logFunctionInvocation(context, data);
 	if (!await canView(context, data.inventoryItemId)) throw AuthService.exceptions.NotAuthorizedException
 
-
 	const requestId = logger.getSLTimestamp() + "_$_" + data.inventoryItemId + "_$_" + await AuthService.getEmail(context);
 	await db.collection('inventory-requests').doc(requestId).set(
 		{
@@ -171,6 +165,26 @@ const createRequest = functions.runWith({
 			created_by: await AuthService.getEmail(context),
 			created_at: logger.getSLTimestamp(),
 		}, { merge: true });
+
+
+	const inventoryItem = await getInventoryItemInner(data.inventoryItemId);
+	db.collection('notifications').doc("inventory-request" + "-" + requestId + "-" + logger.getSLTimestamp()).set(
+		{
+			to: await getInventoryManager(inventoryItem.entity),
+			replyTo: data.created_by,
+			from: "ASL360 Inventory <inventory@360.aiesec.lk>",
+			template: {
+				name: "inventory request create",
+				data: {
+					inventoryItemId: data.inventoryItemId,
+					pickUp: data.pickUp,
+					return: data.return,
+					reason: data.reason,
+					entity: await AuthService.getEntity(context),
+					created_by: await AuthService.getEmail(context),
+				}
+			}
+		});
 
 	return requestId;
 });
@@ -199,7 +213,7 @@ const getActiveRequests = functions.runWith({
 	if (await AuthService.isAdmin(context)) inventoryRequests = await db.collection('inventory-requests');
 	else {
 		const inventoryItemIds: string[] = [];
-		const inventoryItems: InventoryItem[] = getInventoryItems(null, context);
+		const inventoryItems: InventoryItem[] = await getInventoryItemsInner(context);
 		for (const inventoryItem of inventoryItems) {
 			inventoryItemIds.push(inventoryItem.id);
 		}
@@ -234,6 +248,24 @@ const approveRequest = functions.runWith({
 			approved_at: logger.getSLTimestamp(),
 		}, { merge: true });
 
+	const inventoryItem = await getInventoryItemInner(data.inventoryItemId);
+	db.collection('notifications').doc("inventory-request-approve" + "-" + data.id + "-" + logger.getSLTimestamp()).set(
+		{
+			to: data.created_by,
+			from: "ASL360 Inventory <inventory@360.aiesec.lk>",
+			replyTo: await getInventoryManager(inventoryItem.entity),
+			template: {
+				name: "inventory request approve",
+				data: {
+					inventoryItemName: inventoryItem.name,
+					inventoryItemId: data.inventoryItemId,
+					pickUp: data.pickUp,
+					return: data.return,
+					reason: data.reason,
+				}
+			}
+		});
+
 	return data.id;
 });
 
@@ -252,8 +284,34 @@ const rejectRequest = functions.runWith({
 			approved_at: logger.getSLTimestamp(),
 		}, { merge: true });
 
+	const inventoryItem = await getInventoryItemInner(data.inventoryItemId);
+	db.collection('notifications').doc("inventory-request-reject" + "-" + data.id + "-" + logger.getSLTimestamp()).set(
+		{
+			to: data.created_by,
+			from: "ASL360 Inventory <inventory@360.aiesec.lk>",
+			replyTo: await getInventoryManager(inventoryItem.entity),
+			template: {
+				name: "inventory request reject",
+				data: {
+					inventoryItemName: inventoryItem.name,
+					inventoryItemId: data.inventoryItemId,
+					pickUp: data.pickUp,
+					return: data.return,
+					reason: data.reason,
+				}
+			}
+		});
+
 	return data.id;
 });
+
+async function getInventoryItemInner(id: string) {
+	const opportunityRef = await db.collection('inventory').doc(id).get();
+	if (!opportunityRef.exists) throw InventoryItemDoesNotExistException;
+
+	const inventoryItem: InventoryItem = opportunityRef.data();
+	return inventoryItem
+}
 
 async function checkInventoryItemExists(id: string) {
 	const doc = await db.collection('inventory').doc(id).get();
@@ -312,6 +370,33 @@ async function canView(context: CallableContext, id: string): Promise<boolean> {
 	return false;
 }
 
+async function getInventoryItemsInner(context: CallableContext): Promise<InventoryItem[]> {
+	let inventoryItems;
+	if (await AuthService.isAdmin(context)) inventoryItems = await db.collection('inventory');
+	else inventoryItems = await db.collection('inventory')
+		.where("entity", "in", [await AuthService.getEntity(context), "Sri Lanka"])
+		.orderBy("last_modified_at", "desc");
+
+	let inventoryItemMap = new Map<string, InventoryItem>();
+	const querySnapshot = await inventoryItems.get()
+	querySnapshot.forEach((doc: any) => {
+		inventoryItemMap.set(doc.id, {
+			...doc.data(),
+			activeRequests: []
+		});
+	});
+
+	let items: InventoryItem[] = [];
+	for (const inventoryItem of inventoryItemMap.values()) {
+		items.push(inventoryItem);
+	}
+
+	return items;
+}
+
+async function getInventoryManager(entity: string): Promise<string> {
+	return (await db.collection('config').doc('inventory-managers').get()).data()[entity];
+}
 
 module.exports = {
 	createInventoryItem: createInventoryItem,
